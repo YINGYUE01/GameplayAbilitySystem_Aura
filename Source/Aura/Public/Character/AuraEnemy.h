@@ -7,6 +7,7 @@
 #include "Interaction/EnemyInterface.h"
 #include "AuraEnemy.generated.h"
 
+
 /**
  * 
  */
@@ -21,5 +22,6 @@ public:
 	virtual void UnHighlightActor() override;
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlight = false;
+
 	
 };
