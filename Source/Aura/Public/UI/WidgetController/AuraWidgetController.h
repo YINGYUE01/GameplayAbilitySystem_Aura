@@ -7,6 +7,7 @@
 #include "UObject/NoExportTypes.h"
 #include "AuraWidgetController.generated.h"
 
+struct FOnAttributeChangeData;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -42,6 +43,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
 	virtual void BroadcastInitalValues();
+	virtual void BindCallbacksToDependencies();
 protected:
 	UPROPERTY(BlueprintReadOnly,Category="WidgetController")
 	TObjectPtr<APlayerController> PlayerController;
