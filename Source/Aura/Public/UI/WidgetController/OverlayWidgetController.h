@@ -49,6 +49,10 @@ public:
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnMaxManaChangedSignature OnMaxManaChanged;
 protected:
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UDataTable> MessageWidgetDataTable;
+	
 	void HealthChanged(const FOnAttributeChangeData& Deta) const;
 
 	void MaxHealthChanged(const FOnAttributeChangeData& Deta) const;
@@ -57,7 +61,12 @@ protected:
 
 	void MaxManaChanged(const FOnAttributeChangeData& Deta) const;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
-	TObjectPtr<UDataTable> MessageWidgetDataTable;
-	
+	template<typename  T>
+	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag);
 };
+
+template <typename T>
+T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
+{
+	return DataTable->FindRow<T>(Tag.GetTagName(),TEXT(""));
+}
