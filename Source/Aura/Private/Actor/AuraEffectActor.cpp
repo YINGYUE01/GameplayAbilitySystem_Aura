@@ -21,6 +21,7 @@ void AAuraEffectActor::BeginPlay()
 
 void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
+	
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if (TargetASC==nullptr) return;
 	check(GameplayEffectClass);
@@ -28,6 +29,10 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	EffectContextHandle.AddSourceObject(this);
 	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, ActorLevel, EffectContextHandle);
 	const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	//判断是否是无限效果，如果是无限效果我们需要手动清除效果，处理方式是
+	//通过对DurationType和EEffectRemovalPolicy的判断
+	//是否加入TMap<FGameplayEffectHandle,UAbilitySystemComponent*> ActiveEffectHandles里
+	//然后在EndOverlap里面进行手动清除效果
 	const bool bIsInfinite = EffectSpecHandle.Data->Def->DurationPolicy==EGameplayEffectDurationType::Infinite;
 	if (bIsInfinite && InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
 	{
@@ -69,11 +74,14 @@ void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 	{
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 		if (!TargetASC) return ;
+		//保存被清除的效果的FActiveGameplayEffectHandle
+		//用于清除效果后将Map里的数据一同进行清理
 		TArray<FActiveGameplayEffectHandle> HandlesToRemove; 
 		for (auto HandlePair : ActiveEffectHandles)
 		{
 			if (TargetASC == HandlePair.Value)
 			{
+				//清除无限效果
 				TargetASC->RemoveActiveGameplayEffect(HandlePair.Key,1);
 				HandlesToRemove.Add(HandlePair.Key);
 			}
