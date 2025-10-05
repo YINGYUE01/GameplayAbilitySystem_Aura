@@ -8,11 +8,6 @@
 #include "OverlayWidgetController.generated.h"
 class UAuraUserWidget;
 struct FGameplayTagContainer;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature,float,NewMaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature,float,NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature,float,NewMaxMana);
-
 USTRUCT(BlueprintType)
 struct FUIWidgetRow:public FTableRowBase
 {
@@ -29,6 +24,13 @@ struct FUIWidgetRow:public FTableRowBase
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	UTexture2D* Image = nullptr;
 };
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature,float,NewMaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature,float,NewMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature,float,NewMaxMana);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMwssageWidgetRowDelegate,FUIWidgetRow,Row);
+
 /**
  * 
  */
@@ -39,15 +41,21 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 public:
 	virtual void BroadcastInitalValues() override;
 	virtual void BindCallbacksToDependencies() override;
+	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnHealthChangedSignature OnHealthChanged;
 	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnMaxHealthChangedSignature OnMaxHealthChanged;
+	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnManaChangedSignature OnManaChanged;
+	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnMaxManaChangedSignature OnMaxManaChanged;
+	
+	UPROPERTY(BlueprintAssignable,Category="GAS|Message")
+	FMwssageWidgetRowDelegate MessageWidgetRowDelegate;
 protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
