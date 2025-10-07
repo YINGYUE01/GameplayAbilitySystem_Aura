@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/AuraCharacterBase.h"
+#include "Interaction/CombatInterface.h"
 #include "Interaction/EnemyInterface.h"
 #include "AuraEnemy.generated.h"
 
@@ -23,11 +24,19 @@ public:
 	//~end EnemyInterface
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlight = false;
-
+	/*
+	 *  Combatinterface
+	 */
+	virtual int32 GetPlayerLevel() override;
+	/*
+	* end Combatinterface
+	*/
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo() override;
 
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Character Class Defaults")
+	int32 Level = 1;
 	
 };
