@@ -28,9 +28,6 @@ public:
 	FGameplayTag Attribute_Secondary_CriticalHitResistance;
 	FGameplayTag Attribute_Secondary_HealthRegeneration;
 	FGameplayTag Attribute_Secondary_ManaRegeneration;
-	
-protected:
-
 private:
 	static FAuraGameplayTags GameplayTags;
 };

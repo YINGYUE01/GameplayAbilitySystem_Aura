@@ -26,7 +26,7 @@ struct FUIWidgetRow:public FTableRowBase
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeSignature, float, NewValue);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMwssageWidgetRowDelegate,FUIWidgetRow,Row);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate,FUIWidgetRow,Row);
 
 /**
  * 
@@ -52,7 +52,7 @@ public:
 	FOnAttributeSignature OnMaxManaChanged;
 	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Message")
-	FMwssageWidgetRowDelegate MessageWidgetRowDelegate;
+	FMessageWidgetRowDelegate MessageWidgetRowDelegate;
 protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)

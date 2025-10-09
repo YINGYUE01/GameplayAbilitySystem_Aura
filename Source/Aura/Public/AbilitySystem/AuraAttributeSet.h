@@ -47,6 +47,8 @@ struct FEffectProperties
 	ACharacter* TargetCharacter=nullptr;
 	
 };
+template<typename T>
+using TAttributeFuncPtr = typename TBaseStaticDelegateInstance<T,FDefaultDelegateUserPolicy>::FFuncPtr;
 /**
  * 
  */
@@ -61,6 +63,9 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	TMap<FGameplayTag,TAttributeFuncPtr<FGameplayAttribute()>> TagstoAttribute;
+	
 	//~Begin Add Attribute
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Health,Category="Vital Attribute")
 	FGameplayAttributeData Health;
