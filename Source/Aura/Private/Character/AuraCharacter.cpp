@@ -26,6 +26,7 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	//Sever InitS AbilitySysetemInfo
 	InitAbilityActorInfo();
+	AddCharacterAilities();
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -33,6 +34,7 @@ void AAuraCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 	//Clint Init AbilitySysetemInfo
 	InitAbilityActorInfo();
+
 }
 
 int32 AAuraCharacter::GetPlayerLevel()
