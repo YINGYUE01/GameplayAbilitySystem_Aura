@@ -48,42 +48,16 @@ void AAuraPlayerController::AutoRun()
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
+	
 	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 	LastActor = ThisActor;
 	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
-	/*
-	 * 多种情况说明:
-	 * 1.LastActor 和 ThisActor 都为nullptr:
-	 *		什么的不做
-	 * 2.LastActor == nullptr && ThisActor有效:
-	 *		ThisActor->HighLight()
-	 * 3.LastAcotr有效ThisActor==nullptr：
-	 *		LastActor->UnHighLight()
-	 * 4.LastActor 和 ThisActor 都有效但不相等时:
-	 *		LastActor->UnHighLight()
-	 *		ThisActor->HighLight()
-	 * 5.LastActor 和 ThisActor 都有效但相等时:
-	 *		什么都不做
-	 */
-	if (LastActor==nullptr)
+
+	if (LastActor != ThisActor)
 	{
-		if (ThisActor!=nullptr)
-			ThisActor->HighlightActor();
-	}
-	else
-	{
-		if (ThisActor == nullptr)
-			LastActor->UnHighlightActor();
-		else
-		{
-			if (LastActor != ThisActor)
-			{
-				LastActor->UnHighlightActor();
-				ThisActor->HighlightActor();
-			}
-		}
+		if (ThisActor) ThisActor->HighlightActor();
+		if (LastActor) LastActor->UnHighlightActor();
 	}
 }
 
@@ -127,7 +101,8 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					Spline->AddSplinePoint(NavLoc,ESplineCoordinateSpace::World);
 					DrawDebugSphere(GetWorld(),NavLoc,10.f,8.f,FColor::Silver,false,5.f);
 				}
-				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num()-1];
+				if (NavPath->PathPoints.Num()>=1)
+					CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num()-1];
 				bAutonRunning = true;
 			}
 		}
@@ -157,10 +132,9 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
-		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,Hit))
+		if (CursorHit.bBlockingHit)
 		{
-			CachedDestination = Hit.ImpactPoint;
+			CachedDestination = CursorHit.ImpactPoint;
 		}
 		if (APawn* ControllerPawn = GetPawn())
 		{
