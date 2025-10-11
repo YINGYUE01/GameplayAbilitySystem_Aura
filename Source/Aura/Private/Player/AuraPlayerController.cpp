@@ -4,16 +4,19 @@
 #include "Player/AuraPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
-	
+
+	Spline = CreateDefaultSubobject<USplineComponent>(TEXT("Spline"));
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)
@@ -65,20 +68,53 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPresses(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1,3.f,FColor::Red,*InputTag.ToString());
+	//GEngine->AddOnScreenDebugMessage(1,3.f,FColor::Red,*InputTag.ToString());
+	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting = ThisActor ? true : false;
+		bAutonRunning = false;
+	}
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (!GetASC()) return;
-	GetASC()->AbilityInputTagReleased(InputTag);
+	GetASC()->AbilityInputTagHeld(InputTag);
 	
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if (!GetASC()) return;
-	GetASC()->AbilityInputTagHeld(InputTag);
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagReleased(InputTag);
+		}
+		return;
+	}
+	if (bTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagReleased(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+		if (APawn* ControllerPawn = GetPawn())
+		{
+			const FVector WorldDrection = (CachedDestination - ControllerPawn->GetActorLocation()).GetSafeNormal();
+			ControllerPawn->AddMovementInput(WorldDrection);
+		}
+	}
+
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
