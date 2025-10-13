@@ -3,13 +3,28 @@
 
 #include "AbilitySystem/Ability/AuraProjectileSpell.h"
 
-#include "Kismet/KismetStringLibrary.h"
-#include "Kismet/KismetSystemLibrary.h"
+#include "Actor/AuraProjectile.h"
+#include "Interaction/CombatInterface.h"
 
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                            const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                            const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	UKismetSystemLibrary::PrintString(this,FString("Actived (C++)"),true,true,FLinearColor::Yellow,3.f);
+	if (!HasAuthority(&ActivationInfo)) return;
+
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
+	if (CombatInterface)
+	{
+		FTransform SpawnTransform;
+        SpawnTransform.SetLocation(CombatInterface->GetCombatSocketLocation());
+        AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,
+        	SpawnTransform,
+        	GetOwningActorFromActorInfo(),
+        	Cast<APawn>(GetOwningActorFromActorInfo())
+        	,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		
+		Projectile->FinishSpawning(SpawnTransform);
+	}
+
 }

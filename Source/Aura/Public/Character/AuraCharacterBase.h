@@ -26,6 +26,12 @@ protected:
 
 	UPROPERTY(EditAnywhere,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
+	UPROPERTY(EditAnywhere,Category="Weapon")
+	FName WeaponTipSocaketName;
+
+	virtual FVector GetCombatSocketLocation() override;
+
+	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent>	AbilitySystemComponent;
 	UPROPERTY()
