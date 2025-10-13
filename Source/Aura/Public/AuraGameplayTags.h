@@ -14,6 +14,7 @@ struct FAuraGameplayTags
 public:
 	static const FAuraGameplayTags& Get() { return GameplayTags; }
 	static void InitializeNativeTags();
+	/*  AttributeTag  */
 	FGameplayTag Attribute_Primary_Strength;
 	FGameplayTag Attribute_Primary_Intelligence;
 	FGameplayTag Attribute_Primary_Resilience;
@@ -28,14 +29,17 @@ public:
 	FGameplayTag Attribute_Secondary_CriticalHitResistance;
 	FGameplayTag Attribute_Secondary_HealthRegeneration;
 	FGameplayTag Attribute_Secondary_ManaRegeneration;
+	/*  AttributeTag  */
 
+	/*  InputTag  */
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_1;
 	FGameplayTag InputTag_2;
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
-	
+	/*  InputTag  */
+
 private:
 	static FAuraGameplayTags GameplayTags;
 };

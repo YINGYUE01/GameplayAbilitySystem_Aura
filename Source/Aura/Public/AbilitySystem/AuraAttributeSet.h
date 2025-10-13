@@ -64,6 +64,7 @@ public:
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	//Tag与Attribute的映射
 	TMap<FGameplayTag,TAttributeFuncPtr<FGameplayAttribute()>> TagstoAttribute;
 	
 	//~Begin Add Attribute

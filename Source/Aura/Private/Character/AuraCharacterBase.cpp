@@ -20,8 +20,6 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-
-
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -50,7 +48,7 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultVitalAttributes,1);
 }
 
-void AAuraCharacterBase::AddCharacterAilities()
+void AAuraCharacterBase::AddCharacterAbilities()
 {
 	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	if (!HasAuthority()) return ;
