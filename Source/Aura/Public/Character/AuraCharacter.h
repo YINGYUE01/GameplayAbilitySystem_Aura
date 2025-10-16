@@ -22,6 +22,7 @@ public:
 	 *  Combatinterface
 	 */
 	virtual int32 GetPlayerLevel() override;
+	
 	/*
 	* end Combatinterface
 	*/
