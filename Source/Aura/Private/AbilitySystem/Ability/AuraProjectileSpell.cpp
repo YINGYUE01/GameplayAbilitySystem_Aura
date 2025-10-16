@@ -17,7 +17,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 
 
 }
-void UAuraProjectileSpell::SpawnProjectile()
+void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 {
 	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
@@ -25,6 +25,9 @@ void UAuraProjectileSpell::SpawnProjectile()
 	{
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(CombatInterface->GetCombatSocketLocation());
+		FRotator Direction = (TargetLocation - SpawnTransform.GetLocation()).Rotation();
+		Direction.Pitch = 0.f;
+		SpawnTransform.SetRotation(Direction.Quaternion());
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,
 			SpawnTransform,
 			GetOwningActorFromActorInfo(),

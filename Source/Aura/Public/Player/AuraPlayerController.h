@@ -45,6 +45,13 @@ private:
 	void Move(const struct FInputActionValue& InputActionValue);
 	void CursorTrace();
 
+	UPROPERTY(EditAnywhere,Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
+	void ShiftPress() { bShiftPressed = true;} ;
+	void ShiftRelease() { bShiftPressed=false; } ;
+	bool bShiftPressed = false;
+	
 	FHitResult CursorHit;
 	IEnemyInterface* LastActor;
 	IEnemyInterface* ThisActor;
