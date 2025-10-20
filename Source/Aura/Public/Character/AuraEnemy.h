@@ -6,6 +6,7 @@
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AuraEnemy.generated.h"
 
 
@@ -41,6 +42,8 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 
 	void BindUI();
+
+	virtual void InitializeDefaultAttributes() const override;
 protected:
 	virtual void BeginPlay() override;
 
@@ -49,6 +52,9 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Character Class Defaults")
 	int32 Level = 1;
 
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
 };
