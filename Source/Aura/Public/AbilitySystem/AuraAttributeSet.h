@@ -137,6 +137,10 @@ public:
 	//~End Add  Secondary Attribute
 	
 	//~End Add Attribute
+	UPROPERTY(BlueprintReadOnly,Category="Damage")
+	FGameplayAttributeData InComingDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,InComingDamage);
+	
 	
 	//~Begin Rep Function
 	UFUNCTION()

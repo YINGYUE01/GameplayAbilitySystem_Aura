@@ -75,6 +75,17 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		SetMana(FMath::Clamp(GetMana(),0.f,GetMaxMana()));
 	}
+	if (Data.EvaluatedData.Attribute == GetInComingDamageAttribute())
+	{
+		float ComingDamage = GetInComingDamage();
+		SetInComingDamage(0.f);
+		if (ComingDamage>0.f)
+		{
+			float NewHealth = GetHealth() - ComingDamage;
+			SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
+			const bool bFatal = NewHealth<=0.f;
+		}
+	}
 }
 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
