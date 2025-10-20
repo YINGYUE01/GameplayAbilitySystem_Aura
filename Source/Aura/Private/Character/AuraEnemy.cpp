@@ -11,16 +11,20 @@
 
 AAuraEnemy::AAuraEnemy()
 {
+	SetReplicates(true);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile,ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+	HealthBar->SetDrawSize(FVector2D(300.f, 50.f));
+	HealthBar->SetVisibility(true);
+	HealthBar->SetIsReplicated(true);
 }
 
 void AAuraEnemy::HighlightActor()
@@ -44,40 +48,53 @@ int32 AAuraEnemy::GetPlayerLevel()
 	return Level;
 }
 
-void AAuraEnemy::BeginPlay()
+void AAuraEnemy::PossessedBy(AController* NewController)
 {
-	Super::BeginPlay();
+	Super::PossessedBy(NewController);
 	InitAbilityActorInfo();
+}
+
+void AAuraEnemy::BindUI()
+{
 	if (UAuraUserWidget* AuraWidget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
 		AuraWidget->SetWidgetController(this);
 	}
-
-
-	
+    
 	UAuraAttributeSet* AuraSet = Cast<UAuraAttributeSet>(AttributeSet);
 	if (AuraSet)
 	{
+		// 绑定属性变化委托
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraSet->GetHealthAttribute()).AddLambda(
-			[this](const FOnAttributeChangeData& Data)
-			{
-				OnHealthChanged.Broadcast(Data.NewValue);
-			});
+					[this](const FOnAttributeChangeData& Data)
+					{
+						OnHealthChanged.Broadcast(Data.NewValue);
+					});
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraSet->GetMaxHealthAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
 				OnMaxHealthChanged.Broadcast(Data.NewValue);
 			});
+        
+		// 广播初始值
 		OnHealthChanged.Broadcast(AuraSet->GetHealth());
 		OnMaxHealthChanged.Broadcast(AuraSet->GetMaxHealth());
 	}
+}
+
+void AAuraEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	InitAbilityActorInfo();
+	BindUI();
+
 	
 }
 
 void AAuraEnemy::InitAbilityActorInfo()
 {
-	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
-	
 }  

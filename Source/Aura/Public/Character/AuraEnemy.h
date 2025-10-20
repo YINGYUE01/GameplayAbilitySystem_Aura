@@ -37,6 +37,10 @@ public:
 	FOnAttributeSignature OnHealthChanged;
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeSignature OnMaxHealthChanged;
+
+	virtual void PossessedBy(AController* NewController) override;
+
+	void BindUI();
 protected:
 	virtual void BeginPlay() override;
 
