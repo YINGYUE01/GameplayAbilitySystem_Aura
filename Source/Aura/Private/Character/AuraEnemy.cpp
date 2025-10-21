@@ -67,6 +67,7 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
+	UAuraAbilitySystemLibrary::GiveStartupAbilities(this,Level,AbilitySystemComponent);
 	BindUI();
 	
 }
