@@ -21,6 +21,11 @@ public:
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	UPROPERTY(EditDefaultsOnly,Category="Anim")
+	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	virtual UAnimMontage* GetHitMonatage_Implementation() override;
 protected:
 	virtual void BeginPlay() override;
 
@@ -30,7 +35,6 @@ protected:
 	FName WeaponTipSocaketName;
 
 	virtual FVector GetCombatSocketLocation() override;
-
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent>	AbilitySystemComponent;

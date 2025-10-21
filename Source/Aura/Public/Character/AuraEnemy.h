@@ -44,6 +44,12 @@ public:
 	void BindUI();
 
 	virtual void InitializeDefaultAttributes() const override;
+
+	UPROPERTY(BlueprintReadOnly,Category="Combat")
+	bool bHitReacting = false;
+	
+	UPROPERTY(BlueprintReadOnly,Category="Combat")
+	float BaseWalkSpeed = 250.f;
 protected:
 	virtual void BeginPlay() override;
 
@@ -57,4 +63,6 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	void HitReactTagChanged(const FGameplayTag CallBackTag,int32 NewCount);
 };

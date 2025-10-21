@@ -18,8 +18,6 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
-
-
 }
 void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 {
