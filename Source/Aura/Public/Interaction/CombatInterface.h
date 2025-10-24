@@ -29,4 +29,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	UAnimMontage* GetHitMonatage();
+
+	virtual void Die() = 0;
 };

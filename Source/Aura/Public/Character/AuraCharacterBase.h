@@ -26,9 +26,14 @@ public:
 	TObjectPtr<UAnimMontage> HitReactMontage;
 
 	virtual UAnimMontage* GetHitMonatage_Implementation() override;
+
+	virtual void Die() override;
+	
+	UFUNCTION(NetMulticast,Reliable)
+	virtual void MulticastHandleDeath();
 protected:
 	virtual void BeginPlay() override;
-
+	
 	UPROPERTY(EditAnywhere,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 	UPROPERTY(EditAnywhere,Category="Weapon")

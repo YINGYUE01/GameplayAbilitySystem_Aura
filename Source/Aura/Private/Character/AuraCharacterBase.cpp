@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -22,7 +23,28 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 
 UAnimMontage* AAuraCharacterBase::GetHitMonatage_Implementation()
 {
+	
 	return HitReactMontage;
+}
+
+void AAuraCharacterBase::Die()
+{
+	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld,true));
+	MulticastHandleDeath();
+	
+}
+
+void AAuraCharacterBase::MulticastHandleDeath_Implementation()
+{
+	
+	Weapon->SetSimulatePhysics(true);
+	Weapon->SetEnableGravity(true);
+	Weapon->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Block);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 }
 
 void AAuraCharacterBase::BeginPlay()

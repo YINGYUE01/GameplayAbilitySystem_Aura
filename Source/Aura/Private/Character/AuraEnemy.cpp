@@ -52,6 +52,12 @@ int32 AAuraEnemy::GetPlayerLevel()
 	return Level;
 }
 
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(SpanLife);
+	Super::Die();
+}
+
 void AAuraEnemy::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
