@@ -13,7 +13,8 @@
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
-
+#include "GameFramework/Character.h"
+#include "UI/Widget/DamageTextComponent.h"
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
@@ -131,6 +132,27 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 		AuraASC = Cast<UAuraAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return AuraASC;
+}
+
+void AAuraPlayerController::ShowDamageNummber_Implementation(float DamageAmount,ACharacter* TargetCharacter)
+{
+	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	{
+		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter,DamageTextComponentClass);
+		
+		DamageText->RegisterComponent();
+		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [DamageText, DamageAmount]()
+		{
+			if (DamageText)
+			{
+				DamageText->SetDamageText(DamageAmount);
+			}
+		}, 0.01f, false);
+		//DamageText->SetDamageText(DamageAmount);
+	}
 }
 
 void AAuraPlayerController::BeginPlay()

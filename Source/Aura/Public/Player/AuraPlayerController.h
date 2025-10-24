@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GameplayTagContainer.h"
 #include "AuraPlayerController.generated.h"
+class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
 struct FGameplayTag;
@@ -30,12 +31,19 @@ public:
 	TObjectPtr<UAuraAbilitySystemComponent> AuraASC;
 
 	UAuraAbilitySystemComponent* GetASC();
+
+	UFUNCTION(Client,Reliable)
+	void ShowDamageNummber(float DamageAmount,ACharacter* TargetCharacter);
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override;
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
+	
 	UPROPERTY(EditAnywhere,Category="Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
 
