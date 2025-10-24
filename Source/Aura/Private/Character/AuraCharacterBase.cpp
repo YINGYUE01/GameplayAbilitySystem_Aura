@@ -15,7 +15,11 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	
 }
-
+void AAuraCharacterBase::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
@@ -31,7 +35,6 @@ void AAuraCharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld,true));
 	MulticastHandleDeath();
-	
 }
 
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
@@ -45,12 +48,23 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Block);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+	Dissolve();
 }
-
-void AAuraCharacterBase::BeginPlay()
+void AAuraCharacterBase::Dissolve()
 {
-	Super::BeginPlay();
-	
+	if (IsValid(DissolveMaterialInstance))
+	{
+		UMaterialInstanceDynamic* DynamicMatIns = UMaterialInstanceDynamic::Create(DissolveMaterialInstance,this);
+		GetMesh()->SetMaterial(0,DynamicMatIns);
+		StartDissolveTimeline(DynamicMatIns);
+	}
+	if (IsValid(WeaponDissolveMaterialInstance))
+	{
+		UMaterialInstanceDynamic* DynamicMatIns = UMaterialInstanceDynamic::Create(WeaponDissolveMaterialInstance,this);
+		Weapon->SetMaterial(0,DynamicMatIns);
+		WeaponStartDissolveTimeline(DynamicMatIns);
+	}
+
 }
 
 FVector AAuraCharacterBase::GetCombatSocketLocation()
@@ -86,6 +100,8 @@ void AAuraCharacterBase::AddCharacterAbilities()
 	if (!HasAuthority()) return ;
 	AuraASC->AddCharacterAbilities(StartupAbilities);
 }
+
+
 
 
 
