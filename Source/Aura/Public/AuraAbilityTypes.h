@@ -1,0 +1,28 @@
+#pragma once
+#include "GameplayEffectTypes.h"
+#include "AuraAbilityTypes.generated.h"
+USTRUCT(BlueprintType)
+struct FAuraGameplayEffectContext : public FGameplayEffectContext
+{
+	GENERATED_BODY()
+public:
+	/** Returns the actual struct used for serialization, subclasses must override this! */
+	virtual UScriptStruct* GetScriptStruct() const
+	{
+		return FGameplayEffectContext::StaticStruct();
+	}
+	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
+	
+	bool IsCriticalHit() const { return bIsCriticalHit; }
+	bool IsBlockHit() const { return bIsBlockHit; }
+	void SetCriticalHit(bool bCriticalHit) { bIsCriticalHit = bCriticalHit; }
+	void SetBlockHit(bool bBlockHit) { bIsBlockHit = bBlockHit; }
+protected:
+
+private:
+	UPROPERTY()
+	bool bIsCriticalHit = false;
+	UPROPERTY()
+	bool bIsBlockHit = false;
+	
+};
