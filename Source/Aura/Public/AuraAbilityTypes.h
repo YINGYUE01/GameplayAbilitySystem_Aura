@@ -17,8 +17,6 @@ public:
 	bool IsBlockHit() const { return bIsBlockHit; }
 	void SetCriticalHit(bool bCriticalHit) { bIsCriticalHit = bCriticalHit; }
 	void SetBlockHit(bool bBlockHit) { bIsBlockHit = bBlockHit; }
-protected:
-
 private:
 	UPROPERTY()
 	bool bIsCriticalHit = false;
