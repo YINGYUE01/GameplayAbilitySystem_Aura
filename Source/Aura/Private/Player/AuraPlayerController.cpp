@@ -134,7 +134,7 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 	return AuraASC;
 }
 
-void AAuraPlayerController::ShowDamageNummber_Implementation(float DamageAmount,ACharacter* TargetCharacter)
+void AAuraPlayerController::ShowDamageNummber_Implementation(float DamageAmount,ACharacter* TargetCharacter,bool bBlockeHit,bool bCriticalHit)
 {
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)
 	{

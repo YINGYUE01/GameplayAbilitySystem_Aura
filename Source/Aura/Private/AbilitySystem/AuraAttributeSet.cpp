@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
@@ -105,7 +106,9 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			{
 				if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter,0)))
 				{
-					AuraPlayerController->ShowDamageNummber(ComingDamage,Props.TargetCharacter);
+					const bool bBlock = UAuraAbilitySystemLibrary::isBlockeHit(Props.EffectContextHandle);
+					const bool bCritical = UAuraAbilitySystemLibrary::isCriticalHit(Props.EffectContextHandle);
+					AuraPlayerController->ShowDamageNummber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
 				}
 			}
 		}

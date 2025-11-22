@@ -33,7 +33,7 @@ public:
 	UAuraAbilitySystemComponent* GetASC();
 
 	UFUNCTION(Client,Reliable)
-	void ShowDamageNummber(float DamageAmount,ACharacter* TargetCharacter);
+	void ShowDamageNummber(float DamageAmount,ACharacter* TargetCharacter,bool bBlockeHit,bool bCriticalHit);
 
 protected:
 	virtual void BeginPlay() override;
