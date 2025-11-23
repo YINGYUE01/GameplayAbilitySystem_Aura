@@ -73,7 +73,13 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
-	UAuraAbilitySystemLibrary::GiveStartupAbilities(this,Level,AbilitySystemComponent);
+	
+	// 只在服务器端给予能力，客户端会通过复制接收
+	if (HasAuthority())
+	{
+		UAuraAbilitySystemLibrary::GiveStartupAbilities(this,Level,AbilitySystemComponent);
+	}
+	
 	BindUI();
 	
 }
@@ -114,12 +120,15 @@ void AAuraEnemy::InitializeDefaultAttributes() const
 	UAuraAbilitySystemLibrary::InitializeDefaultAttribute(this,CharacterClass,Level,AbilitySystemComponent);
 }
 
-
-
 void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
-	InitializeDefaultAttributes();
+	
+	// 只在服务器端初始化属性，客户端会通过复制接收
+	if (HasAuthority())
+	{
+		InitializeDefaultAttributes();
+	}
 }
 

@@ -143,15 +143,15 @@ void AAuraPlayerController::ShowDamageNummber_Implementation(float DamageAmount,
 		DamageText->RegisterComponent();
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [DamageText, DamageAmount]()
-		{
-			if (DamageText)
-			{
-				DamageText->SetDamageText(DamageAmount);
-			}
-		}, 0.01f, false);
-		//DamageText->SetDamageText(DamageAmount);
+		// FTimerHandle TimerHandle;
+		//  GetWorld()->GetTimerManager().SetTimer(TimerHandle, [bBlockeHit,bCriticalHit,DamageText, DamageAmount]()
+		//  {
+		//  	if (DamageText)
+		//  	{
+		//  		DamageText->SetDamageText(DamageAmount,bBlockeHit,bCriticalHit);
+		//  	}
+		//  }, 0.01f, false);
+		DamageText->SetDamageText(DamageAmount,bBlockeHit,bCriticalHit);
 	}
 }
 

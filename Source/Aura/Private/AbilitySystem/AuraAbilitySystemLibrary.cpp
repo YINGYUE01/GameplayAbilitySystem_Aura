@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
-
 #include "AuraAbilityTypes.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Game/AuraGameModeBase.h"
@@ -10,7 +9,6 @@
 #include "Player/AuraPlayerState.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "UI/HUD/AuraHUD.h"
-
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
@@ -48,9 +46,20 @@ UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuWidge
 
 void UAuraAbilitySystemLibrary::InitializeDefaultAttribute(const UObject* WorldContextObject,ECharacterClass CharacterClass, float Level,UAbilitySystemComponent* ASC)
 {
-
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (CharacterClassInfo == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CharacterClassInfo is null in InitializeDefaultAttribute"));
+		return;
+	}
+
 	FCharacterClassDefaultInfo ClassDefaultInfo = CharacterClassInfo->GetCharacterClassDefaultInfo(CharacterClass);
+	if (ClassDefaultInfo.PrimaryAttributes == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("PrimaryAttributes is null for CharacterClass %d"), static_cast<int32>(CharacterClass));
+		return;
+	}
+
 	AActor* AvatarActor = ASC->GetAvatarActor();
 	
 	FGameplayEffectContextHandle PrimaryContextHandle = ASC->MakeEffectContext();
@@ -58,10 +67,22 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttribute(const UObject* WorldC
 	const FGameplayEffectSpecHandle PrimaryEffectSpecHandle = ASC->MakeOutgoingSpec(ClassDefaultInfo.PrimaryAttributes,Level,PrimaryContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*PrimaryEffectSpecHandle.Data.Get());
 
+	if (CharacterClassInfo->SecondaryAttributes == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("SecondaryAttributes is null in CharacterClassInfo"));
+		return;
+	}
+
 	FGameplayEffectContextHandle  SecondaryContextHandle = ASC->MakeEffectContext();
 	SecondaryContextHandle.AddSourceObject(AvatarActor);
 	const FGameplayEffectSpecHandle SecondaryEffectSpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->SecondaryAttributes,Level,SecondaryContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*SecondaryEffectSpecHandle.Data.Get());
+
+	if (CharacterClassInfo->VitalAttributes == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("VitalAttributes is null in CharacterClassInfo"));
+		return;
+	}
 
 	FGameplayEffectContextHandle  VitalContextHandle = ASC->MakeEffectContext();
 	VitalContextHandle.AddSourceObject(AvatarActor);
@@ -74,10 +95,19 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContext
 	UAbilitySystemComponent* ASC)
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (CharacterClassInfo == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CharacterClassInfo is null in GiveStartupAbilities"));
+		return;
+	}
+	
 	for (auto AbilityClass : CharacterClassInfo->CommonAbilities)
 	{
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,Level);
-		ASC->GiveAbility(AbilitySpec);
+		if (AbilityClass != nullptr)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,Level);
+			ASC->GiveAbility(AbilitySpec);
+		}
 	}
 }
 

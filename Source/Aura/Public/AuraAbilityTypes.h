@@ -9,9 +9,9 @@ public:
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const
 	{
-		return StaticStruct();
+		return FGameplayEffectContext::StaticStruct();
 	}
-	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
+	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
 	
 	bool IsCriticalHit() const { return bIsCriticalHit; }
 	bool IsBlockHit() const { return bIsBlockHit; }
