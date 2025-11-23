@@ -29,6 +29,12 @@ public:
 	FGameplayTag Attribute_Secondary_CriticalHitResistance;
 	FGameplayTag Attribute_Secondary_HealthRegeneration;
 	FGameplayTag Attribute_Secondary_ManaRegeneration;
+
+
+	FGameplayTag Attribute_Resistance_Fire;
+	FGameplayTag Attribute_Resistance_Lightning;
+	FGameplayTag Attribute_Resistance_Physical;
+	FGameplayTag Attribute_Resistance_Arcane;
 	/*  AttributeTag  */
 
 	/*  InputTag  */
@@ -43,7 +49,11 @@ public:
 	/* Damage */
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
-	TArray<FGameplayTag> DamageTypes;
+	FGameplayTag Damage_Lightning;
+	FGameplayTag Damage_Physical;
+	FGameplayTag Damage_Arcane;
+	
+	TMap<FGameplayTag,FGameplayTag> DamageTypes;
 
 	FGameplayTag Effects_HitReact;
 private:

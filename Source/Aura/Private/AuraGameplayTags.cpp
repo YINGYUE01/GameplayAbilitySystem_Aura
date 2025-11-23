@@ -25,6 +25,10 @@ void FAuraGameplayTags::InitializeNativeTags()
 	GameplayTags.Attribute_Secondary_CriticalHitResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Secondary.CriticalHitResistance"),FString("Reduces Critical Hit Chance of attacking enemies"));
 	GameplayTags.Attribute_Secondary_HealthRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Secondary.HealthRegeneration"),FString("Health Regenerdted every 1 second"));
 	GameplayTags.Attribute_Secondary_ManaRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Secondary.ManaRegeneration"),FString("Mana Regenerdted every 1 second"));
+	GameplayTags.Attribute_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Fire"),FString("Resistance Fire"));
+	GameplayTags.Attribute_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Lightning"),FString("Resistance Lightning"));
+	GameplayTags.Attribute_Resistance_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Arcane"),FString("Resistance Arcane"));
+	GameplayTags.Attribute_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Physical"),FString("Resistance Physical"));
 	/*  AttributeTag  */
 
 	/*  InputTag  */
@@ -39,6 +43,12 @@ void FAuraGameplayTags::InitializeNativeTags()
 	/* Damage */
 	GameplayTags.Damage =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage"),FString("Damage"));
 	GameplayTags.Damage_Fire =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Fire"),FString("Fire Damage Types"));
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Fire);
+	GameplayTags.Damage_Lightning =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Lightning"),FString("Lightning Damage Types"));
+	GameplayTags.Damage_Arcane =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Arcane"),FString("Arcane Damage Types"));
+	GameplayTags.Damage_Physical =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Physical"),FString("Physical Damage Types"));
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Fire,GameplayTags.Attribute_Resistance_Fire);
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Lightning,GameplayTags.Attribute_Resistance_Lightning);
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Arcane,GameplayTags.Attribute_Resistance_Arcane);
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Physical,GameplayTags.Attribute_Resistance_Physical);
 	GameplayTags.Effects_HitReact =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"),FString("HitReact"));
 }
