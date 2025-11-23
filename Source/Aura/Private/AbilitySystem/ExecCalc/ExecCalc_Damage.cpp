@@ -59,7 +59,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	FAggregatorEvaluateParameters EvaluateParameters;
 	EvaluateParameters.SourceTags = SourceTag;
 	EvaluateParameters.TargetTags = TargetTag;
-	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	float Damage = 0.f;
+	for (FGameplayTag DamageTypeTag : FAuraGameplayTags::Get().DamageTypes)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag);
+		Damage+=DamageTypeValue;
+	}
+	
 	//获取BlockChance  然后判断知否格挡成功
 	// 成功 伤害减半
 	float TargetBlockChance = 0.f;
@@ -109,10 +115,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CriticalHit"),FString());
 	const float EffectiveCriticalHitCoefficient = EffectiveArmorCurve->Eval(TargetCombatInterface->GetPlayerLevel());
 	const float EffectiveCriticalHitChance = SourceCriticalHitChance - TargetCriticalHitResistance * EffectiveCriticalHitCoefficient;
-	bool bCriticalHit = FMath::RandRange(0.f,10.f) < EffectiveCriticalHitChance;
+	bool bCriticalHit = FMath::RandRange(0.f,100.f) < EffectiveCriticalHitChance;
 	if (bCriticalHit)
 	{
-		Damage = Damage*2.f + CriticalHitDamage;
+		Damage = Damage*2.f + Damage*(CriticalHitDamage/100);
 	}
 	UAuraAbilitySystemLibrary::SetCriticalHit(EffectContextHandle,bCriticalHit);
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetInComingDamageAttribute(),EGameplayModOp::Additive,Damage);
