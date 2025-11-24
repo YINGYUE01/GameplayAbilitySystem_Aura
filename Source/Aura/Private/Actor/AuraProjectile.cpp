@@ -37,11 +37,18 @@ void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, A
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	UGameplayStatics::PlaySoundAtLocation(this,ImpactSound,GetActorLocation());
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactEffect,GetActorLocation(),FRotator::ZeroRotator);
-	if (AudioComponent)
+	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
 	{
-		AudioComponent->Stop();
+		return;
+	}
+	if (!bHit)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this,ImpactSound,GetActorLocation());
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactEffect,GetActorLocation(),FRotator::ZeroRotator);
+		if (AudioComponent)
+		{
+			AudioComponent->Stop();
+		}		
 	}
 	if (HasAuthority())
 	{

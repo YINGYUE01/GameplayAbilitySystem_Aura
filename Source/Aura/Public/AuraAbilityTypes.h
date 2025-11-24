@@ -9,7 +9,7 @@ public:
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const
 	{
-		return FGameplayEffectContext::StaticStruct();
+		return StaticStruct();
 	}
 	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
 	
@@ -41,7 +41,7 @@ struct TStructOpsTypeTraits<FAuraGameplayEffectContext> : TStructOpsTypeTraitsBa
 {
 	enum
 	{
-		WithNetSerialize = true,
+		WithNetSerializer = true,
 		WithCopy = true,
 	};
 };

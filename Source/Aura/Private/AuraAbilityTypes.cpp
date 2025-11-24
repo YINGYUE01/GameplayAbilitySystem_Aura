@@ -94,12 +94,13 @@ bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, class UPackageMap* M
 	{
 		Ar << bIsCriticalHit;
 	}
-
 	if (Ar.IsLoading())
 	{
-		AddInstigator(Instigator.Get(), EffectCauser.Get()); // Just to initialize InstigatorAbilitySystemComponent
-	}	
-	
+		if (Instigator.IsValid() && EffectCauser.IsValid())
+		{
+			AddInstigator(Instigator.Get(), EffectCauser.Get());
+		}
+	}
 	bOutSuccess = true;
 	return true;
 	

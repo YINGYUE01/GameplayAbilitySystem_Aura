@@ -112,7 +112,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			}
 			if (Props.SourceCharacter!=Props.TargetCharacter)
 			{
-				if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter,0)))
+				if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
 				{
 					const bool bBlock = UAuraAbilitySystemLibrary::isBlockeHit(Props.EffectContextHandle);
 					const bool bCritical = UAuraAbilitySystemLibrary::isCriticalHit(Props.EffectContextHandle);
