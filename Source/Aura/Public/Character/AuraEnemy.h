@@ -9,8 +9,9 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AuraEnemy.generated.h"
 
-
 class UWidgetComponent;
+class UBehaviorTree;
+class AAuraAIController;
 /**
  * 
  */
@@ -69,4 +70,9 @@ protected:
 	TObjectPtr<UWidgetComponent> HealthBar;
 
 	void HitReactTagChanged(const FGameplayTag CallBackTag,int32 NewCount);
+	/* AI */
+	UPROPERTY(EditAnywhere,Category="AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+	UPROPERTY()
+	TObjectPtr<AAuraAIController> AuraAIController;
 };
