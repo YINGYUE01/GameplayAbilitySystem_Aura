@@ -19,5 +19,5 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	FBlackboardKeySelector TargetToFollowSelector;
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
-	FBlackboardKeySelector DistanceToTarget;
+	FBlackboardKeySelector DistanceToTargetSelector;
 };
