@@ -36,7 +36,10 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
-	bool bDestoryOnEffectRemoval=false;
+	bool bDestroyOnEffectApplication=false;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	bool bApplyEffectsToEnemies=false;
 	
 	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToTarget(AActor* TargetActor,TSubclassOf<UGameplayEffect> GameplayEffectClass);
