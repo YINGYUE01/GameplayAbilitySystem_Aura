@@ -18,8 +18,6 @@ void UBTService_FindNearestPLayer::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	AActor* ClosestActor = nullptr;
 	for (auto Actor : ActorsWithTags)
 	{
-		GEngine->AddOnScreenDebugMessage(-1,1.f,FColor::Red,*Actor->GetName());
-		
 		if (IsValid(Actor) && IsValid(OwningPawn))
 		{
 			const float Distance = OwningPawn->GetDistanceTo(Actor);
