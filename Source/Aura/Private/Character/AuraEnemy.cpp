@@ -90,7 +90,7 @@ void AAuraEnemy::BeginPlay()
 	// 只在服务器端给予能力，客户端会通过复制接收
 	if (HasAuthority())
 	{
-		UAuraAbilitySystemLibrary::GiveStartupAbilities(this,Level,AbilitySystemComponent);
+		UAuraAbilitySystemLibrary::GiveStartupAbilities(this,Level,AbilitySystemComponent,CharacterClass);
 	}
 	
 	BindUI();

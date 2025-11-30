@@ -50,5 +50,7 @@ void FAuraGameplayTags::InitializeNativeTags()
 	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Lightning,GameplayTags.Attribute_Resistance_Lightning);
 	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Arcane,GameplayTags.Attribute_Resistance_Arcane);
 	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Physical,GameplayTags.Attribute_Resistance_Physical);
+	//Effect
 	GameplayTags.Effects_HitReact =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"),FString("HitReact"));
+	GameplayTags.Abilities_Attack =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Attack"),FString("Attack Ability Tag"));
 }
