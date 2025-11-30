@@ -25,10 +25,15 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-UAnimMontage* AAuraCharacterBase::GetHitMonatage_Implementation()
+UAnimMontage* AAuraCharacterBase::GetHitMontage_Implementation()
 {
 	
 	return HitReactMontage;
+}
+
+UAnimMontage* AAuraCharacterBase::GetAttackMontage_Implementation()
+{
+	return AttackMontage;
 }
 
 void AAuraCharacterBase::Die()

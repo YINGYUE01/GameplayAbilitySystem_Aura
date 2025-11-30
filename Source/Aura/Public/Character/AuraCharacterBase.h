@@ -24,7 +24,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,Category="Anim")
 	TObjectPtr<UAnimMontage> HitReactMontage;
-	virtual UAnimMontage* GetHitMonatage_Implementation() override;
+	UPROPERTY(EditDefaultsOnly,Category="Anim")
+	TObjectPtr<UAnimMontage> AttackMontage;
+	virtual UAnimMontage* GetHitMontage_Implementation() override;
+
+	virtual UAnimMontage* GetAttackMontage_Implementation() override;
 
 	virtual void Die() override;
 	UFUNCTION(NetMulticast,Reliable)

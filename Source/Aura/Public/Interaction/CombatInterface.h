@@ -28,7 +28,11 @@ public:
 	 void UpdateFacingTarget(const FVector& TargetLocation);
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
-	UAnimMontage* GetHitMonatage();
+	UAnimMontage* GetHitMontage();
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	UAnimMontage* GetAttackMontage();
+
 
 	virtual void Die() = 0;
 };
