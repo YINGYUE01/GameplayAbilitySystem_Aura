@@ -70,6 +70,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Block);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	Dissolve();
+	bDead = true;
 }
 void AAuraCharacterBase::Dissolve()
 {
@@ -85,8 +86,6 @@ void AAuraCharacterBase::Dissolve()
 		Weapon->SetMaterial(0,DynamicMatIns);
 		WeaponStartDissolveTimeline(DynamicMatIns);
 	}
-	bDead = true;
-
 }
 
 
