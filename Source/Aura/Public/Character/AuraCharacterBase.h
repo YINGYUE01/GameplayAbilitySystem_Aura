@@ -42,7 +42,15 @@ protected:
 	UPROPERTY(EditAnywhere,Category="Weapon")
 	FName WeaponTipSocaketName;
 
-	virtual FVector GetCombatSocketLocation() override;
+	/*
+	 * CombatInterface
+	 */
+
+	virtual FVector GetCombatSocketLocation_Implementation() override;
+
+	/*
+	* CombatInterface
+	*/
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent>	AbilitySystemComponent;
