@@ -48,6 +48,16 @@ void AAuraCharacterBase::Die()
 	MulticastHandleDeath();
 }
 
+bool AAuraCharacterBase::bIsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* AAuraCharacterBase::GetAvatar_Implementation()
+{
+	return this;
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 {
 	
@@ -75,6 +85,7 @@ void AAuraCharacterBase::Dissolve()
 		Weapon->SetMaterial(0,DynamicMatIns);
 		WeaponStartDissolveTimeline(DynamicMatIns);
 	}
+	bDead = true;
 
 }
 

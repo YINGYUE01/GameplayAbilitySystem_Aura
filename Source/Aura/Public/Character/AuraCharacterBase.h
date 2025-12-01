@@ -26,31 +26,27 @@ public:
 	TObjectPtr<UAnimMontage> HitReactMontage;
 	UPROPERTY(EditDefaultsOnly,Category="Anim")
 	TObjectPtr<UAnimMontage> AttackMontage;
+
+	/* CombatInterface*/
 	virtual UAnimMontage* GetHitMontage_Implementation() override;
-
 	virtual UAnimMontage* GetAttackMontage_Implementation() override;
-
+	virtual FVector GetCombatSocketLocation_Implementation() override;
 	virtual void Die() override;
+	virtual bool bIsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+	/*CombatInterface*/
+	
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MulticastHandleDeath();
 
 protected:
 	virtual void BeginPlay() override;
-	
 	UPROPERTY(EditAnywhere,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 	UPROPERTY(EditAnywhere,Category="Weapon")
 	FName WeaponTipSocaketName;
 
-	/*
-	 * CombatInterface
-	 */
-
-	virtual FVector GetCombatSocketLocation_Implementation() override;
-
-	/*
-	* CombatInterface
-	*/
+	bool bDead = false;
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent>	AbilitySystemComponent;
