@@ -117,6 +117,13 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 					const bool bBlock = UAuraAbilitySystemLibrary::isBlockeHit(Props.EffectContextHandle);
 					const bool bCritical = UAuraAbilitySystemLibrary::isCriticalHit(Props.EffectContextHandle);
 					AuraPlayerController->ShowDamageNummber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
+					return; 
+				}
+				if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
+				{
+					const bool bBlock = UAuraAbilitySystemLibrary::isBlockeHit(Props.EffectContextHandle);
+					const bool bCritical = UAuraAbilitySystemLibrary::isCriticalHit(Props.EffectContextHandle);
+					AuraPlayerController->ShowDamageNummber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
 				}
 			}
 		}
