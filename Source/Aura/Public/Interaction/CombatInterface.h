@@ -3,10 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 class UAnimMontage;
 // This class does not need to be modified.
+USTRUCT(BlueprintType)
+struct FTaggedMontage
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UAnimMontage* Montage=nullptr;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	FGameplayTag MontageTag;
+};
 UINTERFACE(MinimalAPI,BlueprintType)
 class UCombatInterface : public UInterface
 {
@@ -39,4 +49,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	AActor* GetAvatar();
 	virtual void Die() = 0;
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	TArray<FTaggedMontage> GetAttackMontages();
 };
