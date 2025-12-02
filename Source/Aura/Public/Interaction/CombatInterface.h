@@ -33,7 +33,7 @@ public:
 	virtual int32 GetPlayerLevel();
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
-	FVector GetCombatSocketLocation();
+	FVector GetCombatSocketLocation(const FGameplayTag MontageTag);
 	//蓝图可实现事件
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 	void UpdateFacingTarget(const FVector& TargetLocation);
