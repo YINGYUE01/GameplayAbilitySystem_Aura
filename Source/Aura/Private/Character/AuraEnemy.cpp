@@ -14,6 +14,7 @@
 #include "AI/AuraAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
 
 AAuraEnemy::AAuraEnemy()
 {
@@ -21,6 +22,7 @@ AAuraEnemy::AAuraEnemy()
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile,ECR_Overlap);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(true);
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
