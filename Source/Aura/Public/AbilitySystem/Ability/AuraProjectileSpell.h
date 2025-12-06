@@ -17,7 +17,6 @@ class AURA_API UAuraProjectileSpell : public UAuraDamageGameplayAbility
 public:
 
 protected:
-
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TSubclassOf<AAuraProjectile> ProjectileClass;
 	UFUNCTION(BlueprintCallable)
