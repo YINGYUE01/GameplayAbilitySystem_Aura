@@ -24,12 +24,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,Category="Anim")
 	TObjectPtr<UAnimMontage> HitReactMontage;
-	UPROPERTY(EditDefaultsOnly,Category="Anim")
-	TObjectPtr<UAnimMontage> AttackMontage;
-
 	/* CombatInterface*/
 	virtual UAnimMontage* GetHitMontage_Implementation() override;
-	virtual UAnimMontage* GetAttackMontage_Implementation() override;
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag MontageTag) override;
 	virtual void Die() override;
 	virtual bool bIsDead_Implementation() const override;
@@ -44,7 +40,7 @@ public:
 	TArray<FTaggedMontage> AttackMontages;
 protected:
 	virtual void BeginPlay() override;
-	UPROPERTY(EditAnywhere,Category="Weapon")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 	UPROPERTY(EditAnywhere,Category="Weapon")
 	FName WeaponTipSocketName;

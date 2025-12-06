@@ -47,10 +47,6 @@ UAnimMontage* AAuraCharacterBase::GetHitMontage_Implementation()
 	return HitReactMontage;
 }
 
-UAnimMontage* AAuraCharacterBase::GetAttackMontage_Implementation()
-{
-	return AttackMontage;
-}
 
 void AAuraCharacterBase::Die()
 {

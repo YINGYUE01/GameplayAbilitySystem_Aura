@@ -42,9 +42,6 @@ public:
 	UAnimMontage* GetHitMontage();
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
-	UAnimMontage* GetAttackMontage();
-
-	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	bool bIsDead() const;
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	AActor* GetAvatar();
