@@ -9,6 +9,7 @@
 
 class UInputAction;
 
+//保存InputAction和InputTag的结构体，将Acton与Tag绑定
 USTRUCT(BlueprintType)
 struct FAuraInputAction
 {
@@ -27,8 +28,9 @@ class AURA_API UAuraInputConfig : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-
+	//通过InputTag查找Action
 	const UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag,bool bLogNotFound) const;
+	//Acton与Tag绑定集合
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FAuraInputAction> AbilityInputActions;
 };

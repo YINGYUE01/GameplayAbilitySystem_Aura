@@ -15,11 +15,13 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 
 void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
 {
+	//赋予角色初始技能
 	for (TSubclassOf<UGameplayAbility> Ability : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec =  FGameplayAbilitySpec(Ability,1);
 		if (UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
 		{
+			//给Spec添加标签，因为我们的技能是与标签绑定的 比如 发射火球技能对应的标签就是Ability.FireBolt
 			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag);
 			GiveAbility(AbilitySpec);
 		}
@@ -48,6 +50,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(FGameplayTag InputTag)
     			AbilitySpecInputPressed(AbilitySpec);
     			if (!AbilitySpec.IsActive())
     			{
+    				//激活技能
     				TryActivateAbility(AbilitySpec.Handle);
     			}
     		}
@@ -60,5 +63,4 @@ void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySys
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
 	EffectAssetTags.Broadcast(TagContainer);
-
 }

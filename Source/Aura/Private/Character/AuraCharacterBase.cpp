@@ -122,10 +122,11 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultVitalAttributes,1);
 }
 
-void AAuraCharacterBase::AddCharacterAbilities()
+void AAuraCharacterBase::AddCharacterAbilities() 
 {
 	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	if (!HasAuthority()) return ;
+	//StartupAbilities是每个角色的初始技能在这里转到ASC中去赋予初始技能
 	AuraASC->AddCharacterAbilities(StartupAbilities);
 }
 

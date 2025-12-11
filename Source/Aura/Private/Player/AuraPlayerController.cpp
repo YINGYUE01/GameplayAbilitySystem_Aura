@@ -119,8 +119,8 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		if (CursorHit.bBlockingHit)  CachedDestination = CursorHit.ImpactPoint;
 		if (APawn* ControllerPawn = GetPawn())
 		{
-			const FVector WorldDrection = (CachedDestination - ControllerPawn->GetActorLocation()).GetSafeNormal();
-			ControllerPawn->AddMovementInput(WorldDrection);
+			const FVector WorldDirection = (CachedDestination - ControllerPawn->GetActorLocation()).GetSafeNormal();
+			ControllerPawn->AddMovementInput(WorldDirection);
 		}
 	}
 }
@@ -134,7 +134,7 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 	return AuraASC;
 }
 
-void AAuraPlayerController::ShowDamageNummber_Implementation(float DamageAmount,ACharacter* TargetCharacter,bool bBlockeHit,bool bCriticalHit)
+void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount,ACharacter* TargetCharacter,bool bBlockHit,bool bCriticalHit)
 {
 	if (IsValid(TargetCharacter) && DamageTextComponentClass && IsLocalController())
 	{
@@ -143,7 +143,7 @@ void AAuraPlayerController::ShowDamageNummber_Implementation(float DamageAmount,
 		DamageText->RegisterComponent();
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		DamageText->SetDamageText(DamageAmount,bBlockeHit,bCriticalHit);
+		DamageText->SetDamageText(DamageAmount,bBlockHit,bCriticalHit);
 	}
 }
 

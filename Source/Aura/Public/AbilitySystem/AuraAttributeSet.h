@@ -65,7 +65,7 @@ public:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	//Tag与Attribute的映射
-	TMap<FGameplayTag,TAttributeFuncPtr<FGameplayAttribute()>> TagstoAttribute;
+	TMap<FGameplayTag,TAttributeFuncPtr<FGameplayAttribute()>> TagsToAttribute;
 	
 	//~Begin Add Attribute
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Health,Category="Vital Attribute")

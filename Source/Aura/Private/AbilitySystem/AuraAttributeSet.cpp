@@ -9,31 +9,30 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
-#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
 	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-	TagstoAttribute.Add(GameplayTags.Attribute_Primary_Strength,GetStrengthAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Primary_Intelligence,GetIntelligenceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Primary_Resilience,GetResilienceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Primary_Vigor,GetVigorAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_Armor,GetArmorAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_ArmorPenetration,GetArmorPenetrationAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_BlockChance,GetBlockChanceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_CriticalHitChance,GetCriticalHitChanceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_CriticalHitDamage,GetCriticalHitDamageAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_CriticalHitResistance,GetCriticalHitResistanceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_HealthRegeneration,GetHealthRegenerationAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_ManaRegeneration,GetManaRegenerationAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_MaxHealth,GetMaxHealthAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Secondary_MaxMana,GetMaxManaAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Resistance_Fire,GetFireResistanceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Resistance_Lightning,GetLightningResistanceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Resistance_Arcane,GetArcaneResistanceAttribute);
-	TagstoAttribute.Add(GameplayTags.Attribute_Resistance_Physical,GetPhysicalResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Primary_Strength,GetStrengthAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Primary_Intelligence,GetIntelligenceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Primary_Resilience,GetResilienceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Primary_Vigor,GetVigorAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_Armor,GetArmorAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_ArmorPenetration,GetArmorPenetrationAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_BlockChance,GetBlockChanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_CriticalHitChance,GetCriticalHitChanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_CriticalHitDamage,GetCriticalHitDamageAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_CriticalHitResistance,GetCriticalHitResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_HealthRegeneration,GetHealthRegenerationAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_ManaRegeneration,GetManaRegenerationAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_MaxHealth,GetMaxHealthAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_MaxMana,GetMaxManaAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Fire,GetFireResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Lightning,GetLightningResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Arcane,GetArcaneResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Physical,GetPhysicalResistanceAttribute);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -77,11 +76,13 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 	FEffectProperties Props;
+	//
 	SetEffectProperties(Data,Props);
 	if (Data.EvaluatedData.Attribute==GetHealthAttribute())
 	{
+		//
 		SetHealth(FMath::Clamp(GetHealth(),0.f,GetMaxHealth()));
-		UE_LOG(LogTemp,Warning,TEXT("Change Health on %s Health:%f"),*Props.TargetAvatarActor->GetName(),GetHealth());
+		//UE_LOG(LogTemp,Warning,TEXT("Change Health on %s Health:%f"),*Props.TargetAvatarActor->GetName(),GetHealth());
 	}
 	if (Data.EvaluatedData.Attribute==GetManaAttribute())
 	{
@@ -116,14 +117,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				{
 					const bool bBlock = UAuraAbilitySystemLibrary::isBlockeHit(Props.EffectContextHandle);
 					const bool bCritical = UAuraAbilitySystemLibrary::isCriticalHit(Props.EffectContextHandle);
-					AuraPlayerController->ShowDamageNummber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
+					AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
 					return; 
 				}
 				if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
 				{
 					const bool bBlock = UAuraAbilitySystemLibrary::isBlockeHit(Props.EffectContextHandle);
 					const bool bCritical = UAuraAbilitySystemLibrary::isCriticalHit(Props.EffectContextHandle);
-					AuraPlayerController->ShowDamageNummber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
+					AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
 				}
 			}
 		}
