@@ -31,6 +31,7 @@ public:
 	virtual bool bIsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	virtual bool IsDead_Implementation() override;
 	/*CombatInterface*/
 	
 	UFUNCTION(NetMulticast,Reliable)

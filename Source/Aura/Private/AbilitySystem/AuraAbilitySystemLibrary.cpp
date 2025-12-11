@@ -131,24 +131,24 @@ UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObj
 	return AuraGameMode->CharacterClassInfo;
 }
 
-bool UAuraAbilitySystemLibrary::isBlockeHit(const FGameplayEffectContextHandle& EffectContextHandle)
+bool UAuraAbilitySystemLibrary::IsBlockHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 		return AuraEffectContext->IsBlockHit();
 	return false;
 }
 
-bool UAuraAbilitySystemLibrary::isCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
+bool UAuraAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 		return AuraEffectContext->IsCriticalHit();
 	return false;
 }
 
-void UAuraAbilitySystemLibrary::SetBlockeHit(FGameplayEffectContextHandle& EffectContextHandle, bool bBlockeHit)
+void UAuraAbilitySystemLibrary::SetBlockHit(FGameplayEffectContextHandle& EffectContextHandle, bool bBlockHit)
 {
 	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
-		AuraEffectContext->SetBlockHit(bBlockeHit);
+		AuraEffectContext->SetBlockHit(bBlockHit);
 }
 
 void UAuraAbilitySystemLibrary::SetCriticalHit(FGameplayEffectContextHandle& EffectContextHandle, bool bCriticalHit)

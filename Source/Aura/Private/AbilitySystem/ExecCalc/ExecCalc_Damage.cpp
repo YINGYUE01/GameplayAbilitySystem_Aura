@@ -109,7 +109,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		Damage *=0.5f;
 	}
 	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
-	UAuraAbilitySystemLibrary::SetBlockeHit(EffectContextHandle,bBlock);
+	UAuraAbilitySystemLibrary::SetBlockHit(EffectContextHandle,bBlock);
 	//获取目标护甲
 	float TargetArmor = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef,EvaluateParameters,TargetArmor);

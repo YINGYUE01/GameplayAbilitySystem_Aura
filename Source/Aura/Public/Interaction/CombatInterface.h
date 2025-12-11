@@ -46,6 +46,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	AActor* GetAvatar();
 	virtual void Die() = 0;
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	bool IsDead();
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	TArray<FTaggedMontage> GetAttackMontages();

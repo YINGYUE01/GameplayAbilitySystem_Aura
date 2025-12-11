@@ -31,11 +31,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefault")
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
-	static bool isBlockeHit(const FGameplayEffectContextHandle& EffectContextHandle);
+	static bool IsBlockHit(const FGameplayEffectContextHandle& EffectContextHandle);
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
-	static bool isCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
+	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
-	static void SetBlockeHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,bool bBlockeHit);
+	static void SetBlockHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,bool bBlockHit);
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static void SetCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,bool bCriticalHit);
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")

@@ -69,6 +69,11 @@ TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
 	return AttackMontages;
 }
 
+bool AAuraCharacterBase::IsDead_Implementation()
+{
+	return bDead;
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 {
 	
