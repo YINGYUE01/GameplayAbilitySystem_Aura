@@ -74,6 +74,11 @@ bool AAuraCharacterBase::IsDead_Implementation()
 	return bDead;
 }
 
+UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
+{
+	return BloodEffect;
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 {
 	

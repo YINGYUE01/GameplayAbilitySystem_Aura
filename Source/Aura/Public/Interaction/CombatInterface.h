@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
+class UNiagaraSystem;
 class UAnimMontage;
 // This class does not need to be modified.
 USTRUCT(BlueprintType)
@@ -16,6 +17,8 @@ struct FTaggedMontage
 	UAnimMontage* Montage=nullptr;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	FGameplayTag MontageTag;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	USoundBase* HitSound=nullptr;
 };
 UINTERFACE(MinimalAPI,BlueprintType)
 class UCombatInterface : public UInterface
@@ -51,4 +54,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	TArray<FTaggedMontage> GetAttackMontages();
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	UNiagaraSystem* GetBloodEffect();
 };
