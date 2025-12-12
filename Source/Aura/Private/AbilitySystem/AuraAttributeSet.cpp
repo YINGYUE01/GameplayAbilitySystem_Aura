@@ -63,10 +63,10 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	if (Attribute==GetHealthAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
-	}
+	// if (Attribute==GetHealthAttribute())
+	// {
+	// 	NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
+	// }
 	if (Attribute==GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
@@ -82,6 +82,15 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		//
 		SetHealth(FMath::Clamp(GetHealth(),0.f,GetMaxHealth()));
+		const bool bFatal = GetHealth()<=0.f;
+		if (bFatal)
+		{
+			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+			if (CombatInterface)
+			{
+				CombatInterface->Die();
+			}
+		}
 		//UE_LOG(LogTemp,Warning,TEXT("Change Health on %s Health:%f"),*Props.TargetAvatarActor->GetName(),GetHealth());
 	}
 	if (Data.EvaluatedData.Attribute==GetManaAttribute())
