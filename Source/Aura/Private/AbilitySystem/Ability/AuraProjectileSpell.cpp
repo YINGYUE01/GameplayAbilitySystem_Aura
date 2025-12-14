@@ -25,7 +25,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 	if (CombatInterface)
 	{
 		FTransform SpawnTransform;
-		const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(),FAuraGameplayTags::Get().Montage_Attack_Weapon);
+		const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(),FAuraGameplayTags::Get().CombatSocket_Weapon);
 		SpawnTransform.SetLocation(CombatSocketLocation);
 		FRotator Direction = (TargetLocation - SpawnTransform.GetLocation()).Rotation();
 		//Direction.Pitch = 0.f;
