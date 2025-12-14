@@ -44,8 +44,11 @@ public:
 	TArray<FTaggedMontage> AttackMontages;
 	UPROPERTY(EditAnywhere,Category="Combat")
 	UNiagaraSystem* BloodEffect;
+	UPROPERTY(EditAnywhere,Category="Combat")
+	USoundBase* DeathSound;
 protected:
 	virtual void BeginPlay() override;
+	//Weapon Socket
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 	UPROPERTY(EditAnywhere,Category="Weapon")
@@ -54,22 +57,25 @@ protected:
 	FName LeftSocketName;
 	UPROPERTY(EditAnywhere,Category="Weapon")
 	FName RightSocketName;
+	//Weapon Socket
 
 	bool bDead = false;
-	
+	//ASC
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent>	AbilitySystemComponent;
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+	//ASC
 
 	virtual void InitAbilityActorInfo();
-
+	//DefaultAttributes
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Ability")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Ability")
 	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Ability")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
+	//DefaultAttributes
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass,float Level) const;
 	virtual void InitializeDefaultAttributes() const;
@@ -80,12 +86,13 @@ protected:
 	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
-
 	void Dissolve();
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
 	UFUNCTION(BlueprintImplementableEvent)
 	void WeaponStartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+	//Dissolve Effects
+	
 private:
 	UPROPERTY(EditAnywhere,Category="Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
