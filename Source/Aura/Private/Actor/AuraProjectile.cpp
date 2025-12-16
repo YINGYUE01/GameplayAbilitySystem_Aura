@@ -62,6 +62,7 @@ void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, A
 	{
 		bHit = true;
 	}
+	Destroy();
 }
 
 void AAuraProjectile::Destroyed()
