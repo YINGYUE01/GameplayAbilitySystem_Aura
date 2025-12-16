@@ -51,12 +51,14 @@ protected:
 	//Weapon Socket
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
-	UPROPERTY(EditAnywhere,Category="Weapon")
+	UPROPERTY(EditAnywhere,Category="Attack Socket")
 	FName WeaponTipSocketName;
-	UPROPERTY(EditAnywhere,Category="Weapon")
+	UPROPERTY(EditAnywhere,Category="Attack Socket")
 	FName LeftSocketName;
-	UPROPERTY(EditAnywhere,Category="Weapon")
+	UPROPERTY(EditAnywhere,Category="Attack Socket")
 	FName RightSocketName;
+	UPROPERTY(EditAnywhere,Category="Attack Socket")
+	FName TailSocketName;
 	//Weapon Socket
 
 	bool bDead = false;
