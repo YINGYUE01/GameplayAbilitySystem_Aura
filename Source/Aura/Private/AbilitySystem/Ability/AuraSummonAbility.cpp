@@ -15,11 +15,14 @@ TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
 	for (int32 i = 0;i<NumMinions;i++)
 	{
 		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread*i,FVector::UpVector);
-		const FVector ChosenLocation = Location + Direction*FMath::FRandRange(MinSpawnDistance,MaxSpawnDistance);
-		DrawDebugSphere(GetWorld(),ChosenLocation,25.f,12,FColor::Red,false,3.f);
+		FVector ChosenLocation = Location + Direction*FMath::FRandRange(MinSpawnDistance,MaxSpawnDistance);
+		FHitResult Hit;
+		GetWorld()->LineTraceSingleByChannel(Hit,ChosenLocation+FVector(0.f,0.f,400.f),ChosenLocation-FVector(0.f,0.f,400.f),ECollisionChannel::ECC_Visibility);
+		if (Hit.bBlockingHit)
+		{
+			ChosenLocation=Hit.ImpactPoint;
+		}
 		SpawnLocations.Add(ChosenLocation);
-		DrawDebugSphere(GetWorld(),Location + Direction*MinSpawnDistance,10.f,12,FColor::Red,false,3.f);
-		DrawDebugSphere(GetWorld(),Location+Direction*MaxSpawnDistance,10.f,12,FColor::Red,false,3.f);
 	}
 	return SpawnLocations;
 }
