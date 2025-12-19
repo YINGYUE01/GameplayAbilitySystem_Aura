@@ -19,7 +19,8 @@ void UBTService_FindNearestPLayer::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	AActor* ClosestActor = nullptr;
 	for (auto Actor : ActorsWithTags)
 	{
-		if (IsValid(Actor) && IsValid(OwningPawn) && !ICombatInterface::Execute_bIsDead(Actor))
+		// && !ICombatInterface::Execute_bIsDead(Actor)
+		if (IsValid(Actor) && IsValid(OwningPawn))
 		{
 			const float Distance = OwningPawn->GetDistanceTo(Actor);
 			if (Distance<ClosestDistance)

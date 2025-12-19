@@ -32,12 +32,13 @@ AAuraProjectile::AAuraProjectile()
 	ProjectileMovement->MaxSpeed = 550.f;
 	ProjectileMovement->ProjectileGravityScale = false;
 	
+	
 }
 
 void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// if (!GetOwner()->HasAuthority())
+	// if (OtherActor==this)
 	// 	return;
 	if (!DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
 		return;

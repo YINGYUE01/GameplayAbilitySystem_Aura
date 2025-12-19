@@ -38,7 +38,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TObjectPtr<USphereComponent> Sphere;
 
 	UPROPERTY(EditAnywhere)
