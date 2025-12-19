@@ -35,6 +35,7 @@ public:
 	virtual bool IsDead_Implementation() override;
 	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
+	virtual int32 GetMinionCount_Implementation() override;
 	/*CombatInterface*/
 	
 	UFUNCTION(NetMulticast,Reliable)
@@ -68,8 +69,9 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 	//ASC
-
 	virtual void InitAbilityActorInfo();
+	//召唤数量限制
+	int32 MinionCount = 0;
 	//DefaultAttributes
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Ability")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
