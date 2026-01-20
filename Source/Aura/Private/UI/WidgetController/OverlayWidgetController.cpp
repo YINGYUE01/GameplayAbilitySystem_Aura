@@ -23,47 +23,64 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetHealthAttribute()).AddLambda(
-[this](const FOnAttributeChangeData& Data)
-{
-	OnHealthChanged.Broadcast(Data.NewValue);
-}
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnHealthChanged.Broadcast(Data.NewValue);
+	}
 		);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	AuraAttributeSet->GetMaxHealthAttribute()).AddLambda(
-[this](const FOnAttributeChangeData& Data)
-{
-	OnMaxManaChanged.Broadcast(Data.NewValue);
-}
-	);
+		AuraAttributeSet->GetMaxHealthAttribute()).AddLambda(
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnMaxManaChanged.Broadcast(Data.NewValue);
+	}
+		);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	AuraAttributeSet->GetManaAttribute()).AddLambda(
-[this](const FOnAttributeChangeData& Data)
-{
-	OnManaChanged.Broadcast(Data.NewValue);
-}
-	);
+		AuraAttributeSet->GetManaAttribute()).AddLambda(
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnManaChanged.Broadcast(Data.NewValue);
+	}
+		);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	AuraAttributeSet->GetMaxManaAttribute()).AddLambda(
-[this](const FOnAttributeChangeData& Data)
-{
-	OnMaxManaChanged.Broadcast(Data.NewValue);
-}
-	);
-
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[this](const FGameplayTagContainer& AssetTags)
+		AuraAttributeSet->GetMaxManaAttribute()).AddLambda(
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnMaxManaChanged.Broadcast(Data.NewValue);
+	}
+		);
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (AuraASC->bStartupAbilitiesGiven)
 		{
-			for (const FGameplayTag& Tag : AssetTags)
-			{
-				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				if (Tag.MatchesTag(MessageTag))
-				{
-					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable,Tag);
-					MessageWidgetRowDelegate.Broadcast(*Row);
-				}
-			}
+			OnInitialStartUpAbilities(AuraASC);
 		}
-		);
+		else
+		{
+			AuraASC->AbilitiesGivenDelegate.AddUObject(this,&UOverlayWidgetController::OnInitialStartUpAbilities);
+		}
+		AuraASC->EffectAssetTags.AddLambda(
+        		[this](const FGameplayTagContainer& AssetTags)
+        		{
+        			for (const FGameplayTag& Tag : AssetTags)
+        			{
+        				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+        				if (Tag.MatchesTag(MessageTag))
+        				{
+        					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable,Tag);
+        					MessageWidgetRowDelegate.Broadcast(*Row);
+        				}
+        			}
+        		}
+        		);
+	}
+	
+	
+}
+
+void UOverlayWidgetController::OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AbilitySystemComponent)
+{
+	if (!AbilitySystemComponent->bStartupAbilitiesGiven) return;
 }

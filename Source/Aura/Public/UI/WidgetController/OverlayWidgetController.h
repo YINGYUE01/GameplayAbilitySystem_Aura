@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
+class UAuraAbilitySystemComponent;
 class UAbilityInfo;
 class UAuraUserWidget;
 struct FGameplayTagContainer;
@@ -63,6 +64,8 @@ protected:
 	TObjectPtr<UAbilityInfo> AbilityInfo;
 	template<typename  T>
 	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag);
+
+	void OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AbilitySystemComponent);
 };
 
 template <typename T>
