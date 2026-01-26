@@ -81,16 +81,16 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	
 }
 
-void UOverlayWidgetController::OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AbilitySystemComponent)
+void UOverlayWidgetController::OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
 {
-	if (!AbilitySystemComponent->bStartupAbilitiesGiven) return;
+	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
 
 	FForEachAbility BroadcastDelegate;
-	BroadcastDelegate.BindLambda([this,AbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)
+	BroadcastDelegate.BindLambda([this,AuraAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)
 	{
-		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-		Info.InputTag = AbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
+		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
 	});
-	AbilitySystemComponent->ForEachAbility(BroadcastDelegate);
+	AuraAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
 }

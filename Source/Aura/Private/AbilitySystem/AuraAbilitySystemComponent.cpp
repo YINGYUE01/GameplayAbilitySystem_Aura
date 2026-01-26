@@ -21,7 +21,7 @@ void UAuraAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate
 	{
 		if (!Delegate.ExecuteIfBound(AbilitySpec))
 		{
-			UE_LOG(LogAura,Error,TEXT("Failed to Execute Delegate %hs",__FUNCTION__));
+			UE_LOG(LogAura,Error,TEXT("Failed to Execute Delegate %hs"),__FUNCTION__);
 		}
 	}
 }
@@ -43,6 +43,15 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 	AbilitiesGivenDelegate.Broadcast(this);
 }
 
+void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+	if (!bStartupAbilitiesGiven)
+	{
+		bStartupAbilitiesGiven=true;
+		AbilitiesGivenDelegate.Broadcast(this);
+	}
+}
 void UAuraAbilitySystemComponent::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 		if(!InputTag.IsValid()) return;
@@ -82,8 +91,6 @@ FGameplayTag UAuraAbilitySystemComponent::GetAbilityTagFromSpec(const FGameplayA
 				return Tag;
 		}
 	}
-		
-	
 	return FGameplayTag();
 }
 
@@ -91,14 +98,16 @@ FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 {
 	if (AbilitySpec.Ability)
 	{
-		for (FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
+		for (FGameplayTag Tag : AbilitySpec.DynamicAbilityTags)
         	{
-        		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("InputTag"))));
+        		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("InputTag"))))
         			return Tag;
         	}
 	}
 	return FGameplayTag();
 }
+
+
 
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
                                                                      const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle) const

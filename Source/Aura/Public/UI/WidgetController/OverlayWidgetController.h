@@ -70,7 +70,7 @@ protected:
 	template<typename  T>
 	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag);
 
-	void OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AbilitySystemComponent);
+	void OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent);
 };
 
 template <typename T>
