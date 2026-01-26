@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "AuraAbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags,const FGameplayTagContainer&);
 DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven, UAuraAbilitySystemComponent*)
+DECLARE_DELEGATE_OneParam(FForEachAbility,const FGameplayAbilitySpec&);
 /**
  * 
  */
@@ -22,10 +22,13 @@ public:
 	FEffectAssetTags EffectAssetTags;
 	FAbilitiesGiven AbilitiesGivenDelegate;
 
+	void ForEachAbility(const FForEachAbility& Delegate);
 	bool bStartupAbilitiesGiven = false;
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
+	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	
 protected:
 	UFUNCTION(Client,Reliable)

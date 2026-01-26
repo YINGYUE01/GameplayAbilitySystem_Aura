@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
+struct FAuraAbilityInfo;
 class UAuraAbilitySystemComponent;
 class UAbilityInfo;
 class UAuraUserWidget;
@@ -29,6 +30,7 @@ struct FUIWidgetRow:public FTableRowBase
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeSignature, float, NewValue);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate,FUIWidgetRow,Row);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature,const FAuraAbilityInfo&,Info);
 
 /**
  * 
@@ -55,6 +57,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable,Category="GAS|Message")
 	FMessageWidgetRowDelegate MessageWidgetRowDelegate;
+	
+	UPROPERTY(BlueprintAssignable,Category="GAS|Message")
+	FAbilityInfoSignature AbilityInfoDelegate;
 protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
