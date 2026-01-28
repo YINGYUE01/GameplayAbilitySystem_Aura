@@ -166,6 +166,7 @@ void AAuraPlayerController::BeginPlay()
 
 void AAuraPlayerController::Move(const struct FInputActionValue& InputActionValue)
 {
+	bAutonRunning = false;
     const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotaion(0.f,Rotation.Yaw,0.f);
