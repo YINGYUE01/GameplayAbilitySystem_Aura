@@ -8,6 +8,7 @@
 #include "AuraPlayerState.generated.h"
 class UAttributeSet;
 class UAbilitySystemComponent;
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged,int32 /*StateValue*/);
 /**
  * 
  */
@@ -22,7 +23,16 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
-	int32 GetPlayerLevel() const { return Level; }
+	FOnPlayerStateChanged OnXPChangedDelegate;
+	FOnPlayerStateChanged OnLevelChangedDelegate;
+	FORCEINLINE int32 GetPlayerLevel() const { return Level; } 
+	FORCEINLINE int32 GetXP() { return XP; } 
+	
+	void SetXP(int32 NewXP);
+	void SetLevel(int32 NewLevel);
+	
+	void AddToXP(int32 Amount);
+	void AddToLevel(int32 Amount);
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent>	AbilitySystemComponent;
@@ -31,8 +41,11 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere,ReplicatedUsing=OnRep_Level)
 	int32 Level = 1;
-
+	UPROPERTY(VisibleAnywhere,ReplicatedUsing=OnRep_XP)
+	int32 XP = 0;
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
+	UFUNCTION()
+	void OnRep_XP(int32 OldXP);
 	
 };
