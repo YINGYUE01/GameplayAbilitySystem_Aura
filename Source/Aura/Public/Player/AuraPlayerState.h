@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
 #include "AuraPlayerState.generated.h"
+class ULevelUpInfo;
 class UAttributeSet;
 class UAbilitySystemComponent;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged,int32 /*StateValue*/);
@@ -22,7 +23,8 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 	FOnPlayerStateChanged OnXPChangedDelegate;
 	FOnPlayerStateChanged OnLevelChangedDelegate;
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; } 

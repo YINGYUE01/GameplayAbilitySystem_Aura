@@ -6,8 +6,10 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
+#include "Player/AuraPlayerState.h"
 
-void UOverlayWidgetController::BroadcastInitalValues()
+void UOverlayWidgetController::BroadcastInitValues()
 {
 
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
@@ -21,7 +23,10 @@ void UOverlayWidgetController::BroadcastInitalValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
+	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState);
+	AuraPlayerState->OnXPChangedDelegate.AddUObject(this,&UOverlayWidgetController::OnXPChanged);
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
+
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetHealthAttribute()).AddLambda(
 	[this](const FOnAttributeChangeData& Data)
@@ -93,4 +98,22 @@ void UOverlayWidgetController::OnInitialStartUpAbilities(UAuraAbilitySystemCompo
 		AbilityInfoDelegate.Broadcast(Info);
 	});
 	AuraAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
+}
+void UOverlayWidgetController::OnXPChanged(int32 NewXP)
+{
+	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState);
+	ULevelUpInfo* LevelUpInfo = AuraPlayerState->LevelUpInfo;
+	checkf(LevelUpInfo,TEXT("Unabled to find LevelUpInfo.Please fill out AuraPlayerState Blueprint"))
+	int Level = LevelUpInfo->GetLevelForXP(NewXP);
+	int MaxLevel = LevelUpInfo->LevelUpInformation.Num()-1;
+	if (Level<=MaxLevel && Level>0)
+	{
+		const int32 LevelUpRequiredXP = LevelUpInfo->LevelUpInformation[Level].LevelUpRequiredXP; //到当前等级所需经验
+		const int32 PreLevelUpRequiredXP = LevelUpInfo->LevelUpInformation[Level-1].LevelUpRequiredXP;//到前一等级所需经验
+
+		const int32 ThisLevelRequiredXP = LevelUpRequiredXP - PreLevelUpRequiredXP; //在当前等级基础上升级所需经验值
+		const int32 XPForThisLevel = NewXP - PreLevelUpRequiredXP;   // 在当前等级基础上已获得的经验
+		float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(ThisLevelRequiredXP); //计算百分比
+		OnXPChangedDelegate.Broadcast(XPBarPercent);
+	}
 }
