@@ -42,10 +42,10 @@ struct AuraDamageStatics
 		TagsToCaptureDefs.Add(AuraGameplayTags.Attribute_Secondary_CriticalHitChance,CriticalHitChanceDef);
 		TagsToCaptureDefs.Add(AuraGameplayTags.Attribute_Secondary_CriticalHitResistance,CriticalHitResistanceDef);
 		TagsToCaptureDefs.Add(AuraGameplayTags.Attribute_Secondary_CriticalHitDamage,CriticalHitDamageDef);
-		TagsToCaptureDefs.Add(AuraGameplayTags.Attribute_Resistance_Fire,FireResistanceDef);
-		TagsToCaptureDefs.Add(AuraGameplayTags.Attribute_Resistance_Lightning,LightningResistanceDef);
-		TagsToCaptureDefs.Add(AuraGameplayTags.Attribute_Resistance_Arcane,ArcaneResistanceDef);
-		TagsToCaptureDefs.Add(AuraGameplayTags.Attribute_Resistance_Physical,PhysicalResistanceDef);
+		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Fire,FireResistanceDef);
+		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Lightning,LightningResistanceDef);
+		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Arcane,ArcaneResistanceDef);
+		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Physical,PhysicalResistanceDef);
 	}
 };
 

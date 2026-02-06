@@ -31,11 +31,11 @@ public:
 	FGameplayTag Attribute_Secondary_ManaRegeneration;
 
 
-	FGameplayTag Attribute_Resistance_Fire;
-	FGameplayTag Attribute_Resistance_Lightning;
-	FGameplayTag Attribute_Resistance_Physical;
-	FGameplayTag Attribute_Resistance_Arcane;
-	FGameplayTag Attribute_Meta_IncomingXP;
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Physical;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Meta_IncomingXP;
 	/*  AttributeTag  */
 
 	/*  InputTag  */

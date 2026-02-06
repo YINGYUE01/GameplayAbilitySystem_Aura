@@ -225,6 +225,7 @@ public:
 	//~End Add Atrribute
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data,FEffectProperties& Props) const;
+	void SendXPEvent(FEffectProperties& Props);
 
 	
 };

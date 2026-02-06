@@ -30,10 +30,10 @@ UAuraAttributeSet::UAuraAttributeSet()
 	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_ManaRegeneration,GetManaRegenerationAttribute);
 	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_MaxHealth,GetMaxHealthAttribute);
 	TagsToAttribute.Add(GameplayTags.Attribute_Secondary_MaxMana,GetMaxManaAttribute);
-	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Fire,GetFireResistanceAttribute);
-	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Lightning,GetLightningResistanceAttribute);
-	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Arcane,GetArcaneResistanceAttribute);
-	TagsToAttribute.Add(GameplayTags.Attribute_Resistance_Physical,GetPhysicalResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Fire,GetFireResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Lightning,GetLightningResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Arcane,GetArcaneResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Physical,GetPhysicalResistanceAttribute);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -114,6 +114,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				{
 					CombatInterface->Die();
 				}
+				SendXPEvent(Props);
 			}
 			else
 			{
@@ -176,6 +177,22 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
 	}
 		
+}
+
+void UAuraAttributeSet::SendXPEvent(FEffectProperties& Props) 
+{
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	{
+		const int32 Level = CombatInterface->GetPlayerLevel();
+		ECharacterClass CharacterClass = ICombatInterface::Execute_GetCharacterCLass(Props.TargetCharacter);
+		int32 XPReward = UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(Props.TargetCharacter,CharacterClass,Level);
+		const FAuraGameplayTags& GameplayTag = FAuraGameplayTags::Get();
+		FGameplayEventData Payload;
+		Payload.EventTag = GameplayTag.Attributes_Meta_IncomingXP;
+		Payload.EventMagnitude = XPReward;
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter,GameplayTag.Attributes_Meta_IncomingXP,Payload);
+	}
+	
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
