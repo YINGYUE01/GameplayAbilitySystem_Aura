@@ -10,6 +10,7 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "UI/HUD/AuraHUD.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Character/AuraEnemy.h"
 #include "Interaction/CombatInterface.h"
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
@@ -122,6 +123,18 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContext
 	}
 	
 }
+int32 UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* WorldContextObject,ECharacterClass CharacterClass, const int32 Level)
+{
+	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (CharacterClassInfo == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CharacterClassInfo is null in GiveStartupAbilities"));
+		return 0;
+	}
+	FCharacterClassDefaultInfo Info = CharacterClassInfo->GetCharacterClassDefaultInfo(CharacterClass);
+	float XPReward = Info.XPReward.GetValueAtLevel(Level);
+	return static_cast<int32>(XPReward);
+}
 
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
@@ -184,3 +197,4 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondAc
 	const bool AreFriends = BothArePlayers || BothAreEnemies;
 	return !AreFriends;
 }
+

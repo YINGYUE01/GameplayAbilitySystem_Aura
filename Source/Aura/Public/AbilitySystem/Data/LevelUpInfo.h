@@ -21,8 +21,8 @@ public:
 /**
  * 
  */
-UCLASS()
-class AURA_API ULevelUpInfo : public UDataAsset
+UCLASS(BlueprintType)
+class AURA_API ULevelUpInfos : public UDataAsset
 {
 	GENERATED_BODY()
 public:

@@ -42,4 +42,6 @@ public:
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject,TArray<AActor*>& OutOverlappingActors,const TArray<AActor*>& ActorsToIgnore,float Radius,const FVector& SphereOrigin);
 	UFUNCTION(BlueprintPure,BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static bool IsNotFriend(AActor* FirstActor,AActor* SecondActor);
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary")
+	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject,ECharacterClass CharacterClass,const int32 Level);
 };

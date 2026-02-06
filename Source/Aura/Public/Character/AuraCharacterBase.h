@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "Interaction/CombatInterface.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AuraCharacterBase.generated.h"
 class UGameplayAbility;
 class UGameplayEffect;
@@ -37,6 +38,7 @@ public:
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
+	virtual ECharacterClass GetCharacterCLass_Implementation() override;
 	/*CombatInterface*/
 	
 	UFUNCTION(NetMulticast,Reliable)
@@ -50,6 +52,8 @@ public:
 	USoundBase* DeathSound;
 protected:
 	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 	//Weapon Socket
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
