@@ -166,6 +166,7 @@ void AAuraCharacterBase::AddCharacterAbilities()
 	if (!HasAuthority()) return ;
 	//StartupAbilities是每个角色的初始技能在这里转到ASC中去赋予初始技能
 	AuraASC->AddCharacterAbilities(StartupAbilities);
+	AuraASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 }
 
 
