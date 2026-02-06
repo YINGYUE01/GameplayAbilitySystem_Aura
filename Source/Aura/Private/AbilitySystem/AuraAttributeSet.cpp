@@ -2,14 +2,13 @@
 
 
 #include "AbilitySystem/AuraAttributeSet.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
-#include "Aura/AuraLogChannels.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Interaction/PlayerInterface.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/AuraPlayerController.h"
 
@@ -144,7 +143,10 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		const float LocalIncomingXP = GetInComingXP();
 		SetInComingXP(0.f);
-		UE_LOG(LogAura,Log,TEXT("Incoming XP: %f"),LocalIncomingXP);
+		if (Props.SourceCharacter->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter,LocalIncomingXP);
+		}
 	}
 }
 

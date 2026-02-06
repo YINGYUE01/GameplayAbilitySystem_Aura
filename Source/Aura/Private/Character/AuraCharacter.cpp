@@ -49,6 +49,13 @@ void AAuraCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+void AAuraCharacter::AddToXP_Implementation(int32 InXP)
+{
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	AuraPlayerState->AddToXP(InXP);
+}
+
 int32 AAuraCharacter::GetPlayerLevel()
 {
 	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
