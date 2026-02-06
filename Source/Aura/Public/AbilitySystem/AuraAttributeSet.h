@@ -153,6 +153,11 @@ public:
 	UPROPERTY(BlueprintReadOnly,Category="Damage")
 	FGameplayAttributeData InComingDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,InComingDamage);
+
+	UPROPERTY(BlueprintReadOnly,Category="XP")
+	FGameplayAttributeData InComingXP;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,InComingXP);
+	
 	
 	
 	

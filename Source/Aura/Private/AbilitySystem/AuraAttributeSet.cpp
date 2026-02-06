@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
@@ -137,6 +138,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				}
 			}
 		}
+	}
+	if (Data.EvaluatedData.Attribute==GetInComingXPAttribute())
+	{
+		const float LocalIncomingXP = GetInComingXP();
+		SetInComingXP(0.f);
+		UE_LOG(LogAura,Log,TEXT("Incoming XP: %f"),LocalIncomingXP);
 	}
 }
 
