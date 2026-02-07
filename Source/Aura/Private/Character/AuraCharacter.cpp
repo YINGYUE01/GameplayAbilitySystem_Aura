@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
@@ -56,9 +57,64 @@ void AAuraCharacter::AddToXP_Implementation(int32 InXP)
 	AuraPlayerState->AddToXP(InXP);
 }
 
+void AAuraCharacter::AddToLevel_Implementation(int32 InLevel)
+{
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	AuraPlayerState->AddToLevel(InLevel);
+}
+
 void AAuraCharacter::LevelUp_Implementation()
 {
 	
+}
+
+int32 AAuraCharacter::GetXP_Implementation()
+{
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	return AuraPlayerState->GetXP();
+}
+
+int32 AAuraCharacter::FindLevelForXP_Implementation(int32 InXP)
+{
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	return AuraPlayerState->LevelUpInfo->GetLevelForXP(InXP);
+}
+
+int32 AAuraCharacter::GetAttributePointsReward_Implementation(int32 CurrentLevel,int32 NewLevel)
+{
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	int32 AttributePointsReward = 0;
+	for (int i = CurrentLevel;i<NewLevel;i++)
+	{
+		AttributePointsReward += AuraPlayerState->LevelUpInfo->LevelUpInformation[i].AttributePointAward;
+	}
+	return AttributePointsReward;
+}
+
+int32 AAuraCharacter::GetSpellPointsReward_Implementation(int32 CurrentLevel, int32 NewLevel)
+{
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	int32 SpellPointsReward = 0;
+	for (int i = CurrentLevel;i<NewLevel;i++)
+	{
+		SpellPointsReward += AuraPlayerState->LevelUpInfo->LevelUpInformation[i].SpellPointAward;
+	}
+	return SpellPointsReward;
+}
+
+void AAuraCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
+{
+	IPlayerInterface::AddToSpellPoints_Implementation(InSpellPoints);
+}
+
+void AAuraCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
+{
+	IPlayerInterface::AddToAttributePoints_Implementation(InAttributePoints);
 }
 
 int32 AAuraCharacter::GetPlayerLevel_Implementation()

@@ -8,7 +8,6 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Aura/AuraLogChannels.h"
-#include "Engine/World.h"
 #include "Player/AuraPlayerState.h"
 
 void UOverlayWidgetController::BroadcastInitValues()
@@ -68,16 +67,6 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		else
 		{
 			AuraASC->AbilitiesGivenDelegate.AddUObject(this,&UOverlayWidgetController::OnInitialStartUpAbilities);
-			// 客户端上能力列表可能晚于 InitOverlay 才复制到，委托会错过；延迟检查一次并补发 AbilityInfo
-			if (PlayerState && PlayerState->GetWorld() && PlayerState->GetWorld()->GetNetMode() == NM_Client)
-			{
-				PlayerState->GetWorld()->GetTimerManager().SetTimer(
-					ClientAbilityInfoCheckTimer,
-					this,
-					&UOverlayWidgetController::ClientCheckAbilityInfoAndBroadcast,
-					0.2f,
-					false);
-			}
 		}
 		AuraASC->EffectAssetTags.AddLambda(
         		[this](const FGameplayTagContainer& AssetTags)
@@ -99,7 +88,6 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 void UOverlayWidgetController::OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
 {
 	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
-	if (bAbilityInfoBroadcastDone) return;
 	UE_LOG(LogTemp, Warning, TEXT("OnInitialStartUpAbilities Called., AbilityInfo=%s"),
 	   *GetNameSafe(AbilityInfo));
 	FForEachAbility BroadcastDelegate;
@@ -108,23 +96,10 @@ void UOverlayWidgetController::OnInitialStartUpAbilities(UAuraAbilitySystemCompo
 		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
 		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
-		
 	});
+	
 	AuraAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
-	bAbilityInfoBroadcastDone = true;
 }
-
-void UOverlayWidgetController::ClientCheckAbilityInfoAndBroadcast()
-{
-	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
-	{
-		if (AuraASC->bStartupAbilitiesGiven && !bAbilityInfoBroadcastDone)
-		{
-			OnInitialStartUpAbilities(AuraASC);
-		}
-	}
-}
-
 void UOverlayWidgetController::OnXPChanged(const int32 NewXP)
 {
 	const AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState);
