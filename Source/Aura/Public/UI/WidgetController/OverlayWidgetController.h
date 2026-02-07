@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "Player/AuraPlayerState.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 struct FAuraAbilityInfo;
@@ -27,6 +28,7 @@ struct FUIWidgetRow:public FTableRowBase
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	UTexture2D* Image = nullptr;
 };
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayStateChangedSignature, int32, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeSignature, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate,FUIWidgetRow,Row);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature,const FAuraAbilityInfo&,Info);
@@ -62,6 +64,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable,Category="GAS|XP")
 	FOnAttributeSignature OnXPChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable,Category="GAS|Level")
+	FOnPlayStateChangedSignature OnLevelChangedDelegate;
 protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
