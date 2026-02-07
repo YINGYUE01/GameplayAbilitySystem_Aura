@@ -33,7 +33,7 @@ public:
 	/*
 	 *  Combatinterface
 	 */
-	virtual int32 GetPlayerLevel() override;
+	virtual int32 GetPlayerLevel_Implementation() override;
 
 	virtual void Die() override;
 	/*

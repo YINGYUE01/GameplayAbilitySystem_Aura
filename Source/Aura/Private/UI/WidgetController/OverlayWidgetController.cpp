@@ -7,6 +7,8 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "Aura/AuraLogChannels.h"
+#include "Engine/World.h"
 #include "Player/AuraPlayerState.h"
 
 void UOverlayWidgetController::BroadcastInitValues()
@@ -66,6 +68,16 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		else
 		{
 			AuraASC->AbilitiesGivenDelegate.AddUObject(this,&UOverlayWidgetController::OnInitialStartUpAbilities);
+			// 客户端上能力列表可能晚于 InitOverlay 才复制到，委托会错过；延迟检查一次并补发 AbilityInfo
+			if (PlayerState && PlayerState->GetWorld() && PlayerState->GetWorld()->GetNetMode() == NM_Client)
+			{
+				PlayerState->GetWorld()->GetTimerManager().SetTimer(
+					ClientAbilityInfoCheckTimer,
+					this,
+					&UOverlayWidgetController::ClientCheckAbilityInfoAndBroadcast,
+					0.2f,
+					false);
+			}
 		}
 		AuraASC->EffectAssetTags.AddLambda(
         		[this](const FGameplayTagContainer& AssetTags)
@@ -82,38 +94,52 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
         		}
         		);
 	}
-	
-	
 }
 
 void UOverlayWidgetController::OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
 {
 	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
-
+	if (bAbilityInfoBroadcastDone) return;
+	UE_LOG(LogTemp, Warning, TEXT("OnInitialStartUpAbilities Called., AbilityInfo=%s"),
+	   *GetNameSafe(AbilityInfo));
 	FForEachAbility BroadcastDelegate;
 	BroadcastDelegate.BindLambda([this,AuraAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)
 	{
 		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
 		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
+		
 	});
 	AuraAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
+	bAbilityInfoBroadcastDone = true;
 }
-void UOverlayWidgetController::OnXPChanged(int32 NewXP)
+
+void UOverlayWidgetController::ClientCheckAbilityInfoAndBroadcast()
 {
-	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState);
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (AuraASC->bStartupAbilitiesGiven && !bAbilityInfoBroadcastDone)
+		{
+			OnInitialStartUpAbilities(AuraASC);
+		}
+	}
+}
+
+void UOverlayWidgetController::OnXPChanged(const int32 NewXP)
+{
+	const AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(PlayerState);
 	ULevelUpInfos* LevelUpInfo = AuraPlayerState->LevelUpInfo;
 	checkf(LevelUpInfo,TEXT("Unabled to find LevelUpInfo.Please fill out AuraPlayerState Blueprint"))
-	int Level = LevelUpInfo->GetLevelForXP(NewXP);
-	int MaxLevel = LevelUpInfo->LevelUpInformation.Num()-1;
+	const int Level = LevelUpInfo->GetLevelForXP(NewXP);
+	const int MaxLevel = LevelUpInfo->LevelUpInformation.Num()-1;
 	if (Level<=MaxLevel && Level>0)
 	{
 		const int32 LevelUpRequiredXP = LevelUpInfo->LevelUpInformation[Level].LevelUpRequiredXP; //到当前等级所需经验
 		const int32 PreLevelUpRequiredXP = LevelUpInfo->LevelUpInformation[Level-1].LevelUpRequiredXP;//到前一等级所需经验
-
+		
 		const int32 ThisLevelRequiredXP = LevelUpRequiredXP - PreLevelUpRequiredXP; //在当前等级基础上升级所需经验值
 		const int32 XPForThisLevel = NewXP - PreLevelUpRequiredXP;   // 在当前等级基础上已获得的经验
-		float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(ThisLevelRequiredXP); //计算百分比
+		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(ThisLevelRequiredXP); //计算百分比
 		OnXPChangedDelegate.Broadcast(XPBarPercent);
 	}
 }

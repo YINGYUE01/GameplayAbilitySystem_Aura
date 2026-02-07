@@ -56,13 +56,17 @@ void AAuraCharacter::AddToXP_Implementation(int32 InXP)
 	AuraPlayerState->AddToXP(InXP);
 }
 
-int32 AAuraCharacter::GetPlayerLevel()
+void AAuraCharacter::LevelUp_Implementation()
+{
+	
+}
+
+int32 AAuraCharacter::GetPlayerLevel_Implementation()
 {
 	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
 	check(AuraPlayerState);
 	return AuraPlayerState->GetPlayerLevel();
 }
-
 
 void AAuraCharacter::InitAbilityActorInfo()
 {

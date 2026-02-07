@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "TimerManager.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 struct FAuraAbilityInfo;
@@ -73,8 +74,14 @@ protected:
 	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag);
 
 	void OnInitialStartUpAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent);
+	/** 客户端兜底：能力复制可能晚于绑定，延迟检查一次并补发 AbilityInfo */
+	void ClientCheckAbilityInfoAndBroadcast();
 	
-	void OnXPChanged(int32 NewXP);
+	void OnXPChanged(const int32 NewXP);
+
+	/** 防止 AbilityInfo 重复广播（Server/Client 或 委托+延迟检查 可能各触发一次） */
+	bool bAbilityInfoBroadcastDone = false;
+	FTimerHandle ClientAbilityInfoCheckTimer;
 };
 
 
