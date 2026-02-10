@@ -139,12 +139,16 @@ int32 AAuraCharacter::GetSpellPointsReward_Implementation(int32 CurrentLevel, in
 
 void AAuraCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
 {
-	IPlayerInterface::AddToSpellPoints_Implementation(InSpellPoints);
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	AuraPlayerState->AddToSpellPoints(InSpellPoints);
 }
 
 void AAuraCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
 {
-	IPlayerInterface::AddToAttributePoints_Implementation(InAttributePoints);
+	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState());
+	check(AuraPlayerState);
+	AuraPlayerState->AddToAttributePoints(InAttributePoints);
 }
 
 int32 AAuraCharacter::GetPlayerLevel_Implementation()

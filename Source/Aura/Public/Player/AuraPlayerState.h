@@ -27,14 +27,21 @@ public:
 	TObjectPtr<ULevelUpInfos> LevelUpInfo;
 	FOnPlayerStateChanged OnXPChangedDelegate;
 	FOnPlayerStateChanged OnLevelChangedDelegate;
+	FOnPlayerStateChanged OnAttributePointsChangedDelegate;
+	FOnPlayerStateChanged OnSpellPointsChangedDelegate;
+	
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; } 
-	FORCEINLINE int32 GetXP() { return XP; } 
+	FORCEINLINE int32 GetXP() const { return XP; } 
+	FORCEINLINE int32 GetAttributePoints() const { return AttributePoints; }
+	FORCEINLINE int32 GetSpellPoints() const { return SpellPoints; }
 	
 	void SetXP(int32 NewXP);
 	void SetLevel(int32 NewLevel);
 	
 	void AddToXP(int32 Amount);
 	void AddToLevel(int32 Amount);
+	void AddToAttributePoints(int32 Amount);
+	void AddToSpellPoints(int32 Amount);
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent>	AbilitySystemComponent;
@@ -46,9 +53,17 @@ private:
 	int32 Level = 1;
 	UPROPERTY(VisibleAnywhere,ReplicatedUsing=OnRep_XP)
 	int32 XP = 0;
+	UPROPERTY(VisibleAnywhere,ReplicatedUsing=OnRep_AttributePoints)
+	int32 AttributePoints = 0;
+	UPROPERTY(VisibleAnywhere,ReplicatedUsing=OnRep_SpellPoints)
+	int32 SpellPoints = 0;
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
 	UFUNCTION()
 	void OnRep_XP(int32 OldXP);
+	UFUNCTION()
+	void OnRep_AttributePoints(int32 OldAttributePoints);
+	UFUNCTION()
+	void OnRep_SpellPoints(int32 OldSpellPoints);
 	
 };
