@@ -59,11 +59,11 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 public:
 	UAuraAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-
+	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+	bool bChangedMaxHealth = false;
+	bool bChangedMaxMana = false;
 	//Tag与Attribute的映射
 	TMap<FGameplayTag,TAttributeFuncPtr<FGameplayAttribute()>> TagsToAttribute;
 	
