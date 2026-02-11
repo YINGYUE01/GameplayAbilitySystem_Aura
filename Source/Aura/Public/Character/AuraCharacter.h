@@ -31,6 +31,8 @@ public:
 	virtual int32 GetSpellPointsReward_Implementation(int32 CurrentLevel, int32 NewLevel) override;
 	virtual void AddToSpellPoints_Implementation(int32 InSpellPoints) override;
 	virtual void AddToAttributePoints_Implementation(int32 InAttributePoints) override;
+	virtual int32 GetAttributePoints_Implementation() override;
+	virtual int32 GetSpellPoints_Implementation() override;
 	/* End Player Interface */
 	
 	/* Combat Interface */
