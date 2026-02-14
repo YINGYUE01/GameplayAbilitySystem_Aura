@@ -10,9 +10,8 @@
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
 	check(AttributeInfo);
-	for (auto& Pair : AS->TagsToAttribute)
+	for (auto& Pair : GetAuraAS()->TagsToAttribute)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
 [this,Pair](const FOnAttributeChangeData& Data)
@@ -25,21 +24,18 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::BroadcastInitValues()
 {
-	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(PlayerState);
-	check(AuraPlayerState);
-	AuraPlayerState->OnAttributePointsChangedDelegate.AddLambda(
+	GetAuraPS()->OnAttributePointsChangedDelegate.AddLambda(
 		[this](int32 Value)
 	{
 		AttributePointsChangedDelegate.Broadcast(Value);
 	});
-	AuraPlayerState->OnSpellPointsChangedDelegate.AddLambda(
+	GetAuraPS()->OnSpellPointsChangedDelegate.AddLambda(
 		[this](int32 Points)
 		{
 			SpellPointsChangedDelegate.Broadcast(Points);
 		});
-	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-	check(AttributeInfo);
-	for (auto& Pair : AS->TagsToAttribute)
+
+	for (auto& Pair : GetAuraAS()->TagsToAttribute)
 	{
 		BroadcastAttributeInfo(Pair.Key,Pair.Value());
 	}
@@ -47,8 +43,7 @@ void UAttributeMenuWidgetController::BroadcastInitValues()
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& GameplayTag)
 {
-	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-	AuraASC->UpgradeAttribute(GameplayTag);
+	GetAuraASC()->UpgradeAttribute(GameplayTag);
 	
 }
 
@@ -58,8 +53,6 @@ void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& 
 	FAuraAttributeInfo Info = AttributeInfo->FindAttributeInfo(AttributeTag);
 	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
 	AttributeInfoDelegate.Broadcast(Info);
-	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(PlayerState);
-	check(AuraPlayerState);
-	AttributePointsChangedDelegate.Broadcast(AuraPlayerState->GetAttributePoints());
-	SpellPointsChangedDelegate.Broadcast(AuraPlayerState->GetSpellPoints());
+	AttributePointsChangedDelegate.Broadcast(GetAuraPS()->GetAttributePoints());
+	SpellPointsChangedDelegate.Broadcast(GetAuraPS()->GetSpellPoints());
 }
