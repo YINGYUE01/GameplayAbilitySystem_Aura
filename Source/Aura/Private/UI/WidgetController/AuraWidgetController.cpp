@@ -6,6 +6,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "Aura/AuraLogChannels.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
 
@@ -29,15 +30,23 @@ void UAuraWidgetController::BindCallbacksToDependencies()
 
 void UAuraWidgetController::BroadcastAbilityInfo()
 {
-	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
-	FForEachAbility BroadcastDelegate;
-	BroadcastDelegate.BindLambda([this](const FGameplayAbilitySpec& AbilitySpec)
+	const FString Side = GetAuraPC()->HasAuthority() ? TEXT("SERVER") : TEXT("CLIENT");
+    
+	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) 
 	{
-		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
-		AbilityInfoDelegate.Broadcast(Info);
-	});
-	GetAuraASC()->ForEachAbility(BroadcastDelegate);
+		UE_LOG(LogAura, Warning, TEXT("[%s] Broadcast aborted: Abilities not given yet."), *Side);
+		return;
+	}
+		if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
+    	FForEachAbility BroadcastDelegate;
+    	BroadcastDelegate.BindLambda([this,Side](const FGameplayAbilitySpec& AbilitySpec)
+    	{
+    		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
+    		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+    		AbilityInfoDelegate.Broadcast(Info);
+    		UE_LOG(LogAura, Log, TEXT("[%s] Broadcasting Info for Ability Tag: %s ,InputTag:%s"), *Side, *Info.AbilityTag.ToString(),*Info.InputTag.ToString());
+    	});
+    	GetAuraASC()->ForEachAbility(BroadcastDelegate);
 }
 
 AAuraPlayerController* UAuraWidgetController::GetAuraPC()

@@ -16,7 +16,6 @@ void UOverlayWidgetController::BroadcastInitValues()
 	OnMaxHealthChanged.Broadcast(GetAuraAS()->GetMaxHealth());
 	OnManaChanged.Broadcast(GetAuraAS()->GetMana());
 	OnMaxManaChanged.Broadcast(GetAuraAS()->GetMaxMana());
-	
 }
 
 
@@ -29,6 +28,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			OnLevelChangedDelegate.Broadcast(NewLevel);
 		}
 		);
+	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		GetAuraAS()->GetHealthAttribute()).AddLambda(
 	[this](const FOnAttributeChangeData& Data)
@@ -36,6 +36,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		OnHealthChanged.Broadcast(Data.NewValue);
 	}
 		);
+	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		GetAuraAS()->GetMaxHealthAttribute()).AddLambda(
 	[this](const FOnAttributeChangeData& Data)
@@ -59,6 +60,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		OnMaxManaChanged.Broadcast(Data.NewValue);
 	}
 		);
+	
 	if (GetAuraASC())
 	{
 		if (GetAuraASC()->bStartupAbilitiesGiven)

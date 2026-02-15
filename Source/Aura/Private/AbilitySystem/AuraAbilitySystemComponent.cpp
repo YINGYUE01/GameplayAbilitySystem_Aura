@@ -2,12 +2,11 @@
 
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
-#include "AuraGameplayTags.h"
 #include "AbilitySystem/Ability/AuraGameplayAbility.h"
 #include "Aura/AuraLogChannels.h"
 #include "Interaction/PlayerInterface.h"
+#include "Net/UnrealNetwork.h"
 
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
@@ -97,7 +96,7 @@ FGameplayTag UAuraAbilitySystemComponent::GetAbilityTagFromSpec(const FGameplayA
 {
 	if (AbilitySpec.Ability)
 	{
-		for (FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
+		for (FGameplayTag Tag : AbilitySpec.Ability->AbilityTags)
 		{
 			if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities"))))
 				return Tag;

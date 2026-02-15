@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "UObject/NoExportTypes.h"
 #include "AuraWidgetController.generated.h"
 
@@ -56,9 +57,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable,Category="GAS|Message")
 	FAbilityInfoSignature AbilityInfoDelegate;
-
+	
 	void BroadcastAbilityInfo();
 protected:
+
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UAbilityInfo> AbilityInfo;
 	

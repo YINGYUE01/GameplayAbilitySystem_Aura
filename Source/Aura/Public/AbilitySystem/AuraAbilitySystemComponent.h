@@ -23,7 +23,9 @@ public:
 	FAbilitiesGiven AbilitiesGivenDelegate;
 
 	void ForEachAbility(const FForEachAbility& Delegate);
+	
 	bool bStartupAbilitiesGiven = false;
+	
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
