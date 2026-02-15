@@ -30,21 +30,13 @@ void UAuraWidgetController::BindCallbacksToDependencies()
 
 void UAuraWidgetController::BroadcastAbilityInfo()
 {
-	const FString Side = GetAuraPC()->HasAuthority() ? TEXT("SERVER") : TEXT("CLIENT");
-    
-	if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) 
-	{
-		UE_LOG(LogAura, Warning, TEXT("[%s] Broadcast aborted: Abilities not given yet."), *Side);
-		return;
-	}
-		if (!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
+		if (!GetAuraASC()->bStartupAbilitiesGiven) return;
     	FForEachAbility BroadcastDelegate;
-    	BroadcastDelegate.BindLambda([this,Side](const FGameplayAbilitySpec& AbilitySpec)
+    	BroadcastDelegate.BindLambda([this](const FGameplayAbilitySpec& AbilitySpec)
     	{
-    		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-    		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+    		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(GetAuraASC()->GetAbilityTagFromSpec(AbilitySpec));
+    		Info.InputTag = GetAuraASC()->GetInputTagFromSpec(AbilitySpec);
     		AbilityInfoDelegate.Broadcast(Info);
-    		UE_LOG(LogAura, Log, TEXT("[%s] Broadcasting Info for Ability Tag: %s ,InputTag:%s"), *Side, *Info.AbilityTag.ToString(),*Info.InputTag.ToString());
     	});
     	GetAuraASC()->ForEachAbility(BroadcastDelegate);
 }
