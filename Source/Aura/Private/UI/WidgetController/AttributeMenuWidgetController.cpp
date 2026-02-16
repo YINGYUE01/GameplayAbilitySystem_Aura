@@ -29,12 +29,7 @@ void UAttributeMenuWidgetController::BroadcastInitValues()
 	{
 		AttributePointsChangedDelegate.Broadcast(Value);
 	});
-	GetAuraPS()->OnSpellPointsChangedDelegate.AddLambda(
-		[this](int32 Points)
-		{
-			SpellPointsChangedDelegate.Broadcast(Points);
-		});
-
+	
 	for (auto& Pair : GetAuraAS()->TagsToAttribute)
 	{
 		BroadcastAttributeInfo(Pair.Key,Pair.Value());
@@ -54,5 +49,4 @@ void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& 
 	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
 	AttributeInfoDelegate.Broadcast(Info);
 	AttributePointsChangedDelegate.Broadcast(GetAuraPS()->GetAttributePoints());
-	SpellPointsChangedDelegate.Broadcast(GetAuraPS()->GetSpellPoints());
 }

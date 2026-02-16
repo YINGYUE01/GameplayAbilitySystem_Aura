@@ -25,8 +25,7 @@ public:
 	FAttributeInfoSignature AttributeInfoDelegate;
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnPlayStateChangedSignature AttributePointsChangedDelegate;
-	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
-	FOnPlayStateChangedSignature SpellPointsChangedDelegate;
+
 
 	UFUNCTION(BlueprintCallable)
 	void UpgradeAttribute(const FGameplayTag& GameplayTag);
