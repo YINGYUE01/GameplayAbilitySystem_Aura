@@ -4,7 +4,6 @@
 #include "UI/WidgetController/SpellMenuWidgetController.h"
 
 #include "AuraGameplayTags.h"
-#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Player/AuraPlayerState.h"
 
@@ -18,6 +17,14 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
 	GetAuraASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag,const FGameplayTag& StatusTag)
 	{
+		if (SelectedAbility.AbilityTag.MatchesTagExact(AbilityTag))
+		{
+			SelectedAbility.StatusTag = StatusTag;
+			bool bShouldEnabledSpellPointsButton = false;
+			bool bShouldEnabledEquipButton = false;
+			ShouldEnableButton(StatusTag,CurrentSpellPoints,bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
+			OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
+		}
 		if (AbilityInfo)
 		{
 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
@@ -28,6 +35,11 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 	GetAuraPS()->OnSpellPointsChangedDelegate.AddLambda([this](int32 SpellPoints)
 	{
 		SpellPointsChangedDelegate.Broadcast(SpellPoints);
+		CurrentSpellPoints = SpellPoints;
+		bool bShouldEnabledSpellPointsButton = false;
+		bool bShouldEnabledEquipButton = false;
+		ShouldEnableButton(SelectedAbility.StatusTag,CurrentSpellPoints,bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
+		OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
 	});
 }
 
@@ -42,12 +54,14 @@ void USpellMenuWidgetController::OnSpellGlobeSelected(const FGameplayTag& Abilit
 	const bool bSpecValid = AbilitySpec!=nullptr;
 	if (!bTagValid || bTagNone || !bSpecValid)
 	{
-			 StatusTag = GameplayTags.Abilities_Status_Locked;
+		StatusTag = GameplayTags.Abilities_Status_Locked;
 	}
 	else
 	{
 		StatusTag = GetAuraASC()->GetStatusTagFromSpec(*AbilitySpec);
 	}
+	SelectedAbility.StatusTag = StatusTag;
+	SelectedAbility.AbilityTag = AbilityTag;
 	bool bShouldEnabledSpellPointsButton = false;
 	bool bShouldEnabledEquipButton = false;
 	ShouldEnableButton(StatusTag,SpellPoint,bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
