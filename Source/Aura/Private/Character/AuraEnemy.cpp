@@ -76,6 +76,8 @@ void AAuraEnemy::Die()
 	SetLifeSpan(SpanLife);
 	if (AuraAIController)
 		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"),true);
+	if (HealthBar)
+		HealthBar->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	Super::Die();
 }
 

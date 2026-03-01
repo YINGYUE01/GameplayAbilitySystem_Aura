@@ -69,9 +69,9 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 }
 
 void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag,
-	const FGameplayTag& StatusTag)
+	const FGameplayTag& StatusTag,int32 AbilityLevel)
 {
-	AbilityStatusChanged.Broadcast(AbilityTag,StatusTag);
+	AbilityStatusChanged.Broadcast(AbilityTag,StatusTag,AbilityLevel);
 }
 
 void UAuraAbilitySystemComponent::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -157,6 +157,33 @@ FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag(const F
 	}
 	return nullptr;
 }
+
+void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGameplayTag& AbilityTag)
+{
+	if (FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
+	{
+			if (GetAvatarActor()->Implements<UPlayerInterface>())
+        	{
+        		IPlayerInterface::Execute_AddToSpellPoints(GetAvatarActor(),-1);
+        	}
+        	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+        	FGameplayTag StatusTag = GetStatusTagFromSpec(*AbilitySpec);
+        	if (StatusTag.MatchesTagExact(GameplayTags.Abilities_Status_Eligible))
+        	{
+        		AbilitySpec->DynamicAbilityTags.RemoveTag(GameplayTags.Abilities_Status_Eligible);
+        		AbilitySpec->DynamicAbilityTags.AddTag(GameplayTags.Abilities_Status_UnLocked);
+        		StatusTag = GameplayTags.Abilities_Status_UnLocked;
+        	}
+			else if (StatusTag.MatchesTagExact(GameplayTags.Abilities_Status_Equipped) || StatusTag.MatchesTagExact(GameplayTags.Abilities_Status_UnLocked))
+			{
+				AbilitySpec->Level+=1;
+			}
+			ClientUpdateAbilityStatus(AbilityTag,StatusTag,AbilitySpec->Level);
+			MarkAbilitySpecDirty(*AbilitySpec);
+	}
+
+}
+
 void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 {
 	UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
@@ -170,7 +197,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
-			ClientUpdateAbilityStatus(Info.AbilityTag,FAuraGameplayTags::Get().Abilities_Status_Eligible);
+			ClientUpdateAbilityStatus(Info.AbilityTag,FAuraGameplayTags::Get().Abilities_Status_Eligible,1);
 		}
 	}
 }
