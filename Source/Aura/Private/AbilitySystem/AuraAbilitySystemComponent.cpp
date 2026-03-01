@@ -202,6 +202,25 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 	}
 }
 
+bool UAuraAbilitySystemComponent::GetDescriptionFromAbilityTag(const FGameplayTag& AbilityTag,
+	FString& OutSpellDescription, FString& NextLevelSpellDescription)
+{
+	if (FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec->Ability);
+		if (AuraAbility)
+		{
+			OutSpellDescription = AuraAbility->GetDescription(AbilitySpec->Level);
+			NextLevelSpellDescription = AuraAbility->GetNextLevelDescription(AbilitySpec->Level+1);
+			return true;
+		}
+	}
+	UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	OutSpellDescription = UAuraGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	NextLevelSpellDescription = FString();
+	return false;
+}
+
 void UAuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& GameplayTag)
 {
 	if (GetAvatarActor()->Implements<UPlayerInterface>())

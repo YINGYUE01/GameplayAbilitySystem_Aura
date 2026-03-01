@@ -22,8 +22,11 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			SelectedAbility.StatusTag = StatusTag;
 			bool bShouldEnabledSpellPointsButton = false;
 			bool bShouldEnabledEquipButton = false;
+			FString OutSpellDescription;
+			FString OutNextLevelDescription;
+			GetAuraASC()->GetDescriptionFromAbilityTag(AbilityTag,OutSpellDescription,OutNextLevelDescription);
 			ShouldEnableButton(StatusTag,CurrentSpellPoints,bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
-			OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
+			OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton,OutSpellDescription,OutNextLevelDescription);
 		}
 		if (AbilityInfo)
 		{
@@ -38,8 +41,11 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		CurrentSpellPoints = SpellPoints;
 		bool bShouldEnabledSpellPointsButton = false;
 		bool bShouldEnabledEquipButton = false;
+		FString OutSpellDescription;
+		FString OutNextLevelDescription;
+		GetAuraASC()->GetDescriptionFromAbilityTag(SelectedAbility.AbilityTag,OutSpellDescription,OutNextLevelDescription);
 		ShouldEnableButton(SelectedAbility.StatusTag,CurrentSpellPoints,bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
-		OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
+		OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton,OutSpellDescription,OutNextLevelDescription);
 	});
 }
 
@@ -64,8 +70,11 @@ void USpellMenuWidgetController::OnSpellGlobeSelected(const FGameplayTag& Abilit
 	SelectedAbility.AbilityTag = AbilityTag;
 	bool bShouldEnabledSpellPointsButton = false;
 	bool bShouldEnabledEquipButton = false;
+	FString OutSpellDescription;
+	FString OutNextLevelDescription;
+	GetAuraASC()->GetDescriptionFromAbilityTag(AbilityTag,OutSpellDescription,OutNextLevelDescription);
 	ShouldEnableButton(StatusTag,SpellPoint,bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
-	OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton);
+	OnSpellGlobeSelectedDelegate.Broadcast(bShouldEnabledSpellPointsButton,bShouldEnabledEquipButton,OutSpellDescription,OutNextLevelDescription);
 	
 }
 

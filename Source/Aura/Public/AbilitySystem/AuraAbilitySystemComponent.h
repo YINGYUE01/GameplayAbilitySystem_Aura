@@ -45,7 +45,10 @@ public:
 	void ServerUpgradeAttribute(const FGameplayTag& GameplayTag);
 	UFUNCTION(Server,Reliable)
 	void ServerSpendSpellPoint(const FGameplayTag& AbilityTag);
+	
 	void UpdateAbilityStatuses(int32 Level);
+
+	bool GetDescriptionFromAbilityTag(const FGameplayTag& AbilityTag,FString& OutSpellDescription,FString& NextLevelSpellDescription);
 protected:
 	UFUNCTION(Client,Reliable)
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle) const;
@@ -54,6 +57,5 @@ protected:
 
 	UFUNCTION(Client,Reliable)
 	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag,const FGameplayTag& StatusTag,int32 AbilityLevel);
-
 	
 };
