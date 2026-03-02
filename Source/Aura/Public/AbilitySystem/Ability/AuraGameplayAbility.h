@@ -19,6 +19,8 @@ public:
 
 	virtual FString GetDescription(int32 Level);
 	virtual FString GetNextLevelDescription(int32 Level);
+	virtual float GetManaCost(float Level = 1.0f);
+	virtual float GetCooldown(float Level = 1.0f);
 	static FString GetLockedDescription(int32 LevelRequirement);
 
 };
