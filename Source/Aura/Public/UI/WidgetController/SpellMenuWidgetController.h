@@ -36,6 +36,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SpendPointButton();
+
+	UFUNCTION(BlueprintCallable)
+	void GlobeDeselect();
 private:
 	void ShouldEnableButton(const FGameplayTag& StatusTag,int32 SpellPoints,bool& bShouldEnabledSpellPointsButton,bool& bShouldEnabledEquipButton);
 	FSelectedAbility SelectedAbility = {FAuraGameplayTags::Get().Abilities_None,FAuraGameplayTags::Get().Abilities_Status_Locked};
