@@ -62,6 +62,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable,Category="GAS|Level")
 	FOnPlayStateChangedSignature OnLevelChangedDelegate;
+	
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag,const FGameplayTag& SlotTag,const FGameplayTag& StatusTag,const FGameplayTag& PreSlotTag);
 protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
