@@ -49,10 +49,25 @@ void FAuraGameplayTags::InitializeNativeTags()
 	GameplayTags.Damage_Lightning =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Lightning"),FString("Lightning Damage Types"));
 	GameplayTags.Damage_Arcane =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Arcane"),FString("Arcane Damage Types"));
 	GameplayTags.Damage_Physical =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Physical"),FString("Physical Damage Types"));
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Fire,GameplayTags.Attributes_Resistance_Fire);
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Lightning,GameplayTags.Attributes_Resistance_Lightning);
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Arcane,GameplayTags.Attributes_Resistance_Arcane);
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Physical,GameplayTags.Attributes_Resistance_Physical);
+	// Debuff Damage
+	GameplayTags.Debuff_Burn =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Burn"),FString("Debuff Burn Damage"));
+	GameplayTags.Debuff_Stun =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Stun"),FString("Debuff Stun Damage"));
+	GameplayTags.Debuff_Arcane =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Arcane"),FString("Debuff Arcane Damage"));
+	GameplayTags.Debuff_Physical =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Physical"),FString("Debuff Physical Damage"));
+
+	//Maps DamageType To Damage
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire,GameplayTags.Attributes_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning,GameplayTags.Attributes_Resistance_Lightning);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane,GameplayTags.Attributes_Resistance_Arcane);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical,GameplayTags.Attributes_Resistance_Physical);
+
+	//Maps DamageType To Debuff Damage
+	GameplayTags.DamageTypesToDebuff.Add(GameplayTags.Damage_Arcane,GameplayTags.Debuff_Arcane);
+	GameplayTags.DamageTypesToDebuff.Add(GameplayTags.Damage_Fire,GameplayTags.Debuff_Burn);
+	GameplayTags.DamageTypesToDebuff.Add(GameplayTags.Damage_Lightning,GameplayTags.Debuff_Stun);
+	GameplayTags.DamageTypesToDebuff.Add(GameplayTags.Damage_Physical,GameplayTags.Debuff_Physical);
+
+	
 	/*End Damage */
 	
 	/* Ability */

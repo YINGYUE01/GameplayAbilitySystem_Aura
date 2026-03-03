@@ -21,9 +21,8 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 
 FString UAuraProjectileSpell::GetDescription(int32 Level)
 {
-
-	const FGameplayTag DamageType = FAuraGameplayTags::Get().Get().Damage_Fire;
-	const int32 Damage = DamageTypes[DamageType].GetValueAtLevel(Level);
+	
+	const int32 ScaleDamage =Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs<float>(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 	if (Level == 1)
@@ -35,7 +34,7 @@ FString UAuraProjectileSpell::GetDescription(int32 Level)
 			"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 			"<Default>Launches a bolt of fire,"
 			"exploding on impact and dealing: </>"
-			"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,Damage);
+			"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,ScaleDamage);
 	}
 	else
 	{
@@ -46,14 +45,13 @@ FString UAuraProjectileSpell::GetDescription(int32 Level)
 		"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 		"<Default>Launches %d bolt of fire,"
 		"exploding on impact and dealing: </>"
-		"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolt),Damage);
+		"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolt),ScaleDamage);
 	}
 }
 
 FString UAuraProjectileSpell::GetNextLevelDescription(int32 Level)
 {
-	const FGameplayTag DamageType = FAuraGameplayTags::Get().Get().Damage_Fire;
-	const int32 Damage = DamageTypes[DamageType].GetValueAtLevel(Level);
+	const int32 ScaleDamage =Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs<float>(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 	return FString::Printf(TEXT(
@@ -63,7 +61,7 @@ FString UAuraProjectileSpell::GetNextLevelDescription(int32 Level)
 	"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 	"<Default>Launches %d bolt of fire,"
 	"exploding on impact and dealing: </>"
-	"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolt),Damage);
+	"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolt),ScaleDamage);
 }
 
 void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation,const FGameplayTag& SocketTag,bool ShouldPitchOverride,float PitchOverride)
@@ -103,11 +101,8 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation,const F
 		
 		FGameplayEffectSpecHandle DamageEffectSpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass,1,EffectContextHandle);
 		FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-		for (auto& Pair : DamageTypes)
-		{
-			const float ScaleDamage =Pair.Value.GetValueAtLevel(GetAbilityLevel());
-			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,Pair.Key,ScaleDamage);
-		}
+		const float ScaleDamage =Damage.GetValueAtLevel(GetAbilityLevel());
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,DamageType,ScaleDamage);
 		Projectile->DamageEffectSpecHandle = DamageEffectSpecHandle;
 		Projectile->FinishSpawning(SpawnTransform);
 	}

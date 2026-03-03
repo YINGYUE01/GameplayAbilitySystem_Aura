@@ -55,6 +55,11 @@ public:
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Physical;
 	FGameplayTag Damage_Arcane;
+
+	FGameplayTag Debuff_Burn;
+	FGameplayTag Debuff_Stun;
+	FGameplayTag Debuff_Arcane;
+	FGameplayTag Debuff_Physical;
 	
 	/* Ability */
 	FGameplayTag Abilities_Attack;
@@ -86,8 +91,9 @@ public:
 	FGameplayTag Montage_Attack_2;
 	FGameplayTag Montage_Attack_3;
 	FGameplayTag Montage_Attack_4;
-	TMap<FGameplayTag,FGameplayTag> DamageTypes;
+	TMap<FGameplayTag,FGameplayTag> DamageTypesToResistances; 
 
+	TMap<FGameplayTag,FGameplayTag> DamageTypesToDebuff;
 	FGameplayTag Effects_HitReact;
 private:
 	static FAuraGameplayTags GameplayTags;

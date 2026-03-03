@@ -20,8 +20,12 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
+	
 	UPROPERTY(EditAnywhere,Category="Damage")
-	TMap<FGameplayTag,FScalableFloat> DamageTypes;
+	FGameplayTag DamageType;
+	
+	UPROPERTY(EditAnywhere,Category="Damage")
+	FScalableFloat Damage;
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages);
 };
