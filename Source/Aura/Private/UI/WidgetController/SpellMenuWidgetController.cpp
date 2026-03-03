@@ -125,6 +125,7 @@ void USpellMenuWidgetController::SpellRowGlobePressed(const FGameplayTag& SlotTa
 	const FGameplayTag& SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.AbilityTag).AbilityType;
 	if (!SelectedAbilityType.MatchesTagExact(AbilityType)) return;
 	GetAuraASC()->ServerEquipAbility(SelectedAbility.AbilityTag,SlotTag);
+	GlobeDeselect();
 }
 
 void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& SlotTag,
@@ -142,6 +143,7 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
 	Info.StatusTag = StatusTag;
 	Info.InputTag = SlotTag;
 	AbilityInfoDelegate.Broadcast(Info);
+	SpellGlobeReassignedDelegate.Broadcast(AbilityTag);
 	StopWaitForEquipSelectDelegate.Broadcast(AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType);
 }
 

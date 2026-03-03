@@ -27,6 +27,10 @@ UWaitCooldownChange* UWaitCooldownChange::WaitForCooldownChange(UAbilitySystemCo
 
 void UWaitCooldownChange::EndTask()
 {
+	if (!IsValid(ASC)) return;
+	ASC->RegisterGameplayTagEvent(CooldownTag,EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
+	SetReadyToDestroy();
+	MarkAsGarbage();
 }
 
 void UWaitCooldownChange::CooldownTagChanged(const FGameplayTag InCooldownTag, int32 NewCount)
