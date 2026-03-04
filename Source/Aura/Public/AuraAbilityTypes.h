@@ -55,9 +55,25 @@ public:
 	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
 	
 	bool IsCriticalHit() const { return bIsCriticalHit; }
-	bool IsBlockHit() const { return bIsBlockHit; }
 	void SetCriticalHit(bool bCriticalHit) { bIsCriticalHit = bCriticalHit; }
+	
+	bool IsBlockHit() const { return bIsBlockHit; }
 	void SetBlockHit(bool bBlockHit) { bIsBlockHit = bBlockHit; }
+	
+	void SetDebuffDuration(float Duration) { this->DebuffDuration = Duration;}
+	float GetDebuffDuration() const { return DebuffDuration;}
+	
+	void SetDebuffDamage(float Damage) { this->DebuffDamage = Damage;}
+	float GetDebuffDamage() const { return DebuffDamage;}
+	
+	void SetDebuffFrequency(float Frequency) { this->DebuffFrequency = Frequency;}
+	float GetDebuffFrequency() const { return DebuffFrequency;}
+	
+	bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff;}
+	void SetIsSuccessfulDebuff(bool bSuccessfulDebuff) { bIsSuccessfulDebuff = bSuccessfulDebuff; }
+
+	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
+	
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FAuraGameplayEffectContext* Duplicate() const
 	{
@@ -75,6 +91,16 @@ private:
 	bool bIsCriticalHit = false;
 	UPROPERTY()
 	bool bIsBlockHit = false;
+	UPROPERTY()
+	bool bIsSuccessfulDebuff = false;
+	UPROPERTY()
+	float DebuffDamage = 0.f;
+	UPROPERTY()
+	float DebuffDuration = 0.f;
+	UPROPERTY()
+	float DebuffFrequency = 0.f;
+	
+	TSharedPtr<FGameplayTag> DamageType;
 	
 };
 template<>
