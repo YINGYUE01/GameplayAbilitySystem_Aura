@@ -73,7 +73,7 @@ public:
 	void SetIsSuccessfulDebuff(bool bSuccessfulDebuff) { bIsSuccessfulDebuff = bSuccessfulDebuff; }
 
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
-	
+	void SetDamageType(TSharedPtr<FGameplayTag> Type) { this->DamageType = Type;}
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FAuraGameplayEffectContext* Duplicate() const
 	{

@@ -269,6 +269,17 @@ FGameplayTag UAuraAbilitySystemLibrary::GetDamageType(FGameplayEffectContextHand
 	return FGameplayTag();
 }
 
+void UAuraAbilitySystemLibrary::SetDamageType(FGameplayEffectContextHandle& EffectContextHandle,
+	const FGameplayTag& DamageType)
+{
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		TSharedPtr<FGameplayTag> Type = MakeShared<FGameplayTag>(DamageType);
+		AuraEffectContext->SetDamageType(Type);
+	}
+
+}
+
 void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject,
                                                            TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius,
                                                            const FVector& SphereOrigin)

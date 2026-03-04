@@ -224,6 +224,8 @@ public:
 	
 	//~End Add Atrribute
 private:
+	void HandleInComingDamage(FEffectProperties& Props);
+	void HandleInComingXP(FEffectProperties& Props);
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data,FEffectProperties& Props) const;
 	void SendXPEvent(FEffectProperties& Props);
 
