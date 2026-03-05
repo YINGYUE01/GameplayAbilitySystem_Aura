@@ -40,6 +40,9 @@ struct FDamageEffectParams
 	
 	UPROPERTY()
 	FGameplayTag DamageType = FGameplayTag();
+	
+	UPROPERTY()
+	float DeathImpulseMagnitude = 0;
 };
 
 USTRUCT(BlueprintType)
