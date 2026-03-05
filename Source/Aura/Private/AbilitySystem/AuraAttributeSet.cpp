@@ -94,10 +94,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		const bool bFatal = GetHealth()<=0.f;
 		if (bFatal)
 		{
+			
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
 			if (CombatInterface)
 			{
-				CombatInterface->Die();
+	
+				CombatInterface->Die(UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle));
 			}
 		}
 		//UE_LOG(LogTemp,Warning,TEXT("Change Health on %s Health:%f"),*Props.TargetAvatarActor->GetName(),GetHealth());
@@ -233,7 +235,10 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
 			if (CombatInterface)
 			{
-				CombatInterface->Die();
+				const FVector DeathImpulse = UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
+				CombatInterface->Die(DeathImpulse);
+				
+
 			}
 			SendXPEvent(Props);
 		}

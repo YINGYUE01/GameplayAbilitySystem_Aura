@@ -71,14 +71,14 @@ int32 AAuraEnemy::GetPlayerLevel_Implementation()
 }
 
 
-void AAuraEnemy::Die()
+void AAuraEnemy::Die(const FVector DeathImpulse)
 {
 	SetLifeSpan(SpanLife);
 	if (AuraAIController)
 		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"),true);
 	if (HealthBar)
 		HealthBar->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	Super::Die();
+	Super::Die(DeathImpulse);
 }
 
 void AAuraEnemy::PossessedBy(AController* NewController)
