@@ -228,7 +228,6 @@ private:
 	void HandleInComingXP(FEffectProperties& Props);
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data,FEffectProperties& Props) const;
 	void SendXPEvent(FEffectProperties& Props);
-
-	
+	void Debuff(FEffectProperties& Props);
 };
 

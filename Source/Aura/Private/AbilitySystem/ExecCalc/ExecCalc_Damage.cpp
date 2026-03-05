@@ -82,7 +82,7 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 				UAuraAbilitySystemLibrary::SetSuccessfulDebuff(EffectContextHandle,bDebuff);
 				UAuraAbilitySystemLibrary::SetDamageType(EffectContextHandle,DamageType);
 				UAuraAbilitySystemLibrary::SetDebuffDamage(EffectContextHandle,Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Debuff_Damage,false,-1.f));
-				UAuraAbilitySystemLibrary::SetDebuffDuration(EffectContextHandle,Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Debuff_Chance,false,-1.f));
+				UAuraAbilitySystemLibrary::SetDebuffDuration(EffectContextHandle,Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Debuff_Duration,false,-1.f));
 				UAuraAbilitySystemLibrary::SetDebuffFrequency(EffectContextHandle,Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Debuff_Frequency,false,-1.f));
 				
 			}
