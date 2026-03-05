@@ -110,6 +110,7 @@ void AAuraEnemy::BeginPlay()
 	{
 		UAuraAbilitySystemLibrary::GiveStartupAbilities(this,Level,AbilitySystemComponent,CharacterClass);
 	}
+	OnAscRegister.Broadcast(AbilitySystemComponent);
 	
 	BindUI();
 	

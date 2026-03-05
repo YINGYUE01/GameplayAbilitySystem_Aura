@@ -3,12 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "GameplayTagContainer.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 class UNiagaraSystem;
 class UAnimMontage;
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegister,UAbilitySystemComponent*);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeath,AActor*,DeadActor);
+
 // This class does not need to be modified.
 USTRUCT(BlueprintType)
 struct FTaggedMontage
@@ -58,14 +62,22 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	TArray<FTaggedMontage> GetAttackMontages();
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	UNiagaraSystem* GetBloodEffect();
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag& MontageTag);
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	int32 GetMinionCount();
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void IncrementMinionCount(int32 Amount);
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	ECharacterClass GetCharacterCLass();
+
+	virtual FOnASCRegister GetOnASCRegisterDelegate() = 0;
+	virtual FOnDeath GetOnDeathDelegate() = 0;
 };

@@ -11,6 +11,7 @@
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 #include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -193,8 +194,14 @@ void UAuraAttributeSet::Debuff(FEffectProperties& Props)
 	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
 	Effect->Period = DebuffFrequency;
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
-	Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuff[DamageType]);
-
+	//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuff[DamageType]);
+	UTargetTagsGameplayEffectComponent& TargetTagsComponent = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
+	// 2. 构造要添加的标签容器
+	FGameplayTag DebuffTag = GameplayTags.DamageTypesToDebuff[DamageType];
+	FInheritedTagContainer TagContainer;
+	TagContainer.AddTag(DebuffTag);
+	// 3. 使用 SetAndApplyTargetTagChanges (这是 5.5 推荐的 API)
+	TargetTagsComponent.SetAndApplyTargetTagChanges(TagContainer);
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
 	FGameplayModifierInfo ModifierInfo = FGameplayModifierInfo();
 	ModifierInfo.ModifierMagnitude = FScalableFloat(DebuffDamage);

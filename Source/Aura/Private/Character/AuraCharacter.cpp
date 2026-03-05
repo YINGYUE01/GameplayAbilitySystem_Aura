@@ -186,6 +186,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 	//将搭载在PlayerState上的ASC和AS赋予角色
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
+	OnAscRegister.Broadcast(AbilitySystemComponent);
 	//初始化初始属性
 	/**
 	角色需要执行 基类就实现的
