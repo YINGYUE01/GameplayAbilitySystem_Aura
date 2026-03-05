@@ -43,6 +43,9 @@ struct FDamageEffectParams
 	
 	UPROPERTY()
 	float DeathImpulseMagnitude = 0;
+
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType)
@@ -77,6 +80,9 @@ public:
 
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
 	void SetDamageType(TSharedPtr<FGameplayTag> Type) { this->DamageType = Type;}
+
+	FVector GetDeathImpulse() const { return DeathImpulse;}
+	void SetDeathImpulse(FVector Impulse) { this->DeathImpulse = Impulse;}
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FAuraGameplayEffectContext* Duplicate() const
 	{
@@ -104,6 +110,9 @@ private:
 	float DebuffFrequency = 0.f;
 	
 	TSharedPtr<FGameplayTag> DamageType;
+
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 	
 };
 template<>
