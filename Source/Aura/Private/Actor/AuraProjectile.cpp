@@ -9,7 +9,6 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
-#include "PersonaDelegates.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/Aura.h"
 #include "Components/AudioComponent.h"
@@ -55,6 +54,15 @@ void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, A
 		{
 			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
 			DamageEffectParams.DeathImpulse = DeathImpulse;
+			const bool bKnockbacked = FMath::RandRange(0,100) < DamageEffectParams.KnockbackChance;
+			if (bKnockbacked)
+			{
+				FRotator Rotation = GetActorRotation();
+				Rotation.Pitch = 45.f;
+				const FVector Direction = Rotation.Vector();
+				const FVector KnockbackImpulse = Direction * DamageEffectParams.KnockbackImpulseMagnitude;
+				DamageEffectParams.KnockbackImpulse = KnockbackImpulse;
+			}
 			DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
 			UAuraAbilitySystemLibrary::ApplyDamageEffectFromDamageEffectParams(DamageEffectParams);
 			

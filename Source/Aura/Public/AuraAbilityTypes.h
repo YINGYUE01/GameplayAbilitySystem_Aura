@@ -20,32 +20,41 @@ struct FDamageEffectParams
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float BaseDamage = 0;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float AbilityLevel = 1.f;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffChance = 0;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffDamage = 0;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffDuration = 0;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffFrequency = 0;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayTag DamageType = FGameplayTag();
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DeathImpulseMagnitude = 0;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FVector DeathImpulse = FVector::ZeroVector;
+
+	UPROPERTY(BlueprintReadWrite)
+	float KnockbackChance = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	float KnockbackImpulseMagnitude = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	FVector KnockbackImpulse = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType)
@@ -83,6 +92,9 @@ public:
 
 	FVector GetDeathImpulse() const { return DeathImpulse;}
 	void SetDeathImpulse(FVector Impulse) { this->DeathImpulse = Impulse;}
+
+	FVector GetKnockbackImpulse() const { return KnockbackImpulse;}
+	void SetKnockbackImpulse(FVector Impulse) { this->KnockbackImpulse = Impulse;}
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FAuraGameplayEffectContext* Duplicate() const
 	{
@@ -113,6 +125,9 @@ private:
 
 	UPROPERTY()
 	FVector DeathImpulse = FVector::ZeroVector;
+
+	UPROPERTY()
+	FVector KnockbackImpulse = FVector::ZeroVector;
 	
 };
 template<>
