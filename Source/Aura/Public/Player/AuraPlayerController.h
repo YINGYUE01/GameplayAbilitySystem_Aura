@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "GameplayTagContainer.h"
+#include "NiagaraComponent.h"
 #include "AuraPlayerController.generated.h"
+
 class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
@@ -72,6 +74,9 @@ private:
 	bool bTargeting  = false;
 	UPROPERTY(EditAnywhere)
 	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
