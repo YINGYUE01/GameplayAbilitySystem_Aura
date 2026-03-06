@@ -20,13 +20,21 @@ public:
 	virtual FString GetNextLevelDescription(int32 Level) override;
 	/*  可创建子类FireBoltProjectile再重写 */
 
-	
+
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TSubclassOf<AAuraProjectile> ProjectileClass;
 	UFUNCTION(BlueprintCallable)
 	void SpawnProjectile(const FVector& TargetLocation,const FGameplayTag& SocketTag,bool ShouldPitchOverride=false,float PitchOverride = 10.f);
+
+	UFUNCTION(BlueprintCallable)
+	void SpawnProjectiles(const FVector& TargetLocation,const FGameplayTag& SocketTag,bool ShouldPitchOverride,float PitchOverride,AActor* HomingTarget);
+	
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	UPROPERTY(EditDefaultsOnly)
-	int32 NumFireBolt = 5;
+	int32 NumFireBolts = 5;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float ProjectileSpread = 90.f;
+	
 };

@@ -7,6 +7,7 @@
 #include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Chaos/ChaosPerfTest.h"
 #include "Game/AuraGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
@@ -313,6 +314,50 @@ FVector UAuraAbilitySystemLibrary::GetKnockbackImpulse(const FGameplayEffectCont
 		return AuraEffectContext->GetKnockbackImpulse();
 	}
 	return FVector::ZeroVector;
+}
+
+TArray<FRotator> UAuraAbilitySystemLibrary::EvenlySpacedRotators(const FVector& Forward,
+	const FVector& Axis,int32 NumProjectiles,float Spread)
+{
+	TArray<FRotator> Rotators;
+	
+	const FVector LeftOfSpread =Forward.RotateAngleAxis(-Spread / 2,Axis);
+	if (NumProjectiles>1)
+	{
+		const float DeltaSpread = Spread / (NumProjectiles-1);
+		for (int32 i =0;i<NumProjectiles;i++)
+		{
+			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread*i,Axis);
+			Rotators.Add(Direction.Rotation());
+		}		
+	}
+	else
+	{
+		Rotators.Add(Forward.Rotation());
+	}
+	return Rotators;
+}
+
+TArray<FVector> UAuraAbilitySystemLibrary::EvenlySpacedVectors(const FVector& Forward, const FVector& Axis,int32 NumProjectiles,float Spread)
+{
+	TArray<FVector> Vectors;
+	
+	const FVector LeftOfSpread =Forward.RotateAngleAxis(-Spread / 2,Axis);
+	if (NumProjectiles>1)
+	{
+		const float DeltaSpread = Spread / (NumProjectiles-1);
+		for (int32 i =0;i<NumProjectiles;i++)
+		{
+			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread*i,FVector::UpVector);
+			Vectors.Add(Direction);
+		}
+	}
+	else
+	{
+		Vectors.Add(Forward);
+	}
+
+	return Vectors;
 }
 
 void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject,

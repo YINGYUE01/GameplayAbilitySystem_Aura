@@ -87,7 +87,11 @@ public:
 	static void SetKnockbackImpulse(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle,const FVector Impulse);
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static FVector GetKnockbackImpulse(const FGameplayEffectContextHandle& EffectContextHandle);
-	
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects")
+	static TArray<FRotator> EvenlySpacedRotators(const FVector& Forward,const FVector& Axis,int32 NumProjectiles,float Spread);
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects")
+	static TArray<FVector> EvenlySpacedVectors(const FVector& Forward,const FVector& Axis,int32 NumProjectiles,float Spread);
 	
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject,TArray<AActor*>& OutOverlappingActors,const TArray<AActor*>& ActorsToIgnore,float Radius,const FVector& SphereOrigin);
