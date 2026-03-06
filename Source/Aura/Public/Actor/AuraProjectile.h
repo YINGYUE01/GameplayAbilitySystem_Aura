@@ -35,7 +35,8 @@ public:
 	UPROPERTY(BlueprintReadWrite,meta=(ExposeOnSpawn = true))
 	FDamageEffectParams DamageEffectParams;
 	
-	
+	UPROPERTY()
+	TObjectPtr<USceneComponent> SceneComponent;
 protected:
 	virtual void BeginPlay() override;
 	
@@ -55,5 +56,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr< UAudioComponent> AudioComponent;
+
+
 	
 };

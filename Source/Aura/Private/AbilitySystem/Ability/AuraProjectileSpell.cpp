@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Actor/AuraProjectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -118,6 +119,18 @@ void UAuraProjectileSpell::SpawnProjectiles(const FVector& TargetLocation, const
 		Cast<APawn>(GetOwningActorFromActorInfo())
 				 ,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 			Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefault();
+			if (HomingTarget && HomingTarget->Implements<UCombatInterface>())
+			{
+				Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
+			}
+			else
+			{
+				Projectile->SceneComponent = NewObject<USceneComponent>(USceneComponent::StaticClass());
+				Projectile->SceneComponent->SetWorldLocation(TargetLocation);
+				Projectile->ProjectileMovement->HomingTargetComponent = Projectile->SceneComponent;
+			}
+			Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::RandRange(HomingAccelerationMin,HomingAccelerationMax);
+			Projectile->ProjectileMovement->bIsHomingProjectile = true;
 			Projectile->FinishSpawning(SpawnTransform);
 		}
 	}

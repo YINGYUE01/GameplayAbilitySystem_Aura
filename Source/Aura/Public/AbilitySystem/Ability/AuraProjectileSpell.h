@@ -36,5 +36,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	float ProjectileSpread = 90.f;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	float HomingAccelerationMin = 1600.f;
+	UPROPERTY(EditDefaultsOnly)
+	float HomingAccelerationMax = 3200.f;
 };
