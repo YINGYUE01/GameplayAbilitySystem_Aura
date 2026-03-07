@@ -75,19 +75,48 @@ void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const
 {
 	AbilityStatusChanged.Broadcast(AbilityTag,StatusTag,AbilityLevel);
 }
-
+//释放
 void UAuraAbilitySystemComponent::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 		if(!InputTag.IsValid()) return;
     	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
     	{
-    		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
+    		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag) && AbilitySpec.IsActive())
     		{
     			AbilitySpecInputReleased(AbilitySpec);
+    			TArray<UGameplayAbility*> Instances = AbilitySpec.GetAbilityInstances();
+    			for (UGameplayAbility* Instance : Instances)
+    			{
+    				if (Instance && Instance->IsActive())
+    				{
+    					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased,AbilitySpec.Handle,Instance->GetCurrentActivationInfo().GetActivationPredictionKey());
+    				}
+    			}
+    			
     		}
     	}
 }
-
+//按下
+void UAuraAbilitySystemComponent::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	if(!InputTag.IsValid()) return;
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag) && AbilitySpec.IsActive())
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			TArray<UGameplayAbility*> Instances = AbilitySpec.GetAbilityInstances();
+			for (UGameplayAbility* Instance : Instances)
+			{
+				if (Instance && Instance->IsActive())
+				{
+					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased,AbilitySpec.Handle,Instance->GetCurrentActivationInfo().GetActivationPredictionKey());
+				}
+			}
+		}
+	}
+}
+//按住
 void UAuraAbilitySystemComponent::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 		if(!InputTag.IsValid()) return;
