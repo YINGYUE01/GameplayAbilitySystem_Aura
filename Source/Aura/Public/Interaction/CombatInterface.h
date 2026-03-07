@@ -83,4 +83,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void SetInShockLoop(bool bShockLoop);
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	USkeletalMeshComponent* GetWeaponMesh();
 };

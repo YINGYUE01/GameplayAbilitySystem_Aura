@@ -121,6 +121,11 @@ FOnDeath AAuraCharacterBase::GetOnDeathDelegate()
 	return OnDeath;
 }
 
+USkeletalMeshComponent* AAuraCharacterBase::GetWeaponMesh_Implementation()
+{
+	return Weapon;
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector DeathImpulse)
 {
 	UGameplayStatics::PlaySoundAtLocation(this,DeathSound,GetActorLocation(),GetActorRotation());
