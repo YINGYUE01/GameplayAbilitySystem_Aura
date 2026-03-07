@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
+#include <rapidjson/internal/ieee754.h>
+
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
@@ -378,6 +380,30 @@ void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldC
 			}
 		}
 	}
+}
+
+void UAuraAbilitySystemLibrary::GetClosestTargets(const int32 MaxTargets, const TArray<AActor*> Actors,
+	TArray<AActor*>& OutClosestActors, const FVector& Origin)
+{
+	if (MaxTargets >= Actors.Num())
+	{
+		OutClosestActors = Actors;
+		return;
+	}
+	TMap<AActor*,float> TargetDistances;
+	for (AActor* Actor : Actors)
+	{
+		TargetDistances.Add(Actor,(Actor->GetActorLocation()-Origin).Length());
+	}
+	TargetDistances.ValueStableSort([](double A,double B){ return A<B; });
+	int32 Count = 0;
+	for (auto& TargetDistance : TargetDistances)
+	{
+		if (Count<MaxTargets)
+			OutClosestActors.AddUnique(TargetDistance.Key);
+		Count++;
+	}
+	return;
 }
 
 bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)

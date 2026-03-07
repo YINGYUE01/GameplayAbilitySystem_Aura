@@ -95,6 +95,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject,TArray<AActor*>& OutOverlappingActors,const TArray<AActor*>& ActorsToIgnore,float Radius,const FVector& SphereOrigin);
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
+	static void GetClosestTargets(const int32 MaxTargets,const TArray<AActor*> Actors,TArray<AActor*>& OutClosestActors,const FVector& Origin);
+	
 	UFUNCTION(BlueprintPure,BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static bool IsNotFriend(AActor* FirstActor,AActor* SecondActor);
 	UFUNCTION(BlueprintCallable,BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects")

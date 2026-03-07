@@ -20,6 +20,8 @@ public:
 	void StoreOwnerVariable();
 	UFUNCTION(BlueprintCallable)
 	void TraceFirstTarget(const FVector& BeamTargetLocation);
+	UFUNCTION(BlueprintCallable)
+	void StoreAdditionTargets(TArray<AActor*>& OutAdditionTargets);
 protected:
 	UPROPERTY(BlueprintReadWrite,Category="Beam")
 	FVector MouseHitLocation;
@@ -29,6 +31,9 @@ protected:
 	TObjectPtr<APlayerController> OwnerPlayerController;
 	UPROPERTY(BlueprintReadWrite,Category="Beam")
 	TObjectPtr<ACharacter> OwnerCharacter;
+
+	UPROPERTY(EditDefaultsOnly,Category="Beam")
+	int32 MaxNumShockingTargets = 5;
 
 
 };
