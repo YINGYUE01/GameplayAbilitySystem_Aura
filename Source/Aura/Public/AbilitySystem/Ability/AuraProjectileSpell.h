@@ -19,8 +19,6 @@ public:
 	virtual FString GetDescription(int32 Level) override;
 	virtual FString GetNextLevelDescription(int32 Level) override;
 	/*  可创建子类FireBoltProjectile再重写 */
-
-
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TSubclassOf<AAuraProjectile> ProjectileClass;
