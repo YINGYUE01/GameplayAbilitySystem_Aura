@@ -75,8 +75,9 @@ void UAuraBeamSpell::StoreAdditionTargets(TArray<AActor*>& OutAdditionTargets)
 	ActorsIgnore.Add(OwnerCharacter);
 	ActorsIgnore.Add(MouseHitActor);
 	TArray<AActor*> OverlappingTargets;
+	int32 NumBeamShocks = FMath::Min(MaxNumShockingTargets,GetAbilityLevel());
 	UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(GetAvatarActorFromActorInfo(),OverlappingTargets,ActorsIgnore,850.f,MouseHitActor->GetActorLocation());
-	UAuraAbilitySystemLibrary::GetClosestTargets(MaxNumShockingTargets,OverlappingTargets,OutAdditionTargets,MouseHitActor->GetActorLocation());
+	UAuraAbilitySystemLibrary::GetClosestTargets(NumBeamShocks,OverlappingTargets,OutAdditionTargets,MouseHitActor->GetActorLocation());
 	for (AActor* Actor : OutAdditionTargets)
 	{
 		if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Actor))
