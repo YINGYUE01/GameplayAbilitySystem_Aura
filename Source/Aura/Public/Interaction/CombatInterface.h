@@ -79,7 +79,7 @@ public:
 	ECharacterClass GetCharacterCLass();
 
 	virtual FOnASCRegister GetOnASCRegisterDelegate() = 0;
-	virtual FOnDeath GetOnDeathDelegate() = 0;
+	virtual FOnDeath& GetOnDeathDelegate() = 0;
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void SetInShockLoop(bool bShockLoop);
