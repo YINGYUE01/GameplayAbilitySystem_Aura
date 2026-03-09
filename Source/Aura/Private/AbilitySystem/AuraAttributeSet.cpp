@@ -201,6 +201,13 @@ void UAuraAttributeSet::Debuff(FEffectProperties& Props)
 	// 2. 构造要添加的标签容器
 	FGameplayTag DebuffTag = GameplayTags.DamageTypesToDebuff[DamageType];
 	FInheritedTagContainer TagContainer;
+	if (DebuffTag.MatchesTagExact(FAuraGameplayTags::Get().Debuff_Stun))
+	{
+		TagContainer.AddTag(FAuraGameplayTags::Get().Player_Block_CursorTrace);
+		TagContainer.AddTag(FAuraGameplayTags::Get().Player_Block_InputHeld);
+		TagContainer.AddTag(FAuraGameplayTags::Get().Player_Block_InputPressed);
+		TagContainer.AddTag(FAuraGameplayTags::Get().Player_Block_InputReleased);
+	}
 	TagContainer.AddTag(DebuffTag);
 	// 3. 使用 SetAndApplyTargetTagChanges (这是 5.5 推荐的 API)
 	TargetTagsComponent.SetAndApplyTargetTagChanges(TagContainer);
@@ -260,17 +267,16 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 				const bool bBlock = UAuraAbilitySystemLibrary::IsBlockHit(Props.EffectContextHandle);
 				const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
 				AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
-				if (UAuraAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
-				{
-					Debuff(Props);
-				}
-				return; 
 			}
 			if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
 			{
 				const bool bBlock = UAuraAbilitySystemLibrary::IsBlockHit(Props.EffectContextHandle);
 				const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
 				AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
+			}
+			if (UAuraAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
+			{
+				Debuff(Props);
 			}
 		}
 	}

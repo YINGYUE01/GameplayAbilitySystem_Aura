@@ -8,7 +8,9 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -21,6 +23,13 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	
 }
+
+void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AAuraCharacterBase,Stunned);
+}
+
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -124,6 +133,18 @@ FOnDeath& AAuraCharacterBase::GetOnDeathDelegate()
 USkeletalMeshComponent* AAuraCharacterBase::GetWeaponMesh_Implementation()
 {
 	return Weapon;
+}
+
+void AAuraCharacterBase::OnRep_Stuned()
+{
+	
+}
+
+void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Stunned = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = Stunned ? 0 : BaseWalkSpeed;
+	
 }
 
 void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector DeathImpulse)

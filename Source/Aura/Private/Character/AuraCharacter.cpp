@@ -3,6 +3,7 @@
 
 #include "Character/AuraCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
@@ -63,6 +64,27 @@ void AAuraCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 	//Client Init AbilitySystemInfo
 	InitAbilityActorInfo();
+}
+
+void AAuraCharacter::OnRep_Stuned()
+{
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		FGameplayTagContainer BlockTags;
+		BlockTags.AddTag(FAuraGameplayTags::Get().Player_Block_CursorTrace);
+		BlockTags.AddTag(FAuraGameplayTags::Get().Player_Block_InputHeld);
+		BlockTags.AddTag(FAuraGameplayTags::Get().Player_Block_InputPressed);
+		BlockTags.AddTag(FAuraGameplayTags::Get().Player_Block_InputReleased);
+		if (Stunned)
+		{
+			AuraASC->AddLooseGameplayTags(BlockTags);
+		}
+		else
+		{
+			AuraASC->RemoveLooseGameplayTags(BlockTags);
+		}
+		
+	}
 }
 
 void AAuraCharacter::AddToXP_Implementation(int32 InXP)
@@ -187,6 +209,8 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 	OnAscRegister.Broadcast(AbilitySystemComponent);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Debuff_Stun,EGameplayTagEventType::NewOrRemoved).AddUObject(this,&AAuraCharacter::StunTagChanged);
+	
 	//初始化初始属性
 	/**
 	角色需要执行 基类就实现的

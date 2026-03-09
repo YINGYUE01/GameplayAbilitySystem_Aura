@@ -48,6 +48,11 @@ void AAuraProjectile::OnHit()
 void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (!DamageEffectParams.SourceAbilitySystemComponent)
+	{
+		Destroyed();
+		return;
+	}
 	AActor* SourceAvatar = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	if (SourceAvatar == OtherActor) return;
 	if (!UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatar,OtherActor)) return;
