@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AuraCharacterBase.generated.h"
+class UPassiveNiagaraComponent;
 class UDebuffNiagaraComponent;
 class UGameplayAbility;
 class UGameplayEffect;
@@ -22,6 +23,7 @@ class AURA_API AAuraCharacterBase : public ACharacter,public IAbilitySystemInter
 
 public:
 	AAuraCharacterBase();
+	virtual void Tick(float DeltaSeconds) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
@@ -79,6 +81,14 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPassiveNiagaraComponent> HaloOfProtectionNiagaraComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPassiveNiagaraComponent> LifeSiphonNiagaraComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPassiveNiagaraComponent> ManaSiphonNiagaraComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> EffectAttachComponent;
 	//Weapon Socket
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
