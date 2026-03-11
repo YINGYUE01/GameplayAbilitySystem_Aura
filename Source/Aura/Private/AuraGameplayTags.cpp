@@ -90,8 +90,10 @@ void FAuraGameplayTags::InitializeNativeTags()
 	GameplayTags.Abilities_Status_UnLocked=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Status.UnLocked"),FString("UnLocked Ability"));
 	GameplayTags.Abilities_Type_Offensive=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Type.Offensive"),FString("Offensive Type"));
 	GameplayTags.Abilities_Type_Passive=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Type.Passive"),FString("Passive Type"));
-	GameplayTags.Abilities_Type_None=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Type.None"),FString("None Type"));
-
+	GameplayTags.Abilities_Passive_HaloOfProtection=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Passive.HaloOfProtection"),FString("Passive HaloOfProtection"));
+	GameplayTags.Abilities_Passive_LifeSiphon=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Passive.LifeSiphon"),FString("Passive LifeSiphon"));
+	GameplayTags.Abilities_Passive_ManaSiphon=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Passive.ManaSiphon"),FString("Passive ManaSiphon"));
+	
 	/*End Ability */
 	
 	/* CombatSocket */
