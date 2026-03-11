@@ -41,7 +41,7 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterCLass_Implementation() override;
-	virtual FOnASCRegister GetOnASCRegisterDelegate() override;
+	virtual FOnASCRegister& GetOnASCRegisterDelegate() override;
 	virtual FOnDeath& GetOnDeathDelegate() override;
 	virtual USkeletalMeshComponent* GetWeaponMesh_Implementation() override;
 	/*CombatInterface*/
@@ -52,8 +52,12 @@ public:
 
 	UPROPERTY(ReplicatedUsing=OnRep_Stuned,BlueprintReadOnly)
 	bool Stunned = false;
+	UPROPERTY(ReplicatedUsing=OnRep_Burned,BlueprintReadOnly)
+	bool Burned = false;
 	UFUNCTION()
 	virtual void OnRep_Stuned();
+	UFUNCTION()
+	virtual void OnRep_Burned();
 	
 	UPROPERTY(EditAnywhere,Category="Combat")
 	TArray<FTaggedMontage> AttackMontages;
@@ -63,6 +67,9 @@ public:
 	USoundBase* DeathSound;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffNiagaraComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffNiagaraComponent;
 protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
@@ -86,6 +93,7 @@ protected:
 	float BaseWalkSpeed = 600.f;
 
 	virtual void StunTagChanged(const FGameplayTag CallbackTag,int32 NewCount);
+	virtual void BurnTagChanged(const FGameplayTag CallbackTag,int32 NewCount);
 
 	//ASC
 	UPROPERTY()

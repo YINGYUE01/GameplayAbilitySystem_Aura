@@ -22,6 +22,9 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase,public IEnemyInterface
 	GENERATED_BODY()
 public:
 	AAuraEnemy();
+	virtual void OnRep_Burned() override;
+	virtual void OnRep_Stuned() override;
+	virtual void BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 	//~begin EnemyInterface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;

@@ -45,7 +45,7 @@ void UDebuffNiagaraComponent::DebuffTagChanged(const FGameplayTag CallbackTag, i
 	}
 	else
 	{
-		DestroyComponent();
+		Deactivate();
 	}
 }
 

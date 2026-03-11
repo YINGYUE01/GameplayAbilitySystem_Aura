@@ -10,6 +10,7 @@
 #include "Aura/Aura.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 #include "AI/AuraAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -39,6 +40,47 @@ AAuraEnemy::AAuraEnemy()
 	HealthBar->SetIsReplicated(true);
 	BaseWalkSpeed = 250.f;
 }
+
+void AAuraEnemy::OnRep_Burned()
+{
+	if (BurnDebuffNiagaraComponent==nullptr) return;
+	if (Burned)
+	{
+		if (!BurnDebuffNiagaraComponent->IsActive())
+			BurnDebuffNiagaraComponent->Activate();
+	}
+	else
+	{
+		BurnDebuffNiagaraComponent->Deactivate();
+	}
+}
+
+void AAuraEnemy::OnRep_Stuned()
+{
+	if (Stunned)
+	{
+		StunDebuffNiagaraComponent->Activate();
+	}
+	else
+	{
+		StunDebuffNiagaraComponent->Deactivate();
+	}
+}
+
+void AAuraEnemy::BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::BurnTagChanged(CallbackTag, NewCount);
+	
+}
+void AAuraEnemy::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StunTagChanged(CallbackTag, NewCount);
+	if (AuraAIController && AuraAIController->GetBlackboardComponent())
+	{
+		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stun"),Stunned);
+	}
+}
+
 
 void AAuraEnemy::HighlightActor()
 {
@@ -154,20 +196,13 @@ void AAuraEnemy::InitializeDefaultAttributes() const
 	UAuraAbilitySystemLibrary::InitializeDefaultAttribute(this,CharacterClass,Level,AbilitySystemComponent);
 }
 
-void AAuraEnemy::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
-{
-	Super::StunTagChanged(CallbackTag, NewCount);
-	if (AuraAIController && AuraAIController->GetBlackboardComponent())
-	{
-		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stun"),Stunned);
-	}
-}
 
 void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Debuff_Stun,EGameplayTagEventType::NewOrRemoved).AddUObject(this,&AAuraEnemy::StunTagChanged);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Debuff_Burn,EGameplayTagEventType::NewOrRemoved).AddUObject(this,&AAuraEnemy::BurnTagChanged);
 	// 只在服务器端初始化属性，客户端会通过复制接收
 	if (HasAuthority())
 	{

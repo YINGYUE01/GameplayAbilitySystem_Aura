@@ -18,6 +18,11 @@ AAuraCharacterBase::AAuraCharacterBase()
 	BurnDebuffNiagaraComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffNiagaraComponent");
 	BurnDebuffNiagaraComponent->SetupAttachment(GetRootComponent());
 	BurnDebuffNiagaraComponent->DebuffTag = FAuraGameplayTags::Get().Debuff_Burn;
+
+	StunDebuffNiagaraComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("StunDebuffNiagaraComponent");
+	StunDebuffNiagaraComponent->SetupAttachment(GetRootComponent());
+	StunDebuffNiagaraComponent->DebuffTag = FAuraGameplayTags::Get().Debuff_Stun;
+	
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(),FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
@@ -28,6 +33,7 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AAuraCharacterBase,Stunned);
+	DOREPLIFETIME(AAuraCharacterBase,Burned);
 }
 
 void AAuraCharacterBase::BeginPlay()
@@ -120,7 +126,7 @@ ECharacterClass AAuraCharacterBase::GetCharacterCLass_Implementation()
 	return CharacterClass;
 }
 
-FOnASCRegister AAuraCharacterBase::GetOnASCRegisterDelegate()
+FOnASCRegister& AAuraCharacterBase::GetOnASCRegisterDelegate()
 {
 	return OnAscRegister;
 }
@@ -140,10 +146,21 @@ void AAuraCharacterBase::OnRep_Stuned()
 	
 }
 
+void AAuraCharacterBase::OnRep_Burned()
+{
+	
+}
+
 void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	Stunned = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = Stunned ? 0 : BaseWalkSpeed;
+	
+}
+
+void AAuraCharacterBase::BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Burned = NewCount > 0;
 	
 }
 
@@ -162,6 +179,8 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector Death
 	GetMesh()->AddImpulse(DeathImpulse,NAME_None,true);
 	Dissolve();
 	bDead = true;
+	// BurnDebuffNiagaraComponent->Deactivate();
+	// StunDebuffNiagaraComponent->Deactivate();
 	OnDeath.Broadcast(this);
 }
 void AAuraCharacterBase::Dissolve()

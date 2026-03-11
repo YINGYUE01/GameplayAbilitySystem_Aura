@@ -32,6 +32,17 @@ AAuraProjectile::AAuraProjectile()
 	ProjectileMovement->ProjectileGravityScale = false;
 }
 
+void AAuraProjectile::BeginPlay()
+{
+	Super::BeginPlay();
+	SetReplicateMovement(true);
+	SetLifeSpan(SpanLife);
+	Sphere->OnComponentBeginOverlap.AddDynamic(this,&AAuraProjectile::OnSphereOverlay);
+	AudioComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound,GetRootComponent());
+}
+
+
+
 void AAuraProjectile::OnHit()
 {
 	UGameplayStatics::PlaySoundAtLocation(this,ImpactSound,GetActorLocation());
@@ -90,13 +101,5 @@ void AAuraProjectile::Destroyed()
 		OnHit();
 	}
 	Super::Destroyed();
-}
-
-void AAuraProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-	SetLifeSpan(SpanLife);
-	Sphere->OnComponentBeginOverlap.AddDynamic(this,&AAuraProjectile::OnSphereOverlay);
-	AudioComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound,GetRootComponent());
 }
 

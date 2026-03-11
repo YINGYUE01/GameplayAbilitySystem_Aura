@@ -80,7 +80,8 @@ void UAuraBeamSpell::StoreAdditionTargets(TArray<AActor*>& OutAdditionTargets)
 	UAuraAbilitySystemLibrary::GetClosestTargets(NumBeamShocks,OverlappingTargets,OutAdditionTargets,MouseHitActor->GetActorLocation());
 	for (AActor* Actor : OutAdditionTargets)
 	{
-		if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Actor))
+		ICombatInterface* CombatInterface = Cast<ICombatInterface>(Actor);
+		if (CombatInterface && UAuraAbilitySystemLibrary::IsNotFriend(Actor,OwnerCharacter))
 		{
 			if (!CombatInterface->GetOnDeathDelegate().IsAlreadyBound(this,&UAuraBeamSpell::AdditionalTargetDied))
 			{
