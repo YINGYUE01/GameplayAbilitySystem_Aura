@@ -85,5 +85,10 @@ public:
 	void SetInShockLoop(bool bShockLoop);
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	bool IsBeingShocked();
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void SetIsBeingShocked(const bool bInShock);
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	USkeletalMeshComponent* GetWeaponMesh();
 };
