@@ -9,13 +9,11 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Aura/AuraLogChannels.h"
 #include "Interaction/PlayerInterface.h"
-#include "Net/UnrealNetwork.h"
 
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&UAuraAbilitySystemComponent::ClientEffectApplied);
-	//const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 }
 
 void UAuraAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
@@ -261,7 +259,7 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 	}
 }
 
-void UAuraAbilitySystemComponent::ClientEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& SlotTag,
+void UAuraAbilitySystemComponent::ClientEquipAbility_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& SlotTag,
 	const FGameplayTag& StatusTag, const FGameplayTag& PreSlotTag)
 {
 	AbilityEquippedDelegate.Broadcast(AbilityTag,SlotTag,StatusTag,PreSlotTag);
