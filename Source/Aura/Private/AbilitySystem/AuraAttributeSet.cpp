@@ -264,7 +264,7 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 				Props.TargetCharacter->LaunchCharacter(KnockbackImpulse,true,true);
 			}
 		}
-		if (Props.SourceCharacter!=Props.TargetCharacter)
+		if (Props.SourceCharacter && Props.TargetCharacter && Props.SourceCharacter!=Props.TargetCharacter)
 		{
 			if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
 			{

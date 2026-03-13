@@ -8,6 +8,7 @@
 #include "NiagaraComponent.h"
 #include "AuraPlayerController.generated.h"
 
+class AMagicCircle;
 class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
@@ -25,6 +26,7 @@ class AURA_API AAuraPlayerController : public APlayerController
 	GENERATED_BODY()
 public:
 	AAuraPlayerController();
+	
 	//鼠标驱动的移动
 	void AutoRun();
 	virtual void PlayerTick(float DeltaTime) override;
@@ -34,6 +36,12 @@ public:
 	//显示伤害数字函数
 	UFUNCTION(Client,Reliable)
 	void ShowDamageNumber(float DamageAmount,ACharacter* TargetCharacter,bool bBlockHit,bool bCriticalHit);
+	UFUNCTION(BlueprintCallable)
+	void ShowMagicCircle();
+	UFUNCTION(BlueprintCallable)
+	void HideMagicCircle();
+
+	void UpdateMagicCircleLocation();
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -80,4 +88,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMagicCircle> MagicCircleClass;
+	UPROPERTY()
+	TObjectPtr<AMagicCircle> MagicCircle;
 };
