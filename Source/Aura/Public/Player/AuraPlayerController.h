@@ -37,9 +37,11 @@ public:
 	UFUNCTION(Client,Reliable)
 	void ShowDamageNumber(float DamageAmount,ACharacter* TargetCharacter,bool bBlockHit,bool bCriticalHit);
 	UFUNCTION(BlueprintCallable)
-	void ShowMagicCircle();
+	void ShowMagicCircle(UMaterialInterface* Material);
 	UFUNCTION(BlueprintCallable)
 	void HideMagicCircle();
+	UFUNCTION(BlueprintCallable)
+	void SetMagicCircleMaterial(UMaterialInterface* Material);
 
 	void UpdateMagicCircleLocation();
 protected:

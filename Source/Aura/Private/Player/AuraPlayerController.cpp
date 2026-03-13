@@ -12,6 +12,7 @@
 #include "Actor/MagicCircle.h"
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/DecalComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
@@ -156,11 +157,15 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 	return AuraASC;
 }
 
-void AAuraPlayerController::ShowMagicCircle()
+void AAuraPlayerController::ShowMagicCircle(UMaterialInterface* Material)
 {
 	if (!IsValid(MagicCircle))
 	{
 		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+		if (Material!=nullptr)
+		{
+			MagicCircle->MagicCircleDecal->SetMaterial(0,Material);
+		}
 	}
 }
 
@@ -169,6 +174,17 @@ void AAuraPlayerController::HideMagicCircle()
 	if (IsValid(MagicCircle))
 	{
 		MagicCircle->Destroy();	
+	}
+}
+
+void AAuraPlayerController::SetMagicCircleMaterial(UMaterialInterface* Material)
+{
+	if (IsValid(MagicCircle))
+	{
+		if (Material!=nullptr)
+		{
+			MagicCircle->MagicCircleDecal->SetMaterial(0,Material);
+		}
 	}
 }
 

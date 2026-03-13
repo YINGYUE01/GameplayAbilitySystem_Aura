@@ -50,5 +50,13 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent)
 	int32 FindLevelForXP(int32 InXP);
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void ShowMagicCircle(UMaterialInterface* Material);
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void HideMagicCircle();
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void SetMagicCircleMaterial(UMaterialInterface* Material);
+	
 	
 };
