@@ -24,10 +24,12 @@ class AURA_API AAuraCharacterBase : public ACharacter,public IAbilitySystemInter
 public:
 	AAuraCharacterBase();
 	virtual void Tick(float DeltaSeconds) override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	FOnDamageDelegate OnDamageDelegate;
 	UPROPERTY(EditDefaultsOnly,Category="Anim")
 	TObjectPtr<UAnimMontage> HitReactMontage;
 	/* CombatInterface*/
@@ -48,6 +50,7 @@ public:
 	virtual USkeletalMeshComponent* GetWeaponMesh_Implementation() override;
 	virtual bool IsBeingShocked_Implementation() override;
 	virtual void SetIsBeingShocked_Implementation(const bool bInShock) override;
+	virtual FOnDamageDelegate& GetOnDamageDelegate() override;
 	/*CombatInterface*/
 	FOnASCRegister OnAscRegister;
 	FOnDeath OnDeath;

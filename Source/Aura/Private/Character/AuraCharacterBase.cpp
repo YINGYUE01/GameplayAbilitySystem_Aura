@@ -55,6 +55,15 @@ void AAuraCharacterBase::Tick(float DeltaSeconds)
 	EffectAttachComponent->SetWorldRotation(FRotator::ZeroRotator);
 }
 
+float AAuraCharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	const float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	OnDamageDelegate.Broadcast(Damage);
+	return Damage;
+	
+}
+
 void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -176,6 +185,11 @@ bool AAuraCharacterBase::IsBeingShocked_Implementation()
 void AAuraCharacterBase::SetIsBeingShocked_Implementation(const bool bInShock)
 {
 	bIsBeingShocked = bInShock;
+}
+
+FOnDamageDelegate& AAuraCharacterBase::GetOnDamageDelegate()
+{
+	return OnDamageDelegate;
 }
 
 void AAuraCharacterBase::OnRep_Stuned()

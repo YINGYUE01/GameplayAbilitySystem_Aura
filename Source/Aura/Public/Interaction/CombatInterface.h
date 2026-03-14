@@ -12,6 +12,7 @@ class UNiagaraSystem;
 class UAnimMontage;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegister,UAbilitySystemComponent*);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeath,AActor*,DeadActor);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDamageDelegate,float /*DamageAmount*/);
 
 // This class does not need to be modified.
 USTRUCT(BlueprintType)
@@ -80,6 +81,7 @@ public:
 
 	virtual FOnASCRegister& GetOnASCRegisterDelegate() = 0;
 	virtual FOnDeath& GetOnDeathDelegate() = 0;
+	virtual FOnDamageDelegate& GetOnDamageDelegate() = 0;
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void SetInShockLoop(bool bShockLoop);
