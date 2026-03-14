@@ -57,6 +57,18 @@ protected:
 
 	UPROPERTY(EditAnywhere,Category="Damage")
 	FVector KnockbackImpulse = FVector::ZeroVector;
+
+	UPROPERTY(EditAnywhere,Category="Damage")
+	bool bIsRadiaDamage= false;
+	
+	UPROPERTY(EditAnywhere,Category="Damage")
+	float RadiaDamageInnerRadius= 0;
+
+	UPROPERTY(EditAnywhere,Category="Damage")
+	float RadiaDamageOuterRadius= 0;
+
+	UPROPERTY(EditAnywhere,Category="Damage")
+	FVector RadiaDamageOrigin= FVector::Zero();
 	
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages);

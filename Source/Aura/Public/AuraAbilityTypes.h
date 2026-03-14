@@ -55,6 +55,19 @@ struct FDamageEffectParams
 
 	UPROPERTY(BlueprintReadWrite)
 	FVector KnockbackImpulse = FVector::ZeroVector;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsRadiaDamage= false;
+	
+	UPROPERTY(BlueprintReadWrite)
+	float RadiaDamageInnerRadius= 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadiaDamageOuterRadius= 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	FVector RadiaDamageOrigin= FVector::Zero();
+	
 };
 
 USTRUCT(BlueprintType)
@@ -95,6 +108,19 @@ public:
 
 	FVector GetKnockbackImpulse() const { return KnockbackImpulse;}
 	void SetKnockbackImpulse(FVector Impulse) { this->KnockbackImpulse = Impulse;}
+
+	bool IsRadiaDamage() const {return bIsRadiaDamage;}
+	void SetIsRadiaDamage(const bool bRadiaDamage) { this->bIsRadiaDamage = bRadiaDamage;}
+
+	float GetRadiaDamageInnerRadius() const { return RadiaDamageInnerRadius;}
+	void SetRadiaDamageInnerRadius(const float Radius) { this->RadiaDamageInnerRadius = Radius;}
+
+	float GetRadiaDamageOuterRadius() const { return RadiaDamageOuterRadius;}
+	void SetRadiaDamageOuterRadius(const float Radius) { this->RadiaDamageOuterRadius = Radius;}
+
+	FVector GetRadiaDamageOrigin() const { return RadiaDamageOrigin; }
+	void SetRadiaDamageOrigin(const FVector Origin) { this->RadiaDamageOrigin = Origin;}
+	
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FAuraGameplayEffectContext* Duplicate() const
 	{
@@ -108,10 +134,13 @@ public:
 		return NewContext;
 	}
 private:
+	//伤害显示相关参数
 	UPROPERTY()
 	bool bIsCriticalHit = false;
 	UPROPERTY()
 	bool bIsBlockHit = false;
+
+	//Debuff 相关参数
 	UPROPERTY()
 	bool bIsSuccessfulDebuff = false;
 	UPROPERTY()
@@ -120,12 +149,22 @@ private:
 	float DebuffDuration = 0.f;
 	UPROPERTY()
 	float DebuffFrequency = 0.f;
+
+	//范围伤害相关参数
+	UPROPERTY()
+	bool bIsRadiaDamage= false;
+	UPROPERTY()
+	float RadiaDamageInnerRadius= 0;
+	UPROPERTY()
+	float RadiaDamageOuterRadius= 0;
+	UPROPERTY()
+	FVector RadiaDamageOrigin= FVector::Zero();
 	
 	TSharedPtr<FGameplayTag> DamageType;
 
+	//击退相关参数
 	UPROPERTY()
 	FVector DeathImpulse = FVector::ZeroVector;
-
 	UPROPERTY()
 	FVector KnockbackImpulse = FVector::ZeroVector;
 	
