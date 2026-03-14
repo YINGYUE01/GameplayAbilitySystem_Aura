@@ -15,7 +15,7 @@ void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageHandle.Data.Get(),UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
 }
 
-FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassDefault(AActor* TargetActor) const
+FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassDefault(AActor* TargetActor, FVector InRadialDamageOrigin ) const
 {
 	FDamageEffectParams DamageEffectParams;
 	DamageEffectParams.WorldContextObject = GetAvatarActorFromActorInfo();
@@ -47,7 +47,7 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 		DamageEffectParams.bIsRadiaDamage = bIsRadiaDamage;
 		DamageEffectParams.RadiaDamageInnerRadius = RadiaDamageInnerRadius;
 		DamageEffectParams.RadiaDamageOuterRadius = RadiaDamageOuterRadius;
-		DamageEffectParams.RadiaDamageOrigin = RadiaDamageOrigin;
+		DamageEffectParams.RadiaDamageOrigin = InRadialDamageOrigin;
 	}
 	return DamageEffectParams;
 }

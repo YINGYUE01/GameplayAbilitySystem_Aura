@@ -259,7 +259,7 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 			}
 
 			const FVector KnockbackImpulse = UAuraAbilitySystemLibrary::GetKnockbackImpulse(Props.EffectContextHandle);
-			if (!KnockbackImpulse.IsZero())
+			if (!KnockbackImpulse.IsNearlyZero(1.f))
 			{
 				Props.TargetCharacter->LaunchCharacter(KnockbackImpulse,true,true);
 			}

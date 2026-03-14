@@ -146,7 +146,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 		if (UAuraAbilitySystemLibrary::GetIsRadialDamage(EffectContextHandle))
 		{
-			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(SourceAvatar))
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetAvatar))
 			{
 				CombatInterface->GetOnDamageDelegate().AddLambda([&](float DamageAmount)
 				{
