@@ -41,6 +41,7 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 		DamageEffectParams.DeathImpulse = Direction * DeathImpulseMagnitude;
 		DamageEffectParams.KnockbackImpulse = Direction * KnockbackImpulseMagnitude;
 	}
+	//判断是不是范围伤害类型
 	if (bIsRadiaDamage)
 	{
 		DamageEffectParams.bIsRadiaDamage = bIsRadiaDamage;
