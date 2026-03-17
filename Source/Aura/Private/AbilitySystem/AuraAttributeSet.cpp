@@ -244,8 +244,6 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 			{
 				const FVector DeathImpulse = UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
 				CombatInterface->Die(DeathImpulse);
-				
-
 			}
 			SendXPEvent(Props);
 		}
@@ -256,8 +254,7 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 				FGameplayTagContainer TagContainer;
 				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
-			}
-
+			}		
 			const FVector KnockbackImpulse = UAuraAbilitySystemLibrary::GetKnockbackImpulse(Props.EffectContextHandle);
 			if (!KnockbackImpulse.IsNearlyZero(1.f))
 			{

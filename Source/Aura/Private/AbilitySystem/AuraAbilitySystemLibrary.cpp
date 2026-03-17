@@ -492,9 +492,13 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectFromDam
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	FGameplayEffectContextHandle DamageEffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	DamageEffectContextHandle.AddSourceObject(AvatarActor);
-	SetDeathImpulse(DamageEffectContextHandle,DamageEffectParams.DeathImpulse);
-	SetKnockbackImpulse(DamageEffectContextHandle,DamageEffectParams.KnockbackImpulse);
 	
+	SetDeathImpulse(DamageEffectContextHandle,DamageEffectParams.DeathImpulse);
+	//临时设置击退方案
+	if (DamageEffectParams.KnockbackChance>0 && FMath::RandRange(0,100) <= DamageEffectParams.KnockbackChance)
+	{
+		SetKnockbackImpulse(DamageEffectContextHandle,DamageEffectParams.KnockbackImpulse);
+	}
 	SetIsRadialDamage(DamageEffectContextHandle,DamageEffectParams.bIsRadiaDamage);
 	SetRadialDamageInnerRadius(DamageEffectContextHandle,DamageEffectParams.RadiaDamageInnerRadius);
 	SetRadialDamageOuterRadius(DamageEffectContextHandle,DamageEffectParams.RadiaDamageOuterRadius);
