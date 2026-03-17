@@ -230,8 +230,6 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector Death
 	GetMesh()->AddImpulse(DeathImpulse,NAME_None,true);
 	Dissolve();
 	bDead = true;
-	// BurnDebuffNiagaraComponent->Deactivate();
-	// StunDebuffNiagaraComponent->Deactivate();
 	OnDeath.Broadcast(this);
 }
 void AAuraCharacterBase::Dissolve()

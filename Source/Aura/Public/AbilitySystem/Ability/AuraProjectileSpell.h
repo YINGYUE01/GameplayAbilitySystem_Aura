@@ -13,8 +13,9 @@ class AAuraProjectile;
 UCLASS()
 class AURA_API UAuraProjectileSpell : public UAuraDamageGameplayAbility
 {
-	GENERATED_BODY()
+
 public:
+	GENERATED_BODY()
 	/*  可创建子类FireBoltProjectile再重写 */
 	virtual FString GetDescription(int32 Level) override;
 	virtual FString GetNextLevelDescription(int32 Level) override;

@@ -52,7 +52,6 @@ void AAuraProjectile::OnHit()
 		AudioComponent->Stop();
 		AudioComponent->DestroyComponent();
 	}
-		
 	bHit=true;
 }
 
@@ -85,20 +84,23 @@ void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, A
 			}
 			DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
 			UAuraAbilitySystemLibrary::ApplyDamageEffectFromDamageEffectParams(DamageEffectParams);
-			
 		}
 		Destroy();
 	}
 	else bHit = true;
-	
 	Destroy();
 }
 
 void AAuraProjectile::Destroyed()
 {
-	if (!bHit && !HasAuthority())
+	if (!bHit && HasAuthority())
 	{
 		OnHit();
+	}
+	if (AudioComponent)
+	{
+		AudioComponent->Stop();
+		AudioComponent->DestroyComponent();
 	}
 	Super::Destroyed();
 }

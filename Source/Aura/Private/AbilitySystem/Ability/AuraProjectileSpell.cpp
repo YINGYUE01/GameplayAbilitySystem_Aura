@@ -2,14 +2,13 @@
 
 
 #include "AbilitySystem/Ability/AuraProjectileSpell.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Actor/AuraProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Interaction/CombatInterface.h"
-#include "Kismet/KismetSystemLibrary.h"
+
 
 
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -23,7 +22,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 FString UAuraProjectileSpell::GetDescription(int32 Level)
 {
 	
-	const int32 ScaleDamage =Damage.GetValueAtLevel(Level);
+	const float ScaleDamage =Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs<float>(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 	if (Level == 1)
@@ -35,7 +34,7 @@ FString UAuraProjectileSpell::GetDescription(int32 Level)
 			"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 			"<Default>Launches a bolt of fire,"
 			"exploding on impact and dealing: </>"
-			"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,ScaleDamage);
+			"<Damage>%.1f</><Default> fire damage</>"),Level,ManaCost,Cooldown,ScaleDamage);
 	}
 	else
 	{
@@ -46,13 +45,13 @@ FString UAuraProjectileSpell::GetDescription(int32 Level)
 		"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 		"<Default>Launches %d bolt of fire,"
 		"exploding on impact and dealing: </>"
-		"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolts),ScaleDamage);
+		"<Damage>%.1f</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolts),ScaleDamage);
 	}
 }
 
 FString UAuraProjectileSpell::GetNextLevelDescription(int32 Level)
 {
-	const int32 ScaleDamage =Damage.GetValueAtLevel(Level);
+	const float ScaleDamage =Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs<float>(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 	return FString::Printf(TEXT(
@@ -62,7 +61,7 @@ FString UAuraProjectileSpell::GetNextLevelDescription(int32 Level)
 	"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 	"<Default>Launches %d bolt of fire,"
 	"exploding on impact and dealing: </>"
-	"<Damage>%d</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolts),ScaleDamage);
+	"<Damage>%.1f</><Default> fire damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumFireBolts),ScaleDamage);
 }
 
 void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation,const FGameplayTag& SocketTag,bool ShouldPitchOverride,float PitchOverride)

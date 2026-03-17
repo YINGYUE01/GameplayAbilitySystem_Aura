@@ -7,6 +7,50 @@
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+FString UAuraBeamSpell::GetDescription(int32 Level)
+{
+	const float ScaleDamage =Damage.GetValueAtLevel(Level);
+	const float ManaCost = FMath::Abs<float>(GetManaCost(Level));
+	const float Cooldown = GetCooldown(Level);
+	if (Level == 1)
+	{
+		return FString::Printf(TEXT(
+			"<Title>SHOCK</>\n"
+			"<Small>Level:</><Level>%d</>\n"
+			"<Small>ManaCost:</><ManaCost>%.1f</>\n"
+			"<Small>Cooldown:</><Cooldown>%.1f</>\n"
+			"<Default>Cast one chain lightning,"
+			"exploding on impact and dealing: </>"
+			"<Damage>%.1f</><Default> Lighting damage Per Second</>"),Level,ManaCost,Cooldown,ScaleDamage);
+	}
+	else
+	{
+		return FString::Printf(TEXT(
+		"<Title>SHOCK</>\n"
+		"<Small>Level:</><Level>%d</>\n"
+		"<Small>ManaCost:</><ManaCost>%.1f</>\n"
+		"<Small>Cooldown:</><Cooldown>%.1f</>\n"
+		"<Default>Cast one chain lightning,Arc to %d Additional Targets"
+		"exploding on impact and dealing: </>"
+		"<Damage>%.1f</><Default> Lighting Damage Per Second</>"),Level,ManaCost,Cooldown,FMath::Min(Level,MaxNumShockingTargets),ScaleDamage);
+	}
+}
+
+FString UAuraBeamSpell::GetNextLevelDescription(int32 Level)
+{
+	const float ScaleDamage =Damage.GetValueAtLevel(Level);
+	const float ManaCost = FMath::Abs<float>(GetManaCost(Level));
+	const float Cooldown = GetCooldown(Level);
+	return FString::Printf(TEXT(
+	"<Title>NEXT LEVEL</>\n"
+	"<Small>Level:</><Level>%d</>\n"
+	"<Small>ManaCost:</><ManaCost>%.1f</>\n"
+	"<Small>Cooldown:</><Cooldown>%.1f</>\n"
+	"<Default>Cast one chain lightning,Arc to %d Additional Targets"
+	"exploding on impact and dealing: </>"
+	"<Damage>%.1f</><Default> Lighting Damage Per Second</>"),Level,ManaCost,Cooldown,FMath::Min(Level,MaxNumShockingTargets),ScaleDamage);
+}
+
 void UAuraBeamSpell::StoreMouseDataInfo(const FHitResult& Hit)
 {
 	if (Hit.bBlockingHit)
