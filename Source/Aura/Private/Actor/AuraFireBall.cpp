@@ -6,6 +6,7 @@
 void AAuraFireBall::BeginPlay()
 {
 	Super::BeginPlay();
+	StatOutgoingTimeline();
 }
 
 void AAuraFireBall::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, AActor* OtherActor,
