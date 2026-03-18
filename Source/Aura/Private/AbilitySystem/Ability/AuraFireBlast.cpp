@@ -33,3 +33,8 @@ FString UAuraFireBlast::GetNextLevelDescription(int32 Level)
 	"exploding on impact and dealing: </>"
 	"<Damage>%.1f</><Default> fire damage</>"),Level,ManaCost,Cooldown,NumFireBalls,ScaleDamage);
 }
+
+TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBall()
+{
+	return TArray<AAuraFireBall*>();
+}

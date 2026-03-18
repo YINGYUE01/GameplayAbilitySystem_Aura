@@ -93,7 +93,7 @@ void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, A
 
 void AAuraProjectile::Destroyed()
 {
-	if (!bHit && HasAuthority())
+	if (!bHit && !HasAuthority())
 	{
 		OnHit();
 	}
