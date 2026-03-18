@@ -28,7 +28,7 @@ FString UArcaneShardsAbility::GetDescription(int32 Level)
 		"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 		"<Default>Summon %d spike traps,"
 		"exploding on impact and dealing: </>"
-		"<Damage>%.1f</><Default> Arcane damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumPoints),ScaleDamage);
+		"<Damage>%.1f</><Default> Arcane damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,MaxNumPoints),ScaleDamage);
 	}
 }
 
@@ -44,5 +44,5 @@ FString UArcaneShardsAbility::GetNextLevelDescription(int32 Level)
 	"<Small>Cooldown:</><Cooldown>%.1f</>\n"
 	"<Default>Summon %d spike traps,"
 	"exploding on impact and dealing: </>"
-	"<Damage>%.1f</><Default> Arcane damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,NumPoints),ScaleDamage);
+	"<Damage>%.1f</><Default> Arcane damage</>"),Level,ManaCost,Cooldown,FMath::Min(Level,MaxNumPoints),ScaleDamage);
 }
