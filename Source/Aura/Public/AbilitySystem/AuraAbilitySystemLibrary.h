@@ -122,6 +122,19 @@ public:
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static TArray<FVector> EvenlySpacedVectors(const FVector& Forward,const FVector& Axis,int32 NumProjectiles,float Spread);
 
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffectParams")
+	static void SetIsRadialDamageEffectParams(UPARAM(ref)FDamageEffectParams& DamageEffectParams,const bool bRadialDamage,const float InnerRadial,const float OuterRadial,FVector Origin);
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffectParams")
+	static void SetKncokbackDirection(UPARAM(ref)FDamageEffectParams& DamageEffectParams,FVector Direction,float Magnitude = 0.f,float OverridePitch = 45.f);
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffectParams")
+	static void SetDeathDirection(UPARAM(ref)FDamageEffectParams& DamageEffectParams,FVector Direction,float Magnitude = 0.f,float OverridePitch = 45.f);
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffectParams")
+	static void SetTargetASC(UPARAM(ref)FDamageEffectParams& DamageEffectParams,UAbilitySystemComponent* InASC);
+	
 	/*
 	 * More Game
 	 */

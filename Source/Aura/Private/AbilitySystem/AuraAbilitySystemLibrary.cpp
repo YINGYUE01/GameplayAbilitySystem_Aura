@@ -17,10 +17,11 @@
 #include "UI/HUD/AuraHUD.h"
 #include "Character/AuraEnemy.h"
 #include "Interaction/CombatInterface.h"
+#include "UObject/GarbageCollectionSchema.h"
 
 
 bool UAuraAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject,
-	FWidgetControllerParams& OutWCParams, AAuraHUD*& AuraHUD)
+                                                           FWidgetControllerParams& OutWCParams, AAuraHUD*& AuraHUD)
 {
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject,0))
 	{
@@ -432,6 +433,55 @@ TArray<FVector> UAuraAbilitySystemLibrary::EvenlySpacedVectors(const FVector& Fo
 	}
 
 	return Vectors;
+}
+
+void UAuraAbilitySystemLibrary::SetIsRadialDamageEffectParams(FDamageEffectParams& DamageEffectParams,
+	const bool bRadialDamage, const float InnerRadial, const float OuterRadial, FVector Origin)
+{
+	DamageEffectParams.bIsRadiaDamage = bRadialDamage;
+	DamageEffectParams.RadiaDamageInnerRadius = InnerRadial;
+	DamageEffectParams.RadiaDamageOuterRadius = OuterRadial;
+	DamageEffectParams.RadiaDamageOrigin = Origin;
+}
+
+void UAuraAbilitySystemLibrary::SetKncokbackDirection(FDamageEffectParams& DamageEffectParams, FVector Direction,float Magnitude,
+	float OverridePitch)
+{
+	FRotator Rotator = Direction.Rotation();
+	Rotator.Pitch = OverridePitch;
+	Direction = Rotator.Vector();
+	Direction.Normalize();
+	if (Magnitude==0.f)
+	{
+		DamageEffectParams.KnockbackImpulse = Direction * DamageEffectParams.KnockbackImpulseMagnitude;
+	}
+	else
+	{
+		DamageEffectParams.KnockbackImpulse = Direction * Magnitude;
+	}
+	
+}
+
+void UAuraAbilitySystemLibrary::SetDeathDirection(FDamageEffectParams& DamageEffectParams, FVector Direction,float Magnitude,
+	float OverridePitch)
+{
+	FRotator Rotator = Direction.Rotation();
+	Rotator.Pitch = OverridePitch;
+	Direction = Rotator.Vector();
+	Direction.Normalize();
+	if (Magnitude==0.f)
+	{
+		DamageEffectParams.DeathImpulse = Direction * DamageEffectParams.KnockbackImpulseMagnitude;
+	}
+	else
+	{
+		DamageEffectParams.DeathImpulse = Direction * Magnitude;
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetTargetASC(FDamageEffectParams& DamageEffectParams, UAbilitySystemComponent* InASC)
+{
+	DamageEffectParams.TargetAbilitySystemComponent = InASC;
 }
 
 void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject,
