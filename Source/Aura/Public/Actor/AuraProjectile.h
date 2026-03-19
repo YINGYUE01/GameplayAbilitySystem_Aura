@@ -15,20 +15,16 @@ UCLASS()
 class AURA_API AAuraProjectile : public AActor
 {
 	GENERATED_BODY()
-	
 public:	
 	AAuraProjectile();
 	UFUNCTION(BlueprintCallable)
 	void OnHit();
+	bool IsValidOverlap(AActor* OtherActor);
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 	
 	UFUNCTION()
 	virtual void OnSphereOverlay(UPrimitiveComponent* OverlapedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult );
-
-
-	bool bHit = false;
-
 	virtual void Destroyed() override;
 
 	UPROPERTY(EditAnywhere)
@@ -41,6 +37,8 @@ public:
 	TObjectPtr<USceneComponent> SceneComponent;
 protected:
 	virtual void BeginPlay() override;
+
+	bool bHit = false;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TObjectPtr<USphereComponent> Sphere;
@@ -56,5 +54,4 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr< UAudioComponent> AudioComponent;
-	
 };
