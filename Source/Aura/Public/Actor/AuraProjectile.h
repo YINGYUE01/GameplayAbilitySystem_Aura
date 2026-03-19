@@ -18,7 +18,7 @@ class AURA_API AAuraProjectile : public AActor
 public:	
 	AAuraProjectile();
 	UFUNCTION(BlueprintCallable)
-	void OnHit();
+	virtual void OnHit();
 	bool IsValidOverlap(AActor* OtherActor);
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;

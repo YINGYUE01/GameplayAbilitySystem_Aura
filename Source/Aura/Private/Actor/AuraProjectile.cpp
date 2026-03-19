@@ -41,8 +41,6 @@ void AAuraProjectile::BeginPlay()
 	AudioComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound,GetRootComponent());
 }
 
-
-
 void AAuraProjectile::OnHit()
 {
 	UGameplayStatics::PlaySoundAtLocation(this,ImpactSound,GetActorLocation());
@@ -68,6 +66,7 @@ void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, A
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!IsValidOverlap(OtherActor)) return;
+	if (!bHit) OnHit();
 	if (HasAuthority())
 	{
 		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
@@ -89,7 +88,6 @@ void AAuraProjectile::OnSphereOverlay(UPrimitiveComponent* OverlapedComponent, A
 		Destroy();
 	}
 	else bHit = true;
-	Destroy();
 }
 
 void AAuraProjectile::Destroyed()

@@ -40,6 +40,11 @@ FString UAuraFireBlast::GetNextLevelDescription(int32 Level)
 TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBall()
 {
 	TArray<AAuraFireBall*> FireBalls;
+	//修复在Client重复执行，ReturnActor使用网络复制同步
+	if (!GetAvatarActorFromActorInfo()->HasAuthority())
+	{
+		return FireBalls;
+	}
 	const FVector ActorLocation = GetAvatarActorFromActorInfo()->GetActorLocation();
 	const FVector ActorForward = GetAvatarActorFromActorInfo()->GetActorForwardVector();
 	TArray<FRotator> Rotators = UAuraAbilitySystemLibrary::EvenlySpacedRotators(ActorForward,FVector::UpVector,NumFireBalls,360);

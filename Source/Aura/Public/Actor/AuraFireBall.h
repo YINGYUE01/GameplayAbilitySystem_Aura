@@ -14,10 +14,12 @@ class AURA_API AAuraFireBall : public AAuraProjectile
 {
 	GENERATED_BODY()
 public:
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	UFUNCTION(BlueprintImplementableEvent)
 	void StatOutgoingTimeline();
+	virtual void OnHit() override;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly,Replicated)
 	TObjectPtr<AActor> ReturnToActor;
 	UPROPERTY(BlueprintReadWrite)
 	FDamageEffectParams ExplodeDamageEffectParams;

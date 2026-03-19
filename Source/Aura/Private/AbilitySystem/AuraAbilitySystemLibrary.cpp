@@ -538,6 +538,7 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondAc
 
 FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectFromDamageEffectParams(FDamageEffectParams DamageEffectParams)
 {
+	if (!IsValid(DamageEffectParams.SourceAbilitySystemComponent)) return FGameplayEffectContextHandle();
 	const AActor* AvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	FGameplayEffectContextHandle DamageEffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
