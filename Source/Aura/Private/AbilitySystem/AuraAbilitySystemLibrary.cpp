@@ -561,7 +561,7 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectFromDam
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,GameplayTags.Debuff_Chance,DamageEffectParams.DebuffChance);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,GameplayTags.Debuff_Frequency,DamageEffectParams.DebuffFrequency);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,GameplayTags.Debuff_Duration,DamageEffectParams.DebuffDuration);
-	if (DamageEffectParams.TargetAbilitySystemComponent)
+	if (IsValid(DamageEffectParams.TargetAbilitySystemComponent))
 		DamageEffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data);
 	return DamageEffectContextHandle;
 }
