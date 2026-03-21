@@ -6,6 +6,7 @@
 #include "MVVMViewModelBase.h"
 #include "MVVM_LoadScreen.generated.h"
 
+class UMVVM_LoadSlot;
 /**
  * 
  */
@@ -13,5 +14,29 @@ UCLASS()
 class AURA_API UMVVM_LoadScreen : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
+public:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UMVVM_LoadSlot> LoadSlotClass;
+
+	void InitializedLoadSLot();
+
+	UFUNCTION(BlueprintPure)
+	UMVVM_LoadSlot* GetLoadSlotByIndex(int32 index);
+
+	void SetSlotNums(int32 nums);
+	int32 GetSlotNums() const { return SlotNums;};
 	
+private:
+	
+	UPROPERTY()
+	TMap<int32,UMVVM_LoadSlot*> LoadSlots;
+	UPROPERTY()
+	TObjectPtr<UMVVM_LoadSlot> LoadSlot_0;
+	UPROPERTY()
+	TObjectPtr<UMVVM_LoadSlot> LoadSlot_1;
+	UPROPERTY()
+	TObjectPtr<UMVVM_LoadSlot> LoadSlot_2;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,FieldNotify,Setter,Getter,meta=(AllowPrivateAccess = "true"))
+	int32 SlotNums;
 };
