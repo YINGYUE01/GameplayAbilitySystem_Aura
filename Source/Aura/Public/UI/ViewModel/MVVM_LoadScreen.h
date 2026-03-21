@@ -24,7 +24,17 @@ public:
 	UMVVM_LoadSlot* GetLoadSlotByIndex(int32 index);
 
 	void SetSlotNums(int32 nums);
-	int32 GetSlotNums() const { return SlotNums;};
+	int32 GetSlotNums() const { return SlotNums;}
+
+	UFUNCTION(BlueprintCallable)
+	void NewGameButtonPressed(int32 Slot);
+
+	UFUNCTION(BlueprintCallable)
+	void SelectSLotButtonPressed(int32 Slot);
+	
+	UFUNCTION(BlueprintCallable)
+	void NewSlotButtonPressed(int32 Slot,const FString& EnterName);
+	
 	
 private:
 	

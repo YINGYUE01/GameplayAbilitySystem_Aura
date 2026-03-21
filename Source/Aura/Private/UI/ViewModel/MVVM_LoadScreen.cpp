@@ -27,3 +27,16 @@ void UMVVM_LoadScreen::SetSlotNums(int32 nums)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(SlotNums,nums);
 }
+
+void UMVVM_LoadScreen::NewGameButtonPressed(int32 Slot)
+{
+	LoadSlots[Slot]->SetWidgetSwitcherIndex.Broadcast(1);
+}
+
+void UMVVM_LoadScreen::SelectSLotButtonPressed(int32 Slot)
+{
+}
+
+void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnterName)
+{
+}
