@@ -34,7 +34,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void NewSlotButtonPressed(int32 Slot,const FString& EnterName);
-	
+
 	
 private:
 	
