@@ -44,6 +44,7 @@ void UMVVM_LoadScreen::SelectSLotButtonPressed(int32 Slot)
 		if (LoadSlot.Key == Slot)
 		{
 			LoadSlot.Value->EnableSelectSlotButton.Broadcast(false);
+			SelectSlot = Slot;
 		}
 		else
 		{
@@ -59,6 +60,18 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnterName
 	LoadSlots[Slot]->SlotStatus = Taken;
 	GameModeBase->SaveSlotData(LoadSlots[Slot],Slot);
 	LoadSlots[Slot]->InitializeSlot();
+}
+
+void UMVVM_LoadScreen::DeleteButtonPressed()
+{
+	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (AuraGameModeBase)
+	{
+		AuraGameModeBase->DeleteSlot(LoadSlots[SelectSlot]->LoadSlotName,SelectSlot);
+		LoadSlots[SelectSlot]->SlotStatus = Vacant;
+		LoadSlots[SelectSlot]->InitializeSlot();
+		LoadSlots[SelectSlot]->EnableSelectSlotButton.Broadcast(true);
+	}
 }
 
 void UMVVM_LoadScreen::LoadData()
