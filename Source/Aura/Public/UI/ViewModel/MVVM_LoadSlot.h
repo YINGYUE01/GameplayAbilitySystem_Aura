@@ -38,10 +38,19 @@ public:
 	UPROPERTY()
 	FString SlotIndex;
 
-	//FieldNotify
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,FieldNotify,Setter,Getter)
-	FString PlayerName;
 
 	void SetPlayerName(FString Name);
 	FString GetPlayerName() const { return PlayerName;}
+
+	void SetMapName(FString Name);
+	FString GetMapName() const {return MapName;}
+
+private:
+	//FieldNotify
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,FieldNotify,Setter,Getter,meta=(AllowPrivateAccess="true"))
+	FString PlayerName;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,FieldNotify,Setter,Getter,meta=(AllowPrivateAccess="true"))
+	FString MapName;
+
 };
