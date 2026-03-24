@@ -82,6 +82,7 @@ void UMVVM_LoadScreen::LoadData()
 	{
 		ULoadScreenSaveGame* LoadScreenSaveGame = AuraGameMode->GetSaveSlotData(LoadSlot.Value->LoadSlotName,LoadSlot.Key);
 		const FString PlayerName = LoadScreenSaveGame->PlayerName;
+		LoadSlot.Value->SetMapName(LoadScreenSaveGame->MapName);
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->SlotStatus = LoadScreenSaveGame->SaveSlotStatus;
 		LoadSlot.Value->InitializeSlot();
