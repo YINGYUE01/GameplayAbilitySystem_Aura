@@ -12,3 +12,8 @@ void UMVVM_LoadSlot::InitializeSlot()
 {
 	SetWidgetSwitcherIndex.Broadcast(2);
 }
+
+void UMVVM_LoadSlot::SetPlayerName(FString Name)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(PlayerName,Name);
+}
