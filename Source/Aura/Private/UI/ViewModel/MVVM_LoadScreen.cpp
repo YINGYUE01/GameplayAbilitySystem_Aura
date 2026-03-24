@@ -38,6 +38,7 @@ void UMVVM_LoadScreen::NewGameButtonPressed(int32 Slot)
 
 void UMVVM_LoadScreen::SelectSLotButtonPressed(int32 Slot)
 {
+	SlotSelected.Broadcast();
 	for (TTuple<int32,UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
 		if (LoadSlot.Key == Slot)
