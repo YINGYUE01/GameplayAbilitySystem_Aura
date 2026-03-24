@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "MVVMViewModelBase.h"
 #include "MVVM_LoadSlot.generated.h"
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetWidgetSwitcherIndex,int32,WidgetSwitchIndex);
+enum ESaveSlotStatus : int;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetWidgetSwitcherIndex, int32, WidgetSwitchIndex);
 /**
  * 
  */
@@ -25,7 +26,8 @@ public:
 
 	void InitializeSlot();
 
-
+	UPROPERTY()
+	TEnumAsByte<ESaveSlotStatus> SlotStatus;
 
 	UPROPERTY()
 	FString LoadSlotName;

@@ -4,6 +4,8 @@
 #include "UI/ViewModel/MVVM_LoadScreen.h"
 
 #include "Game/AuraGameModeBase.h"
+#include "Game/LoadScreenSaveGame.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 
 void UMVVM_LoadScreen::InitializedLoadSLot()
@@ -42,6 +44,20 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnterName
 {
 	AAuraGameModeBase* GameModeBase = Cast<AAuraGameModeBase>(GetWorld()->GetAuthGameMode());
 	LoadSlots[Slot]->SetPlayerName(EnterName);
+	LoadSlots[Slot]->SlotStatus = Taken;
 	GameModeBase->SaveSlotData(LoadSlots[Slot],Slot);
 	LoadSlots[Slot]->InitializeSlot();
+}
+
+void UMVVM_LoadScreen::LoadData()
+{
+	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
+	for (TTuple<int32,UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	{
+		ULoadScreenSaveGame* LoadScreenSaveGame = AuraGameMode->GetSaveSlotData(LoadSlot.Value->LoadSlotName,LoadSlot.Key);
+		const FString PlayerName = LoadScreenSaveGame->PlayerName;
+		LoadSlot.Value->SetPlayerName(PlayerName);
+		LoadSlot.Value->SlotStatus = LoadScreenSaveGame->SaveSlotStatus;
+		LoadSlot.Value->InitializeSlot();
+	}
 }
