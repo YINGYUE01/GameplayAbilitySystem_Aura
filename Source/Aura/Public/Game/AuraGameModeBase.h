@@ -35,7 +35,7 @@ public:
 	void TravelMap(UMVVM_LoadSlot* LoadSlot);
 
 	UPROPERTY(EditDefaultsOnly)
-	FString PlayStartName;
+	FName DefaultPlayStartName;
 
 	UPROPERTY(EditDefaultsOnly)
 	FString DefaultMapName;

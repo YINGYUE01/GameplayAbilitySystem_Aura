@@ -36,7 +36,7 @@ public:
 	FString LoadSlotName;
 
 	UPROPERTY()
-	FString SlotIndex;
+	int32 SlotIndex;
 
 
 	void SetPlayerName(FString Name);

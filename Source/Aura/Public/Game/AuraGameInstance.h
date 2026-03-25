@@ -1,0 +1,23 @@
+// Copyright YING
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Engine/GameInstance.h"
+#include "AuraGameInstance.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class AURA_API UAuraGameInstance : public UGameInstance
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+	FString LoadSlotName = FString();
+	UPROPERTY()
+	int32 LoadSlotIndex = 0;
+	UPROPERTY()
+	FName PlayerStatTag = FName();
+};
