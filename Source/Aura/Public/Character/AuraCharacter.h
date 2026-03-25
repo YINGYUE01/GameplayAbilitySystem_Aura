@@ -49,6 +49,7 @@ public:
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
 private:
 	virtual void InitAbilityActorInfo() override;
+	void LoadData();
 
 	UFUNCTION(NetMulticast,Reliable)
 	void MulticastLevelUpParticles();
@@ -60,3 +61,4 @@ private:
 	
 	
 };
+

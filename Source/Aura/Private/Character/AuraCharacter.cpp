@@ -52,11 +52,12 @@ AAuraCharacter::AAuraCharacter()
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	//Sever InitS AbilitySysetemInfo
+	//Sever InitS AbilitySystemInfo
 	/**
 	 * InitAbilityActorInfo() 初始化Character的AbilitySystemComponent、AttributeSet
 	 */
 	InitAbilityActorInfo();
+	LoadData();
 	/*
 	添加角色的基础技能 在基类中已经实现 而基础技能是在基类声明的StartupAbilities
 	AddCharacterAbilities（） 函数会呼叫 ASC->GiveAbility（） 来赋予技能。
@@ -64,6 +65,32 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	由于赋予技能是由ASC完成的，所以这一步是在InitAbilityActorInfo（）执行之后的因为在里面PlayerState将真正搭载的ASC和AS赋予Character
 	*/
 	AddCharacterAbilities();
+}
+
+void AAuraCharacter::LoadData()
+{
+	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (AuraGameModeBase)
+	{
+		ULoadScreenSaveGame* SaveData = AuraGameModeBase->RetrieveInGameSaveData();
+		if (SaveData==nullptr) return;
+		if (AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState()))
+		{
+			AuraPlayerState->SetLevel(SaveData->PlayerLevel);
+			AuraPlayerState->SetXP(SaveData->XP);
+			AuraPlayerState->SetAttributePoints(SaveData->AttributePoints);
+			AuraPlayerState->SetSpellPoints(SaveData->SpellPoints);
+		}
+		if (SaveData->bFirstSave)
+		{
+			InitAbilityActorInfo();
+			AddCharacterAbilities();
+		}
+		else
+		{
+			
+		}
+	}
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -255,6 +282,7 @@ void AAuraCharacter::SaveGameProgress_Implementation(const FName& CheckPointTag)
 			SaveData->AttributePoints = AuraPlayerState->GetAttributePoints();
 			SaveData->SpellPoints = AuraPlayerState->GetSpellPoints();
 		}
+		SaveData->bFirstSave = false;
 		SaveData->Strength = UAuraAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
 		SaveData->Vigor = UAuraAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 		SaveData->Intelligence = UAuraAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
