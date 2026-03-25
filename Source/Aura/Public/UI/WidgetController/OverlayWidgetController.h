@@ -30,6 +30,7 @@ struct FUIWidgetRow:public FTableRowBase
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeSignature, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLevelSignature, float, NewValue,bool,bLevelUp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate,FUIWidgetRow,Row);
 /**
  * 
@@ -61,7 +62,7 @@ public:
 	FOnAttributeSignature OnXPChangedDelegate;
 
 	UPROPERTY(BlueprintAssignable,Category="GAS|Level")
-	FOnPlayStateChangedSignature OnLevelChangedDelegate;
+	FOnLevelSignature OnLevelChangedDelegate;
 	
 	void OnAbilityEquipped(const FGameplayTag& AbilityTag,const FGameplayTag& SlotTag,const FGameplayTag& StatusTag,const FGameplayTag& PreSlotTag);
 protected:

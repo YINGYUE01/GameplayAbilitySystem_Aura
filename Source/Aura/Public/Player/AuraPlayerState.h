@@ -10,6 +10,7 @@ class ULevelUpInfos;
 class UAttributeSet;
 class UAbilitySystemComponent;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged,int32 /*StateValue*/);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnPlayerLevelChanged,int32,bool);
 /**
  * 
  */
@@ -26,7 +27,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<ULevelUpInfos> LevelUpInfo;
 	FOnPlayerStateChanged OnXPChangedDelegate;
-	FOnPlayerStateChanged OnLevelChangedDelegate;
+	FOnPlayerLevelChanged OnLevelChangedDelegate;
 	FOnPlayerStateChanged OnAttributePointsChangedDelegate;
 	FOnPlayerStateChanged OnSpellPointsChangedDelegate;
 	

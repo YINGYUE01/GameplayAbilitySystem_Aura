@@ -9,6 +9,7 @@
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
 #include "NiagaraComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -64,7 +65,6 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	AddCharacterAbilities依赖于Character的AbilitySystemComponent
 	由于赋予技能是由ASC完成的，所以这一步是在InitAbilityActorInfo（）执行之后的因为在里面PlayerState将真正搭载的ASC和AS赋予Character
 	*/
-	AddCharacterAbilities();
 }
 
 void AAuraCharacter::LoadData()
@@ -74,21 +74,20 @@ void AAuraCharacter::LoadData()
 	{
 		ULoadScreenSaveGame* SaveData = AuraGameModeBase->RetrieveInGameSaveData();
 		if (SaveData==nullptr) return;
-		if (AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState()))
-		{
-			AuraPlayerState->SetLevel(SaveData->PlayerLevel);
-			AuraPlayerState->SetXP(SaveData->XP);
-			AuraPlayerState->SetAttributePoints(SaveData->AttributePoints);
-			AuraPlayerState->SetSpellPoints(SaveData->SpellPoints);
-		}
 		if (SaveData->bFirstSave)
 		{
-			InitAbilityActorInfo();
 			AddCharacterAbilities();
 		}
 		else
 		{
-			
+			if (AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(GetPlayerState()))
+			{
+				AuraPlayerState->SetLevel(SaveData->PlayerLevel);
+				AuraPlayerState->SetXP(SaveData->XP);
+				AuraPlayerState->SetAttributePoints(SaveData->AttributePoints);
+				AuraPlayerState->SetSpellPoints(SaveData->SpellPoints);
+			}
+			UAuraAbilitySystemLibrary::InitializeDefaultAttributeWithSaveGame(this,AbilitySystemComponent,SaveData);
 		}
 	}
 }
