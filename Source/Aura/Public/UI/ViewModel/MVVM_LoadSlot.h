@@ -37,7 +37,9 @@ public:
 
 	UPROPERTY()
 	int32 SlotIndex;
-
+	
+	UPROPERTY()
+	FName PlayerStartTag;
 
 	void SetPlayerName(FString Name);
 	FString GetPlayerName() const { return PlayerName;}

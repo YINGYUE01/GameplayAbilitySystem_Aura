@@ -24,12 +24,19 @@ class AURA_API ULoadScreenSaveGame : public USaveGame
 public:
 	UPROPERTY()
 	FString SlotName = FString();
+	
 	UPROPERTY()
 	int32 SlotIndex = 0;
+	
 	UPROPERTY()
 	FString PlayerName = FString("Default Name");
+	
 	UPROPERTY()
 	FString MapName = FString("Default Map Name");
+
+	UPROPERTY()
+	FName PlayerStartTag;
+	
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
 };
