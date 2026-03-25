@@ -4,6 +4,7 @@
 #include "Game/AuraGameModeBase.h"
 
 #include "Game/LoadScreenSaveGame.h"
+#include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "Tools/UEdMode.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
@@ -54,4 +55,31 @@ void AAuraGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	Maps.Add(DefaultMapName,DefaultMap);
+}
+
+AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
+{
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(),APlayerStart::StaticClass(),Actors);
+	if (Actors.Num()>0)
+	{
+		AActor* SelectedActor = Actors[0];
+		for (auto Actor : Actors)
+		{
+			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
+			{
+				if (PlayerStart->PlayerStartTag == FName("The Tag"))
+				{
+					SelectedActor = PlayerStart;
+					break;
+				}
+			}
+		}
+		return SelectedActor;
+	}
+	else
+	{
+		return nullptr;
+	}
+
 }

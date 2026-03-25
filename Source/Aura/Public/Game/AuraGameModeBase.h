@@ -35,6 +35,9 @@ public:
 	void TravelMap(UMVVM_LoadSlot* LoadSlot);
 
 	UPROPERTY(EditDefaultsOnly)
+	FString PlayStartName;
+
+	UPROPERTY(EditDefaultsOnly)
 	FString DefaultMapName;
 	UPROPERTY(EditDefaultsOnly)
 	TSoftObjectPtr<UWorld> DefaultMap;
@@ -42,4 +45,5 @@ public:
 	TMap<FString,TSoftObjectPtr<UWorld>> Maps;
 protected:
 	virtual void BeginPlay() override;
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 };
