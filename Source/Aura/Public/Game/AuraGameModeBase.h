@@ -28,6 +28,8 @@ public:
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
 
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot,int32 SlotIndex);
+	ULoadScreenSaveGame* RetrieveInGameSaveData();
+	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
 
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName,int32 SlotIndex) const;
 	void DeleteSlot(const FString& SlotName,int32 SlotIndex);

@@ -4,14 +4,18 @@
 #include "Character/AuraCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTags.h"
+#include "GameplayCueManager.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Game/AuraGameModeBase.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
@@ -230,6 +234,18 @@ void AAuraCharacter::SetMagicCircleMaterial_Implementation(UMaterialInterface* M
 	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
 	{
 		AuraPlayerController->SetMagicCircleMaterial(Material);
+	}
+}
+
+void AAuraCharacter::SaveGameProgress_Implementation(const FName& CheckPointTag)
+{
+	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (AuraGameModeBase)
+	{
+		ULoadScreenSaveGame* SaveData = AuraGameModeBase->RetrieveInGameSaveData();
+		if (SaveData==nullptr) return;
+		SaveData->PlayerStartTag = CheckPointTag;
+		AuraGameModeBase->SaveInGameProgressData(SaveData);
 	}
 }
 

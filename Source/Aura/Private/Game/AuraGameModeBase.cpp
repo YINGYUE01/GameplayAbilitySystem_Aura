@@ -25,6 +25,25 @@ void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->LoadSlotName, SlotIndex);
 }
 
+ULoadScreenSaveGame*  AAuraGameModeBase::RetrieveInGameSaveData()
+{
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+	const FString LoadSlotName = AuraGameInstance->LoadSlotName;
+	const int32 LoadSlotIndex = AuraGameInstance->LoadSlotIndex;
+	return GetSaveSlotData(LoadSlotName,LoadSlotIndex);
+
+}
+
+void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
+{
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+	const FString LoadSlotName = AuraGameInstance->LoadSlotName;
+	const int32 LoadSlotIndex = AuraGameInstance->LoadSlotIndex;
+	AuraGameInstance->PlayerStatTag = SaveObject->PlayerStartTag;
+	UGameplayStatics::SaveGameToSlot(SaveObject,LoadSlotName,LoadSlotIndex);
+	
+}
+
 ULoadScreenSaveGame* AAuraGameModeBase::GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const
 {
 	USaveGame* SaveGameObject = nullptr;
