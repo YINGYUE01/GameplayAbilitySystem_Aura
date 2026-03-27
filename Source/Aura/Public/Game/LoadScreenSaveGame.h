@@ -16,6 +16,33 @@ enum ESaveSlotStatus
 	EnterName,
 	Taken
 };
+USTRUCT(BlueprintType)
+struct FSaveActor
+{
+	GENERATED_BODY()
+	UPROPERTY()
+	FName ActorName = FName();
+	UPROPERTY()
+	FTransform Transform = FTransform();
+
+	UPROPERTY()
+	TArray<uint8> Bytes; 
+};
+inline bool operator==(const FSaveActor& Left,const FSaveActor& Right)
+{
+	return Left.ActorName == Right.ActorName;
+}
+
+USTRUCT()
+struct FSaveMap
+{
+	GENERATED_BODY()
+	UPROPERTY()
+	FString MapName = FString();
+	UPROPERTY()
+	TArray<FSaveActor> Actors;
+};
+
 
 USTRUCT(BlueprintType)
 struct FSaveAbility
@@ -95,4 +122,11 @@ public:
 	/* Abilities */
 	UPROPERTY()
 	TArray<FSaveAbility> SaveAbilities;
+
+	/* Map And MapActors */
+	UPROPERTY()
+	TArray<FSaveMap> SaveMaps;
+
+	FSaveMap GetSaveMapWithMapName(const FString& InMapName);
+	bool HarMap(const FString& InMapName);
 };

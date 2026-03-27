@@ -49,7 +49,6 @@ void UAuraAbilitySystemComponent::AddCharacterAbilitiesFromSaveGame(ULoadScreenS
 			{
 				GiveAbility(AbilitySpec);
 				TryActivateAbility(AbilitySpec.Handle);
-				GiveAbilityAndActivateOnce()
 			}
 			else
 			{
