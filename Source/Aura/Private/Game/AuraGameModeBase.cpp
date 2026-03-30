@@ -88,6 +88,37 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World)
 	}
 }
 
+void AAuraGameModeBase::LoadWorldState(UWorld* World)
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+	UAuraGameInstance* AuraGI = Cast<UAuraGameInstance>(GetGameInstance());
+	if (UGameplayStatics::DoesSaveGameExist(AuraGI->LoadSlotName,AuraGI->LoadSlotIndex))
+	{
+		ULoadScreenSaveGame* SaveGame = GetSaveSlotData(AuraGI->LoadSlotName,AuraGI->LoadSlotIndex);
+		if (SaveGame==nullptr) return;
+		for (FActorIterator It(World);It;++It)
+		{
+			AActor* Actor = *It;
+			if (!Actor->Implements<USaveInterface>()) continue;
+			for (FSaveActor SaveActor : SaveGame->GetSaveMapWithMapName(WorldName).Actors)
+			{
+				if (SaveActor.ActorName == Actor->GetFName())
+				{
+					if (ISaveInterface::Execute_ShouldLoadTransform(Actor))
+						Actor->SetActorTransform(SaveActor.Transform);
+					FMemoryReader MemoryReader(SaveActor.Bytes);
+					FObjectAndNameAsStringProxyArchive Archive(MemoryReader,true);
+					Archive.GetArchiveState().ArIsSaveGame = true;
+					Actor->Serialize(Archive);
+					ISaveInterface::Execute_LoadActor(Actor);
+				}
+			}
+		}
+	}
+
+}
+
 ULoadScreenSaveGame* AAuraGameModeBase::GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const
 {
 	USaveGame* SaveGameObject = nullptr;

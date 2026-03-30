@@ -1,6 +1,7 @@
 // Copyright YING
 #include "CheckPoint/CheckPoint.h"
 #include "Components/SphereComponent.h"
+#include "Game/AuraGameModeBase.h"
 #include "Interaction/PlayerInterface.h"
 #include "Interfaces/IPluginManager.h"
 
@@ -19,6 +20,14 @@ ACheckPoint::ACheckPoint(const FObjectInitializer& ObjectInitializer)
 	Sphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn,ECR_Overlap);
 }
 
+void ACheckPoint::LoadActor_Implementation()
+{
+	if (bReached)
+	{
+		HandleGlowEffects();
+	}
+}
+
 void ACheckPoint::BeginPlay()
 {
 	Super::BeginPlay();
@@ -30,6 +39,12 @@ void ACheckPoint::OnSphereOverlay(UPrimitiveComponent* OverlappedComponent, AAct
 {
 	if (OtherActor->Implements<UPlayerInterface>())
 	{
+		bReached = true;
+		if (AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(GetWorld()->GetAuthGameMode()))
+		{
+			AuraGM->SaveWorldState(GetWorld());
+		}
+		
 		HandleGlowEffects();
 		IPlayerInterface::Execute_SaveGameProgress(OtherActor,PlayerStartTag);
 	}

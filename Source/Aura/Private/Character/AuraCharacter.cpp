@@ -2,6 +2,8 @@
 
 
 #include "Character/AuraCharacter.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTags.h"
 #include "GameplayCueManager.h"
@@ -13,6 +15,7 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
+#include "Commandlets/WorldPartitionCommandletHelpers.h"
 #include "Components/CapsuleComponent.h"
 #include "Game/AuraGameModeBase.h"
 #include "Game/LoadScreenSaveGame.h"
@@ -60,6 +63,10 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	 */
 	InitAbilityActorInfo();
 	LoadData();
+	if (AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		AuraGM->LoadWorldState(GetWorld());
+	}
 	/*
 	添加角色的基础技能 在基类中已经实现 而基础技能是在基类声明的StartupAbilities
 	AddCharacterAbilities（） 函数会呼叫 ASC->GiveAbility（） 来赋予技能。
