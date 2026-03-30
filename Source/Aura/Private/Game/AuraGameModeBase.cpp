@@ -3,11 +3,14 @@
 
 #include "Game/AuraGameModeBase.h"
 
+#include "EngineUtils.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interaction/SaveInterface.h"
 #include "Kismet/GameplayStatics.h"
-#include "Tools/UEdMode.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
+#include "Serialization/Archive.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 
 void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
@@ -43,6 +46,46 @@ void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 	AuraGameInstance->PlayerStatTag = SaveObject->PlayerStartTag;
 	UGameplayStatics::SaveGameToSlot(SaveObject,LoadSlotName,LoadSlotIndex);
 	
+}
+
+void AAuraGameModeBase::SaveWorldState(UWorld* World)
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+	UAuraGameInstance* AuraGI = Cast<UAuraGameInstance>(GetGameInstance());
+	check(AuraGI);
+	if (ULoadScreenSaveGame* SaveGame = GetSaveSlotData(AuraGI->LoadSlotName,AuraGI->LoadSlotIndex))
+	{
+		if (!SaveGame->HarMap(WorldName))
+		{
+			FSaveMap SaveMap;
+			SaveMap.MapName = WorldName;
+			SaveGame->SaveMaps.Add(SaveMap);
+		}
+		FSaveMap SaveMap = SaveGame->GetSaveMapWithMapName(WorldName);
+		SaveMap.Actors.Empty();
+		for (FActorIterator It(World); It ; ++It)
+		{
+			AActor* Actor = *It;
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
+			FSaveActor SaveActor;
+			SaveActor.ActorName = Actor->GetFName();
+			SaveActor.Transform = Actor->GetTransform();
+			FMemoryWriter MemoryWriter(SaveActor.Bytes);
+			FObjectAndNameAsStringProxyArchive Archive(MemoryWriter,true);
+			Archive.GetArchiveState().ArIsSaveGame = true;
+			Actor->Serialize(Archive);
+			SaveMap.Actors.Add(SaveActor);
+		}
+		for (FSaveMap& MapToReplace : SaveGame->SaveMaps)
+		{
+			if (MapToReplace.MapName==WorldName)
+			{
+				MapToReplace = SaveMap;
+			}
+		}
+		UGameplayStatics::SaveGameToSlot(SaveGame, AuraGI->LoadSlotName, AuraGI->LoadSlotIndex);
+	}
 }
 
 ULoadScreenSaveGame* AAuraGameModeBase::GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const
