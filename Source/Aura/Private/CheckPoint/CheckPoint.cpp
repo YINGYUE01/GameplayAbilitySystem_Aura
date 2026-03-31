@@ -27,6 +27,13 @@ ACheckPoint::ACheckPoint(const FObjectInitializer& ObjectInitializer)
 	Sphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn,ECR_Overlap);
 }
 
+void ACheckPoint::BeginPlay()
+{
+	Super::BeginPlay();
+	if (bBindOverlapCallback)
+		Sphere->OnComponentBeginOverlap.AddDynamic(this,&ACheckPoint::OnSphereOverlay);
+}
+
 void ACheckPoint::SetMoveToLocation_Implementation(FVector& OutLocation)
 {
 	OutLocation = SceneComponent->GetComponentLocation();
@@ -50,11 +57,6 @@ void ACheckPoint::LoadActor_Implementation()
 	}
 }
 
-void ACheckPoint::BeginPlay()
-{
-	Super::BeginPlay();
-	Sphere->OnComponentBeginOverlap.AddDynamic(this,&ACheckPoint::OnSphereOverlay);
-}
 
 void ACheckPoint::OnSphereOverlay(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

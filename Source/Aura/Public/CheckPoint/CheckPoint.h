@@ -18,16 +18,19 @@ class AURA_API ACheckPoint : public APlayerStart , public ISaveInterface,public 
 	GENERATED_BODY()
 public:
 	ACheckPoint(const FObjectInitializer& ObjectInitializer);
-	UPROPERTY(BlueprintReadOnly,SaveGame)
+	UPROPERTY(BlueprintReadWrite,SaveGame)
 	bool bReached = false;
+
+	UPROPERTY(EditDefaultsOnly)
+	bool bBindOverlapCallback = true;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TObjectPtr<USceneComponent> SceneComponent;
 
 	/* Highlight Interface */
-	void SetMoveToLocation_Implementation(FVector& OutLocation) override;
-	void HighlightActor_Implementation() override;
-	void UnHighlightActor_Implementation() override;
+	virtual void SetMoveToLocation_Implementation(FVector& OutLocation) override;
+	virtual void HighlightActor_Implementation() override;
+	virtual void UnHighlightActor_Implementation() override;
 
 	/*SaveInterface*/
 	virtual bool ShouldLoadTransform_Implementation() override { return false; }
@@ -40,6 +43,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void CheckPointReached(UMaterialInstanceDynamic* DynamicMaterialInstance);
 
+	UFUNCTION(BlueprintCallable)
 	void HandleGlowEffects();
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
