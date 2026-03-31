@@ -6,6 +6,7 @@
 #include "ScalableFloat.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
+#include "Interaction/HighLightInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 
 #include "AuraEnemy.generated.h"
@@ -17,7 +18,7 @@ class AAuraAIController;
  * 
  */
 UCLASS()
-class AURA_API AAuraEnemy : public AAuraCharacterBase,public IEnemyInterface
+class AURA_API AAuraEnemy : public AAuraCharacterBase,public IEnemyInterface,public IHighLightInterface
 {
 	GENERATED_BODY()
 public:
@@ -25,10 +26,10 @@ public:
 	virtual void OnRep_Burned() override;
 	virtual void OnRep_Stuned() override;
 	virtual void BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
-	//~begin EnemyInterface
-	virtual void HighlightActor() override;
-	virtual void UnHighlightActor() override;
-	//~end EnemyInterface
+	//~begin HighLightInterface
+	virtual void HighlightActor_Implementation() override;
+	virtual void UnHighlightActor_Implementation() override;
+	//~end HighLightInterface
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlight = false;
 	virtual AActor* GetCombatTarget_Implementation() override;

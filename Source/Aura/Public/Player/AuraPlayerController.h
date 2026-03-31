@@ -8,6 +8,7 @@
 #include "NiagaraComponent.h"
 #include "AuraPlayerController.generated.h"
 
+class IHighLightInterface;
 class AMagicCircle;
 class UDamageTextComponent;
 class USplineComponent;
@@ -17,6 +18,12 @@ class UAuraInputConfig;
 class UInputMappingContext;
 class UInputAction;
 class IEnemyInterface;
+enum class ETargetingStatus : uint8
+{
+	TargetingEnemy,
+	TargetingNotEnemy,
+	NotTargeting
+};
 /**
  * 
  */
@@ -66,8 +73,8 @@ private:
 	
 	FHitResult CursorHit;
 	//高光描边显示转换上下Actor
-	IEnemyInterface* LastActor;
-	IEnemyInterface* ThisActor;
+	TObjectPtr<AActor> LastActor;
+	TObjectPtr<AActor> ThisActor;
 
 	void AbilityInputTagPresses(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -81,7 +88,7 @@ private:
 	float FollowTime = 0.f;
 	float ShortPressThreshold = 0.5f;
 	bool bAutonRunning=false;
-	bool bTargeting  = false;
+	ETargetingStatus TargetingStatus  = ETargetingStatus::NotTargeting;
 	UPROPERTY(EditAnywhere)
 	float AutoRunAcceptanceRadius = 50.f;
 
