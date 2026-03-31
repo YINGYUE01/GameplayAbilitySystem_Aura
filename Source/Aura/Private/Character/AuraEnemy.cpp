@@ -39,6 +39,10 @@ AAuraEnemy::AAuraEnemy()
 	HealthBar->SetVisibility(true);
 	HealthBar->SetIsReplicated(true);
 	BaseWalkSpeed = 250.f;
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	GetMesh()->MarkRenderStateDirty();
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->MarkRenderStateDirty();
 }
 
 void AAuraEnemy::OnRep_Burned()
@@ -86,9 +90,7 @@ void AAuraEnemy::HighlightActor_Implementation()
 {
 	bHighlight = true;
 	GetMesh()->SetRenderCustomDepth(bHighlight);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	Weapon->SetRenderCustomDepth(bHighlight);
-	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AAuraEnemy::UnHighlightActor_Implementation()
@@ -96,6 +98,11 @@ void AAuraEnemy::UnHighlightActor_Implementation()
 	bHighlight = false;
 	GetMesh()->SetRenderCustomDepth(bHighlight);
 	Weapon->SetRenderCustomDepth(bHighlight);
+}
+
+void AAuraEnemy::SetMoveToLocation_Implementation(FVector& OutLocation)
+{
+	
 }
 
 AActor* AAuraEnemy::GetCombatTarget_Implementation()

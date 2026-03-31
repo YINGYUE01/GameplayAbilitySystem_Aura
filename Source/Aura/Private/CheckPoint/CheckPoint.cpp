@@ -1,5 +1,7 @@
 // Copyright YING
 #include "CheckPoint/CheckPoint.h"
+
+#include "Aura/Aura.h"
 #include "Components/SphereComponent.h"
 #include "Game/AuraGameModeBase.h"
 #include "Interaction/PlayerInterface.h"
@@ -13,11 +15,31 @@ ACheckPoint::ACheckPoint(const FObjectInitializer& ObjectInitializer)
 	CheckPointMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
 	CheckPointMesh->SetCollisionResponseToAllChannels(ECR_Block);
 
+	CheckPointMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_BLUE);
+	CheckPointMesh->MarkRenderStateDirty();
+	SceneComponent=CreateDefaultSubobject<USceneComponent>("SceneComponent");
+	SceneComponent->SetupAttachment(GetRootComponent());
+
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
 	Sphere->SetupAttachment(CheckPointMesh);
 	Sphere->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	Sphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn,ECR_Overlap);
+}
+
+void ACheckPoint::SetMoveToLocation_Implementation(FVector& OutLocation)
+{
+	OutLocation = SceneComponent->GetComponentLocation();
+}
+
+void ACheckPoint::HighlightActor_Implementation()
+{
+	CheckPointMesh->SetRenderCustomDepth(true);
+}
+
+void ACheckPoint::UnHighlightActor_Implementation()
+{
+	CheckPointMesh->SetRenderCustomDepth(false);
 }
 
 void ACheckPoint::LoadActor_Implementation()

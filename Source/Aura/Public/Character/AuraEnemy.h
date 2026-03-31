@@ -29,6 +29,7 @@ public:
 	//~begin HighLightInterface
 	virtual void HighlightActor_Implementation() override;
 	virtual void UnHighlightActor_Implementation() override;
+	virtual void SetMoveToLocation_Implementation(FVector& OutLocation) override;
 	//~end HighLightInterface
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlight = false;
