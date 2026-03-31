@@ -92,6 +92,9 @@ public:
 	
 	UPROPERTY()
 	FString MapName = FString("Default Map Name");
+		
+	UPROPERTY()
+	FString MapAssetName = FString("Default Map Asset Name");
 
 	UPROPERTY()
 	FName PlayerStartTag;
@@ -128,5 +131,5 @@ public:
 	TArray<FSaveMap> SaveMaps;
 
 	FSaveMap GetSaveMapWithMapName(const FString& InMapName);
-	bool HarMap(const FString& InMapName);
+	bool HasMap(const FString& InMapName);
 };

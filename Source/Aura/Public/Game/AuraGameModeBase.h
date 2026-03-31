@@ -30,8 +30,9 @@ public:
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot,int32 SlotIndex);
 	ULoadScreenSaveGame* RetrieveInGameSaveData();
 	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
-	void SaveWorldState(UWorld* World);
+	void SaveWorldState(UWorld* World,const FString& DestinationAssetMapName = FString(""));
 	void LoadWorldState(UWorld* World);
+	FString GetMapNameFromAssetMapName(const FString& InAssetMapName);
 
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName,int32 SlotIndex) const;
 	void DeleteSlot(const FString& SlotName,int32 SlotIndex);

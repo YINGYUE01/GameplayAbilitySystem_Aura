@@ -15,7 +15,9 @@ FSaveMap ULoadScreenSaveGame::GetSaveMapWithMapName(const FString& InMapName)
 	return FSaveMap();
 }
 
-bool ULoadScreenSaveGame::HarMap(const FString& InMapName)
+
+
+bool ULoadScreenSaveGame::HasMap(const FString& InMapName)
 {
 	for (const FSaveMap& Map : SaveMaps)
 	{
