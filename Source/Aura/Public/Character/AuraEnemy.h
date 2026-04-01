@@ -36,13 +36,13 @@ public:
 	virtual AActor* GetCombatTarget_Implementation() override;
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	/*
-	 *  Combatinterface
+	 *  CombatInterface
 	 */
 	virtual int32 GetPlayerLevel_Implementation() override;
 
 	virtual void Die(const FVector DeathImpulse) override;
 	/*
-	* end Combatinterface
+	* end CombatInterface
 	*/
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float SpanLife = 5.f;
@@ -65,16 +65,16 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<AActor> CombatTarget;
+
+	void SetLevel(const int32& InLevel) { Level = InLevel; }
+	void SetCharacterClass(const ECharacterClass& InCharacterClass) { CharacterClass = InCharacterClass; }
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo() override;
 	
-
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Character Class Defaults")
 	int32 Level = 1;
-
-
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
