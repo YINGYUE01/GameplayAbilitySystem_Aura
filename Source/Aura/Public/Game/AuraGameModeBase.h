@@ -33,7 +33,7 @@ public:
 	void SaveWorldState(UWorld* World,const FString& DestinationAssetMapName = FString(""));
 	void LoadWorldState(UWorld* World);
 	FString GetMapNameFromAssetMapName(const FString& InAssetMapName);
-
+	void PlayerDied(ACharacter* DeadCharacter);
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName,int32 SlotIndex) const;
 	void DeleteSlot(const FString& SlotName,int32 SlotIndex);
 

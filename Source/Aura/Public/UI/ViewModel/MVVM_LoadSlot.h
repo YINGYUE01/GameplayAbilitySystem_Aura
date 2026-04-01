@@ -41,6 +41,8 @@ public:
 	
 	UPROPERTY()
 	FName PlayerStartTag;
+	UPROPERTY()
+	FString MapAssetName;
 
 	void SetPlayerName(FString Name);
 	FString GetPlayerName() const { return PlayerName;}

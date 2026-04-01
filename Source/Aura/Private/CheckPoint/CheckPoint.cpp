@@ -66,7 +66,10 @@ void ACheckPoint::OnSphereOverlay(UPrimitiveComponent* OverlappedComponent, AAct
 		bReached = true;
 		if (AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(GetWorld()->GetAuthGameMode()))
 		{
-			AuraGM->SaveWorldState(GetWorld());
+			const UWorld* World = GetWorld();
+			FString WorldName = World->GetMapName();
+			WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+			AuraGM->SaveWorldState(GetWorld(),WorldName);
 		}
 		
 		HandleGlowEffects();

@@ -67,6 +67,7 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnterName
 	LoadSlots[Slot]->SetPlayerLevel(1);
 	LoadSlots[Slot]->SlotStatus = Taken;
 	LoadSlots[Slot]->PlayerStartTag = GameModeBase->DefaultPlayStartName;
+	LoadSlots[Slot]->MapAssetName = GameModeBase->DefaultMap.ToSoftObjectPath().GetAssetName();
 	GameModeBase->SaveSlotData(LoadSlots[Slot],Slot);
 	LoadSlots[Slot]->InitializeSlot();
 	UAuraGameInstance* GameInstance  = Cast<UAuraGameInstance>(GameModeBase->GetGameInstance());
