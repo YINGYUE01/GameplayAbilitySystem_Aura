@@ -68,6 +68,9 @@ public:
 
 	void SetLevel(const int32& InLevel) { Level = InLevel; }
 	void SetCharacterClass(const ECharacterClass& InCharacterClass) { CharacterClass = InCharacterClass; }
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnLootTier();
 protected:
 	virtual void BeginPlay() override;
 

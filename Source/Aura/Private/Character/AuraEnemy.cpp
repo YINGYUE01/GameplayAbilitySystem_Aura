@@ -129,6 +129,7 @@ void AAuraEnemy::Die(const FVector DeathImpulse)
 		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"),true);
 	if (HealthBar)
 		HealthBar->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	SpawnLootTier();
 	Super::Die(DeathImpulse);
 }
 

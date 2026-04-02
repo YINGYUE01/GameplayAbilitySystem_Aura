@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "AuraGameModeBase.generated.h"
 
+class ULootTier;
+struct FLootItem;
 class ULoadScreenSaveGame;
 class USaveGame;
 class UMVVM_LoadSlot;
@@ -23,6 +25,8 @@ public:
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
 	UPROPERTY(EditAnywhere,Category="Character Class Defaults")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
+	UPROPERTY(EditAnywhere,Category="Character Class Defaults")
+	TObjectPtr<ULootTier> LootTierInfo;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
