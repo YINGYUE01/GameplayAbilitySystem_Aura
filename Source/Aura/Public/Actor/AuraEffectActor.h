@@ -34,6 +34,28 @@ public:
 	AAuraEffectActor();
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+	UPROPERTY(BlueprintReadOnly)
+	FVector CalculateLocation;
+	UPROPERTY(BlueprintReadOnly)
+	FRotator CalculateRotation;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Pick Up Movement")
+	bool bRotates = false;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Pick Up Movement")
+	float RotationRate = 45.f;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Pick Up Movement")
+	bool bSinusoidalMovement = false;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Pick Up Movement")
+	float SinAmplitude = 0.f;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Pick Up Movement")
+	float SinPeriodConstant = 1;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Pick Up Movement")
+	FVector InitialLocation;
+	UFUNCTION(BlueprintCallable)
+	void StartSinusodalMovement();
+
+	UFUNCTION(BlueprintCallable)
+	void StartRotation();
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
 	bool bDestroyOnEffectApplication=false;
@@ -75,4 +97,7 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Applied Effects")
 	float ActorLevel=1.0f;
+private:
+	float RunningTime = 0.f;
+	void ItemMovement(float DeltaTime);
 };
