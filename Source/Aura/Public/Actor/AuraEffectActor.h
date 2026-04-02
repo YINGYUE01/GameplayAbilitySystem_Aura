@@ -35,9 +35,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	FVector CalculateLocation;
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	FRotator CalculateRotation;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Pick Up Movement")
 	bool bRotates = false;

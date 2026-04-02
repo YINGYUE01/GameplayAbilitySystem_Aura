@@ -40,9 +40,8 @@ void AAuraEffectActor::ItemMovement(float DeltaTime)
 	}
 	if (bSinusoidalMovement)
 	{
-		const float Sine = SinAmplitude * FMath::Sin(DeltaTime * SinPeriodConstant);
+		const float Sine = SinAmplitude * FMath::Sin(RunningTime * SinPeriodConstant);
 		CalculateLocation = InitialLocation + FVector(0,0,Sine);
-		
 	}
 }
 void AAuraEffectActor::StartSinusodalMovement()
