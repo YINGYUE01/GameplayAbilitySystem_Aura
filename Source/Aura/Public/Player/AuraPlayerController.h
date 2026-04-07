@@ -61,8 +61,11 @@ private:
 	TObjectPtr<UInputMappingContext> AuraContext;
 	UPROPERTY(EditAnywhere,Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
+	UPROPERTY(EditAnywhere,Category="Input")
+	TObjectPtr<UInputAction> ForwardAction;
 	//键盘移动函数
 	void Move(const struct FInputActionValue& InputActionValue);
+	void Steering(const struct FInputActionValue& InputActionValue);
 	//鼠标光标检测
 	void CursorTrace();
 	UPROPERTY(EditAnywhere,Category="Input")

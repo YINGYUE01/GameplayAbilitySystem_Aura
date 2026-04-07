@@ -13,6 +13,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Aura.h"
+#include "Character/AuraCharacter.h"
+#include "Character/AuraCharacterBase.h"
 #include "Components/DecalComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
@@ -260,14 +262,25 @@ void AAuraPlayerController::Move(const struct FInputActionValue& InputActionValu
 	bAutonRunning = false;
     const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
-	const FRotator YawRotaion(0.f,Rotation.Yaw,0.f);
-	const FVector ForwardDirection = FRotationMatrix(YawRotaion).GetUnitAxis(EAxis::X);
-	const FVector RightDirection = FRotationMatrix(YawRotaion).GetUnitAxis(EAxis::Y);
+	const FRotator YawRotation(0.f,Rotation.Yaw,0.f);
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection,InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection,InputAxisVector.X);
 	}
+}
+
+void AAuraPlayerController::Steering(const struct FInputActionValue& InputActionValue)
+{
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
+		return;
+	if (GetCharacter()->Implements<UPlayerInterface>())
+	{
+		IPlayerInterface::Execute_Steering(GetCharacter(),InputActionValue.Get<float>());
+	}
+	
 }
 
 void AAuraPlayerController::SetupInputComponent()
@@ -277,5 +290,6 @@ void AAuraPlayerController::SetupInputComponent()
 	AuraInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AAuraPlayerController::Move);
 	AuraInputComponent->BindAction(ShiftAction,ETriggerEvent::Triggered,this,&AAuraPlayerController::ShiftPress);
 	AuraInputComponent->BindAction(ShiftAction,ETriggerEvent::Completed,this,&AAuraPlayerController::ShiftRelease);
+	AuraInputComponent->BindAction(ForwardAction,ETriggerEvent::Triggered,this,&AAuraPlayerController::Steering);
 	AuraInputComponent->BindAbilityActions(InputConfig,this,&AAuraPlayerController::AbilityInputTagPresses,&AAuraPlayerController::AbilityInputTagReleased,&AAuraPlayerController::AbilityInputTagHeld);
 }

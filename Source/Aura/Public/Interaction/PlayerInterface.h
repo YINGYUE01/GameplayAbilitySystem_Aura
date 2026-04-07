@@ -20,6 +20,9 @@ class AURA_API IPlayerInterface
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintNativeEvent)
+	void Steering(float Muti);
+	
+	UFUNCTION(BlueprintNativeEvent)
 	void AddToXP(int32 InXP);
 
 	UFUNCTION(BlueprintNativeEvent)

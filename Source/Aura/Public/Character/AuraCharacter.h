@@ -19,6 +19,7 @@ class AURA_API AAuraCharacter : public AAuraCharacterBase,public IPlayerInterfac
 	GENERATED_BODY()
 public:
 	AAuraCharacter();
+	virtual void Tick(float DeltaSeconds) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 	virtual void OnRep_Stuned() override;
@@ -39,6 +40,7 @@ public:
 	virtual void HideMagicCircle_Implementation() override;
 	virtual void SetMagicCircleMaterial_Implementation(UMaterialInterface* Material) override;
 	virtual void SaveGameProgress_Implementation(const FName& CheckPointTag) override;
+	virtual void Steering_Implementation(float Muti) override;
 	/* End Player Interface */
 	
 	/* Combat Interface */
@@ -53,6 +55,11 @@ public:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+
+	bool Steering = false;
+	FRotator TargetRotation = FRotator();
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float SteeringSpeed = 10.f;
 private:
 	virtual void InitAbilityActorInfo() override;
 	void LoadData();
@@ -64,7 +71,7 @@ private:
 	TObjectPtr<UCameraComponent> TopDownCameraComponent;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> CameraBoom;
-	
-	
+
+
 };
 

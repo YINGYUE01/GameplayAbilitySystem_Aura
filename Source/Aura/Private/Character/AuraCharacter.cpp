@@ -54,6 +54,19 @@ AAuraCharacter::AAuraCharacter()
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 }
 
+void AAuraCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (Steering)
+	{
+		FRotator CurrentRotation = CameraBoom->GetRelativeRotation();
+		FRotator NewRotation = FMath::RInterpTo(CurrentRotation,TargetRotation,DeathTime,SteeringSpeed);
+		CameraBoom->SetRelativeRotation(NewRotation);
+		if (NewRotation.Equals(TargetRotation, 1.0f))
+			Steering = false;
+	}
+}
+
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -148,6 +161,18 @@ void AAuraCharacter::SaveGameProgress_Implementation(const FName& CheckPointTag)
 	}
 }
 
+void AAuraCharacter::Steering_Implementation(float Muti)
+{
+	FRotator Rotation = CameraBoom->GetComponentTransform().GetRotation().Rotator();
+	float Scal = 45*Muti;
+	Rotation.Yaw+=Scal;
+	TargetRotation = Rotation;
+	Steering = true;
+
+	FRotator ControllerRotation = GetControlRotation();
+	ControllerRotation.Yaw = Rotation.Yaw;
+	GetController()->SetControlRotation(ControllerRotation);
+}
 
 void AAuraCharacter::OnRep_PlayerState()
 {
