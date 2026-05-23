@@ -259,23 +259,26 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 				Props.TargetCharacter->LaunchCharacter(KnockbackImpulse,true,true);
 			}
 		}
-		if (Props.SourceCharacter && Props.TargetCharacter && Props.SourceCharacter!=Props.TargetCharacter)
-		{
-			if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
+			if (Props.SourceCharacter && Props.TargetCharacter && Props.SourceCharacter!=Props.TargetCharacter)
 			{
-				const bool bBlock = UAuraAbilitySystemLibrary::IsBlockHit(Props.EffectContextHandle);
-				const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
-				AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
-			}
-			if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
-			{
-				const bool bBlock = UAuraAbilitySystemLibrary::IsBlockHit(Props.EffectContextHandle);
-				const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
-				AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
-			}
-			if (UAuraAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
-			{
-				Debuff(Props);
+				if (Props.TargetAvatarActor && Props.TargetAvatarActor->HasAuthority())
+				{
+					if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
+					{
+						const bool bBlock = UAuraAbilitySystemLibrary::IsBlockHit(Props.EffectContextHandle);
+						const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+						AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
+					}
+					if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
+					{
+						const bool bBlock = UAuraAbilitySystemLibrary::IsBlockHit(Props.EffectContextHandle);
+						const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+						AuraPlayerController->ShowDamageNumber(ComingDamage,Props.TargetCharacter,bBlock,bCritical);
+					}
+				}
+				if (UAuraAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
+				{
+					Debuff(Props);
 			}
 		}
 	}
@@ -407,5 +410,4 @@ void UAuraAttributeSet::OnRep_PhysicalResistance(const FGameplayAttributeData& O
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet,PhysicalResistance,OldPhysicalResistance);
 }
-
 
