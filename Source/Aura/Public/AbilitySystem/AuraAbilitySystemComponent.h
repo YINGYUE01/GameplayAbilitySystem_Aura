@@ -38,6 +38,7 @@ public:
 	void AddCharacterAbilitiesFromSaveGame(ULoadScreenSaveGame* SaveGame);
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
+	
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);

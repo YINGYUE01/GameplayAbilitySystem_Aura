@@ -17,7 +17,7 @@ public:
 	UExecCalc_Damage();
 	void DetermineDebuff(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
 	                     const FGameplayEffectSpec& Spec,
-	                     FAggregatorEvaluateParameters EvaluateParameters,
-	                     TMap<FGameplayTag,FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDefs) const;
+	                     const FAggregatorEvaluateParameters& EvaluateParameters,
+	                     const TMap<FGameplayTag,FGameplayEffectAttributeCaptureDefinition> &TagsToCaptureDefs) const;
 	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
 };

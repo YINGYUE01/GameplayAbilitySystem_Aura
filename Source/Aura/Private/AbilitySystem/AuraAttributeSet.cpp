@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
@@ -65,10 +66,10 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	// if (Attribute==GetHealthAttribute())
-	// {
-	// 	NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
-	// }
+	if (Attribute==GetHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
+	}
 	if (Attribute==GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
@@ -101,7 +102,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				CombatInterface->Die(UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle));
 			}
 		}
-		//UE_LOG(LogTemp,Warning,TEXT("Change Health on %s Health:%f"),*Props.TargetAvatarActor->GetName(),GetHealth());
+		
 	}
 	if (Data.EvaluatedData.Attribute==GetManaAttribute())
 	{
@@ -234,6 +235,7 @@ void UAuraAttributeSet::HandleInComingDamage(FEffectProperties& Props)
 	{
 		float NewHealth = GetHealth() - ComingDamage;
 		SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
+		UE_LOG(LogAura,Warning,TEXT("Change Health on %s Health:%f"),*Props.TargetAvatarActor->GetName(),GetHealth());
 		const bool bFatal = NewHealth<=0.f;
 		if (bFatal)
 		{

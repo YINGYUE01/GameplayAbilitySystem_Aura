@@ -9,6 +9,7 @@
 #include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Aura/AuraLogChannels.h"
 #include "Chaos/ChaosPerfTest.h"
 #include "Game/AuraGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -575,6 +576,7 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondAc
 FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectFromDamageEffectParams(FDamageEffectParams DamageEffectParams)
 {
 	if (!IsValid(DamageEffectParams.SourceAbilitySystemComponent)) return FGameplayEffectContextHandle();
+	//UE_LOG(LogAura, Error, TEXT("ApplyDamageEffectFromDamageEffectParams Target: %s"), *DamageEffectParams.TargetAbilitySystemComponent->GetOwnerActor()->GetName());
 	const AActor* AvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	FGameplayEffectContextHandle DamageEffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
@@ -597,8 +599,15 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectFromDam
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,GameplayTags.Debuff_Chance,DamageEffectParams.DebuffChance);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,GameplayTags.Debuff_Frequency,DamageEffectParams.DebuffFrequency);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageEffectSpecHandle,GameplayTags.Debuff_Duration,DamageEffectParams.DebuffDuration);
-	if (IsValid(DamageEffectParams.TargetAbilitySystemComponent))
-		DamageEffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data);
+	if (DamageEffectParams.TargetAbilitySystemComponent->GetOwnerActor()->HasAuthority())
+	{
+		if (IsValid(DamageEffectParams.TargetAbilitySystemComponent))
+		{
+			DamageEffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data);
+		}
+	}
+
+		
 	return DamageEffectContextHandle;
 }
 

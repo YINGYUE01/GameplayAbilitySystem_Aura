@@ -105,8 +105,10 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPresses(FGameplayTag InputTag)
 {
+	//如果被施加Player_Block_InputPressed标签则不能激活技能
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
 		 return;
+	
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (IsValid(ThisActor))
@@ -119,14 +121,16 @@ void AAuraPlayerController::AbilityInputTagPresses(FGameplayTag InputTag)
 			TargetingStatus = ETargetingStatus::NotTargeting;
 		}
 	}
+	//根据输入Tag转入ASC激活技能
 	if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputReleased))
 		return;
-	/*  若不是鼠标左键  */
+	/*  若不是鼠标左键  直接激活技能*/
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetASC())  GetASC()->AbilityInputTagReleased(InputTag);
@@ -134,7 +138,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 
 	if (GetASC())  GetASC()->AbilityInputTagReleased(InputTag);
-	//左键短按判断
+	//左键短按判断   若无目标且shift没有被按住 则判定为自动寻路，处理寻路逻辑
 	if (TargetingStatus!=ETargetingStatus::TargetingEnemy && !bShiftPressed)
 	{
 		APawn* ControllerPawn = GetPawn();

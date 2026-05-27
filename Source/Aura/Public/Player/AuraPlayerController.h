@@ -79,6 +79,7 @@ private:
 	TObjectPtr<AActor> LastActor;
 	TObjectPtr<AActor> ThisActor;
 
+	//捕获技能输入，执行相应逻辑
 	void AbilityInputTagPresses(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
