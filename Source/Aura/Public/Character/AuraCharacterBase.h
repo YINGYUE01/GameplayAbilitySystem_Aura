@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AuraCharacterBase.generated.h"
+class AAuraWeapon;
 class UPassiveNiagaraComponent;
 class UDebuffNiagaraComponent;
 class UGameplayAbility;
@@ -47,7 +48,7 @@ public:
 	virtual ECharacterClass GetCharacterCLass_Implementation() override;
 	virtual FOnASCRegister& GetOnASCRegisterDelegate() override;
 	virtual FOnDeath& GetOnDeathDelegate() override;
-	virtual USkeletalMeshComponent* GetWeaponMesh_Implementation() override;
+	virtual AAuraWeapon* GetWeaponMesh_Implementation() override;
 	virtual bool IsBeingShocked_Implementation() override;
 	virtual void SetIsBeingShocked_Implementation(const bool bInShock) override;
 	virtual FOnDamageDelegate& GetOnDamageDelegate() override;
@@ -95,6 +96,10 @@ protected:
 	//Weapon Socket
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="WeaponActor")
+	TSubclassOf<AAuraWeapon> WeaponActorClass;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="WeaponActor")
+	TObjectPtr<AAuraWeapon> WeaponActor;
 	UPROPERTY(EditAnywhere,Category="Attack Socket")
 	FName WeaponTipSocketName;
 	UPROPERTY(EditAnywhere,Category="Attack Socket")

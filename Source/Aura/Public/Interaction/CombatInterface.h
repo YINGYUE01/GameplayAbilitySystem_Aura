@@ -8,6 +8,7 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
+class AAuraWeapon;
 class UNiagaraSystem;
 class UAnimMontage;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegister,UAbilitySystemComponent*);
@@ -92,5 +93,5 @@ public:
 	void SetIsBeingShocked(const bool bInShock);
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
-	USkeletalMeshComponent* GetWeaponMesh();
+	AAuraWeapon* GetWeaponMesh();
 };

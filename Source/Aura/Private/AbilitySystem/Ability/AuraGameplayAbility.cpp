@@ -3,9 +3,21 @@
 
 #include "AbilitySystem/Ability/AuraGameplayAbility.h"
 
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include "Interfaces/IPluginManager.h"
+
+void UAuraGameplayAbility::InputPressed(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+{
+	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
+	if(ActorInfo->AbilitySystemComponent->HasMatchingGameplayTag(FAuraGameplayTags::Get().Ability_Combo_ComboWindow) && !bNextAttack)
+	{
+		bNextAttack = true;
+		CurrentComboIndex++;
+	}
+}
 
 FString UAuraGameplayAbility::GetDescription(int32 Level)
 {

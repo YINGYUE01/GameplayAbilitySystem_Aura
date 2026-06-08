@@ -158,9 +158,6 @@ public:
 	FGameplayAttributeData InComingXP;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,InComingXP);
 	
-	
-	
-	
 	//~Begin Rep Function
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;

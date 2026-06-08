@@ -76,8 +76,6 @@ protected:
 	void OnXPChanged(const int32 NewXP);
 };
 
-
-
 template <typename T>
 T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
 {

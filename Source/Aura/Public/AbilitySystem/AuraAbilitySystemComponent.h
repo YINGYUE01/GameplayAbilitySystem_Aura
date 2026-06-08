@@ -42,7 +42,10 @@ public:
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
-	
+	UFUNCTION(BlueprintCallable)
+	void AddTagToASC(UPARAM(ref)FGameplayTag& Tag);
+	UFUNCTION(BlueprintCallable)
+	void RemoveTagFromASC(UPARAM(ref)FGameplayTag& Tag);
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);

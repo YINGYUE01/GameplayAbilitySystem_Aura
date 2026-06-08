@@ -144,6 +144,18 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(FGameplayTag InputTag)
 		}
 	}
 }
+
+void UAuraAbilitySystemComponent::AddTagToASC(FGameplayTag& Tag)
+{
+	AddLooseGameplayTag(Tag);
+}
+
+void UAuraAbilitySystemComponent::RemoveTagFromASC(FGameplayTag& Tag)
+{
+	RemoveLooseGameplayTag(Tag);
+}
+
+
 //释放
 void UAuraAbilitySystemComponent::AbilityInputTagReleased(FGameplayTag InputTag)
 {

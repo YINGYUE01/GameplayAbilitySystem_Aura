@@ -84,6 +84,7 @@ public:
 	FGameplayTag Abilities_Fire_FireBlast;
 	FGameplayTag Abilities_Lightning_Electrocute;
 	FGameplayTag Abilities_Arcane_ArcaneShards;
+	FGameplayTag Abilities_Physical_Slash;
 	
 	FGameplayTag Cooldown_Fire_FireBolt;
 	FGameplayTag Cooldown_None;
@@ -91,6 +92,10 @@ public:
 	FGameplayTag Abilities_Passive_HaloOfProtection;
 	FGameplayTag Abilities_Passive_LifeSiphon;
 	FGameplayTag Abilities_Passive_ManaSiphon;
+
+	/*Combo Ability Tag*/
+	FGameplayTag Ability_Combo_ComboWindow;
+	FGameplayTag Ability_Combo_Executable;
 
 	/* CombatSocket */
 	FGameplayTag CombatSocket_Weapon;

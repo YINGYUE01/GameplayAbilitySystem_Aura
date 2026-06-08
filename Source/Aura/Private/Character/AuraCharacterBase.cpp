@@ -8,6 +8,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "AbilitySystem/Passive/PassiveNiagaraComponent.h"
+#include "Actor/AuraWeapon.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SceneComponent.h"
@@ -47,6 +48,8 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon->SetupAttachment(GetMesh(),FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	
+	
+	
 }
 
 void AAuraCharacterBase::Tick(float DeltaSeconds)
@@ -75,7 +78,11 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	WeaponActor = GetWorld()->SpawnActor<AAuraWeapon>(WeaponActorClass);
+	if (WeaponActor)
+	{
+		WeaponActor->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetIncludingScale,FName("WeaponHandSocket"));
+	}
 }
 
 FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag MontageTag)
@@ -172,9 +179,9 @@ FOnDeath& AAuraCharacterBase::GetOnDeathDelegate()
 	return OnDeath;
 }
 
-USkeletalMeshComponent* AAuraCharacterBase::GetWeaponMesh_Implementation()
+AAuraWeapon* AAuraCharacterBase::GetWeaponMesh_Implementation()
 {
-	return Weapon;
+	return WeaponActor;
 }
 
 bool AAuraCharacterBase::IsBeingShocked_Implementation()

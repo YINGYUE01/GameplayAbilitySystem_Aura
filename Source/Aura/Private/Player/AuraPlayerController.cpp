@@ -134,6 +134,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetASC())  GetASC()->AbilityInputTagReleased(InputTag);
+		bAutonRunning = false;
 		return;
 	}
 
@@ -178,6 +179,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
+		bAutonRunning = false;
 		return;
 	}
 	//鼠标左键
@@ -191,6 +193,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		if (CursorHit.bBlockingHit)  CachedDestination = CursorHit.ImpactPoint;
 		if (APawn* ControllerPawn = GetPawn())
 		{
+			bAutonRunning  = false;
 			const FVector WorldDirection = (CachedDestination - ControllerPawn->GetActorLocation()).GetSafeNormal();
 			ControllerPawn->AddMovementInput(WorldDirection);
 		}

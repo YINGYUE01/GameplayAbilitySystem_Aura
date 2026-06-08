@@ -4,6 +4,7 @@
 #include "AbilitySystem/Ability/AuraBeamSpell.h"
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Actor/AuraWeapon.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -78,7 +79,7 @@ void UAuraBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 	check(OwnerCharacter);
 	if (OwnerCharacter->Implements<UCombatInterface>())
 	{
-		USkeletalMeshComponent* Weapon = ICombatInterface::Execute_GetWeaponMesh(OwnerCharacter);
+		USkeletalMeshComponent* Weapon = ICombatInterface::Execute_GetWeaponMesh(OwnerCharacter)->WeaponMesh;
 		if (Weapon)
 		{
 			TArray<AActor*> ActorsToIgnore;

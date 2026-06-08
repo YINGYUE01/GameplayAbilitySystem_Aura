@@ -85,6 +85,7 @@ void FAuraGameplayTags::InitializeNativeTags()
 	GameplayTags.Abilities_Fire_FireBlast =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Fire.FireBlast"),FString("FireBlast Ability Tag"));
 	GameplayTags.Abilities_Lightning_Electrocute=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Lightning.Electrocute"),FString("Electrocute Ability"));
 	GameplayTags.Abilities_Arcane_ArcaneShards=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Arcane.ArcaneShards"),FString("ArcaneShards Ability"));
+	GameplayTags.Abilities_Physical_Slash=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Physical.Slash"),FString("Slash Ability"));
 	
 	GameplayTags.Cooldown_Fire_FireBolt=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Fire.FireBolt"),FString("FireBolt Cooldown Tag"));
 	GameplayTags.Cooldown_None=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.None"),FString("None Cooldown Tag"));
@@ -103,6 +104,11 @@ void FAuraGameplayTags::InitializeNativeTags()
 	GameplayTags.Abilities_Passive_ManaSiphon=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Passive.ManaSiphon"),FString("Passive ManaSiphon"));
 	
 	/*End Ability */
+
+	/* Ability Combo */
+	GameplayTags.Ability_Combo_ComboWindow=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Ability.Combo.ComboWindow"),FString("ComboWindow"));
+	GameplayTags.Ability_Combo_Executable=  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Ability.Combo.Executable"),FString("Executable"));
+	/* Ability Combo */
 	
 	/* CombatSocket */
 	GameplayTags.CombatSocket_Weapon =  UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.Weapon"),FString("Weapon"));
